@@ -1,0 +1,1131 @@
+---
+title: "carotenoid_extractions"
+output: html_document
+date: "2024-07-19"
+---
+Loading R packages
+```{r}
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(ggplot2)
+
+```
+
+
+# Read in data
+```{r}
+carotenoids <- read.csv("./data/Cassava_Carotenoid_Extraction.csv") %>% #uplc/uv-vis data
+  filter(tube_ID != 168) %>% #exclude a duplicate with outlier total carotenoids
+  dplyr::select(-c(X:X.3)) #remove empty columns 
+
+weights <- read.csv("./data/carotenoid_sample_weights.csv") #sample weights for carotenoid extractions
+
+dry_matter <- read.csv("./data/3_harvest_data.csv") %>% #dry matter and metadata
+  mutate(tube_ID = as.character(samplenum)) %>% dplyr::select(-samplenum) %>%
+  mutate(block = substr(as.character(plant), 1, 1), #get block number from first digit of plant number
+         timept = case_when(harvest_date %in% c("5/29/23", "5/30/23") ~ "6MAP", 
+                            harvest_date %in% c("6/20/23", "6/21/23") ~ "7MAP", 
+                            harvest_date %in% c("7/6/23") ~ "8MAP", 
+                            harvest_date %in% c("7/28/23") ~ "9MAP", T ~ NA) )
+```
+
+
+# Data curation
+Change variable types, making DM above 100 be NA, standarizing with sample weights and changing units from ng/g to ug/g.
+
+```{r}
+joined_df <- full_join(x=carotenoids, y=weights, by= c("tube_ID" = "tube_number")) %>%  
+  left_join(y= dry_matter, by=c("tube_ID", "sample_ID" = "old_sample_ID")) %>%
+  dplyr::select(-sample_ID) %>% #drop uncorrected sample ID column #tubeID %>%
+  rename(originaltubelabel = tubeID) %>% 
+  mutate(Extr.Set.Date = as.factor(Extr.Set.Date), 
+         sample_weight_g = as.numeric(sample_weight_g), 
+         block = as.factor(block), 
+         plant = as.factor(plant), 
+         root = as.factor(root), across(Phytoene:Lutein, as.numeric)) %>%
+  mutate(dry_matter = case_when(`dry_matter._complete` > 100 ~ NA, TRUE ~ `dry_matter._complete`)) #filter out impossible percentages
+
+joined_df <- joined_df %>% 
+  mutate(across(Phytoene:Lutein, function(x){x/joined_df$sample_weight_g})) %>%  #standardize carotenoids by starting weight
+  mutate(across(Phytoene:Lutein, function(x){x*0.001})) %>% #convert ng/g to ug/g
+  mutate(across(Phytoene:Lutein, ~ case_when(tube_ID == "2" ~ NA, T ~ . )) ) %>% #exclude tube 02 spilled during dry down
+  mutate(total_carotenoids = rowSums(dplyr::select(., Phytoene:Lutein)), #sum total carotenoids
+         total_violaxanthin = Violaxanthin.peak.1 + Violaxanthin.peak.2) %>% #sum total violaxanthin
+  mutate(Beta.Carotene = case_when(Beta.Carotene == 0 ~ NA, TRUE ~ Beta.Carotene)) %>% #filter out impossible percentages
+  mutate(genotype.category = case_when(
+    startsWith(genotypeID, "A") ~ "African",
+    startsWith(genotypeID, "C") ~ "Latin American",
+    startsWith(genotypeID, "X") ~ "Hybrid")) %>%
+  mutate(genotypeID = case_when(grepl("S", tube_ID) == T ~ "standard", T ~ genotypeID)) %>%
+  dplyr::select(-c(dry_matter., dry_matter._complete))
+
+
+write.csv(joined_df, "./data/CarotenoidsHPLCdata_merged_yr2.csv")
+```
+
+
+
+
+Detecting and remove outliers 
+
+```{r}
+library(outliers)
+#Grubbs test
+outliertest <- grubbs.test(joined_df$dry_matter)
+#outliertest
+
+#removing outliers of DM
+joined_df[joined_df$tube_ID == "228", "dry_matter" ] <- NA
+
+outliertest2 <- grubbs.test(joined_df$dry_matter)
+# #outliertest2
+joined_df[joined_df$tube_ID == "62", "dry_matter" ] <- NA
+
+# outliertest3 <- grubbs.test(joined_df$total_carotenoids)
+# # #outliertest3
+# joined_df[joined_df$tube_ID == "349", "total_carotenoids" ] <- NA
+
+```
+
+# Carotenoid composition
+```{r}
+data_long <- joined_df %>% mutate(CisCarotenes = Phytoene + Phytofluene + Zeta.Carotene) %>%
+  pivot_longer(cols = c(Beta.Carotene:Lutein, CisCarotenes), names_to = "Carotenoid", values_to = "value") 
+
+ggplot(data_long, aes(x = "", y = value, fill = Carotenoid)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y") +
+  theme_void() +
+  labs(title = "Carotenoid composition") 
+
+```
+
+
+
+# Check the technical consistency of the standards  
+
+```{r}
+standards <- joined_df %>% 
+  filter(str_starts(tube_ID, "^S")) 
+
+std_means <- standards %>% summarise(across(c(Phytoene:Lutein, total_carotenoids, total_violaxanthin), mean, na.rm = T)) #means
+std_sd <- standards %>% summarise(across(c(Phytoene:Lutein, total_carotenoids, total_violaxanthin), sd, na.rm = T)) #standard deviation
+std_cv <- (std_sd/std_means)*100 #coefficient of variation in % 
+
+head(std_cv)
+
+ggplot(data = standards)+
+  aes(x = genotypeID, y = total_carotenoids)+
+  geom_boxplot()
+```
+
+# Data Analysis 
+
+Filtering into categories
+```{r}
+inner_df <- filter(joined_df, layer == "inner")
+outer_df <- filter(joined_df, layer == "outer")
+
+timept_1 <- filter(joined_df, timept == "6MAP")
+timept_2 <- filter(joined_df, timept == "7MAP")
+timept_3 <- filter(joined_df, timept == "8MAP")
+timept_4 <- filter(joined_df, timept == "9MAP")
+```
+
+
+Phenotypic correlation tests 
+```{r}
+# phenotypic correlation between TC & DM 
+TCDM_cor <- cor.test(joined_df$total_carotenoids, joined_df$dry_matter, method="kendall")
+TCDM_cor
+
+
+#TC/DM correlation between layers 
+cor.test(inner_df$total_carotenoids, inner_df$dry_matter, method="kendall") 
+cor.test(outer_df$total_carotenoids, outer_df$dry_matter, method="kendall")
+
+
+
+#TC/DM phenotypic correlation across time points 
+cor.test(timept_1$total_carotenoids, timept_1$dry_matter)
+
+cor.test(timept_2$total_carotenoids, timept_2$dry_matter)
+ 
+cor.test(timept_3$total_carotenoids, timept_3$dry_matter)
+
+cor.test(timept_4$total_carotenoids, timept_4$dry_matter)
+
+```
+
+- TC and DM are significantly negatively phenotypically correlated, r=-0.24
+- Inner layer: TC is negatively correlated with DM 
+- Outer layer: TC is not significantly correlated with DM 
+- TC and DM are most phenotypically negatively correlated at timepoint 4, -0.41
+
+
+Examine genetic correlations with linear models
+```{r}
+library(lme4)
+
+#overall genetic correlation and heritability
+DMBLUPmodel <- lmer(data = joined_df, dry_matter ~ block + (1|genotypeID) + layer + timept + (1|plant))
+TCBLUPmodel <- lmer(data = joined_df, total_carotenoids ~ block + (1|genotypeID) +  layer + timept + (1|plant))
+
+overallgencor <- cor.test(ranef(DMBLUPmodel)[[1]][,1], ranef(TCBLUPmodel)[[1]][,1])
+
+H2DM <- as.data.frame(summary(DMBLUPmodel)$varcor)[2,"vcov"] / sum(as.data.frame(summary(DMBLUPmodel)$varcor)[,"vcov"]*c((1/4), 1, (1/24)))
+H2TC <- as.data.frame(summary(TCBLUPmodel)$varcor)[2,"vcov"] / sum(as.data.frame(summary(TCBLUPmodel)$varcor)[,"vcov"]*c((1/4), 1, (1/24)))
+
+cat("Overall H2 of DM: ", round(H2DM,2), "\n")
+cat("Overall H2 of TC: ", round(H2TC,2), "\n")
+
+
+DMBLUPmodel_1 <- lmer(data = timept_1, dry_matter ~ block + (1|genotypeID) + layer)
+H2DM_1 <- as.data.frame(summary(DMBLUPmodel_1)$varcor)[1,"vcov"] / sum(as.data.frame(summary(DMBLUPmodel_1)$varcor)[,"vcov"])
+TCBLUPmodel_1 <- lmer(data = timept_1, total_carotenoids ~ block + (1|genotypeID) + layer)
+H2TC_1 <-  as.data.frame(summary(TCBLUPmodel_1)$varcor)[1,"vcov"] / sum(as.data.frame(summary(TCBLUPmodel_1)$varcor)[,"vcov"])
+tp1gencor <- cor.test(ranef(DMBLUPmodel_1)[[1]][,1], ranef(TCBLUPmodel_1)[[1]][,1])
+tp1layer <- as.data.frame(summary(DMBLUPmodel_1)$coefficients)["layerouter", "Estimate"]
+
+DMBLUPmodel_2 <- lmer(data = timept_2, dry_matter ~ block + (1|genotypeID) + layer)
+H2DM_2 <- as.data.frame(summary(DMBLUPmodel_2)$varcor)[1,"vcov"] / sum(as.data.frame(summary(DMBLUPmodel_2)$varcor)[,"vcov"])
+TCBLUPmodel_2 <- lmer(data = timept_2, total_carotenoids ~ block + (1|genotypeID) + layer)
+H2TC_2 <-  as.data.frame(summary(TCBLUPmodel_2)$varcor)[1,"vcov"] / sum(as.data.frame(summary(TCBLUPmodel_2)$varcor)[,"vcov"])
+tp2gencor <- cor.test(ranef(DMBLUPmodel_2)[[1]][,1], ranef(TCBLUPmodel_2)[[1]][,1])
+tp2layer <- as.data.frame(summary(DMBLUPmodel_2)$coefficients)["layerouter", "Estimate"]
+
+
+
+DMBLUPmodel_3 <- lmer(data = timept_3, dry_matter ~ block + (1|genotypeID) + layer)
+H2DM_3 <- as.data.frame(summary(DMBLUPmodel_3)$varcor)[1,"vcov"] / sum(as.data.frame(summary(DMBLUPmodel_3)$varcor)[,"vcov"])
+TCBLUPmodel_3 <- lmer(data = timept_3, total_carotenoids ~ block + (1|genotypeID) + layer)
+H2TC_3 <-  as.data.frame(summary(TCBLUPmodel_3)$varcor)[1,"vcov"] / sum(as.data.frame(summary(TCBLUPmodel_3)$varcor)[,"vcov"])
+tp3gencor <- cor.test(ranef(DMBLUPmodel_3)[[1]][,1], ranef(TCBLUPmodel_3)[[1]][,1])
+tp3layer <- as.data.frame(summary(DMBLUPmodel_3)$coefficients)["layerouter", "Estimate"]
+
+
+DMBLUPmodel_4 <- lmer(data = timept_4, dry_matter ~ block + (1|genotypeID) + layer)
+H2DM_4 <- as.data.frame(summary(DMBLUPmodel_4)$varcor)[1,"vcov"] / sum(as.data.frame(summary(DMBLUPmodel_4)$varcor)[,"vcov"])
+TCBLUPmodel_4 <- lmer(data = timept_4, total_carotenoids ~ block + (1|genotypeID) + layer)
+H2TC_4 <-  as.data.frame(summary(TCBLUPmodel_4)$varcor)[1,"vcov"] / sum(as.data.frame(summary(TCBLUPmodel_4)$varcor)[,"vcov"])
+tp4gencor <- cor.test(ranef(DMBLUPmodel_4)[[1]][,1], ranef(TCBLUPmodel_4)[[1]][,1])
+tp4layer <- as.data.frame(summary(DMBLUPmodel_4)$coefficients)["layerouter", "Estimate"]
+
+
+cat("genetic correlations across timepoints: " ,tp1gencor$estimate, tp2gencor$estimate, tp3gencor$estimate, tp4gencor$estimate, "\n")
+
+cat("H2 of DM across timepoints: ", H2DM_1, H2DM_2, H2DM_3, H2DM_4, "\n")
+
+cat("H2 of TC across timepoints: ", H2TC_1, H2TC_2, H2TC_3, H2TC_4, "\n")
+
+cat("layer effect across timepoints: ", tp1layer, tp2layer, tp3layer, tp4layer)
+
+```
+
+- TC and DM are most genetically negatively correlated at timepoint 4, -0.60
+- timepoint 4 also has the highest heritability for DM and the second highest for TC
+
+  
+  
+#Pick 4 genotypes for RNAseq:
+For the four most important traits (DM, TC, phytoene, beta-carotene), fit a line through the timepoints (one for inner, one for outer layer)
+Get genotype/layer mean and std. error for each timepoint, divide by standard error (?)
+Calculate the distance between each genotype/layer scaled mean and the line
+Pick the 4 genotypes with the lowest total distance across timepoints and traits 
+Check that the selected genotypes have complete TC/DM data and have tissue available for RNA. (nobs = 3)
+
+To identify 4 genotypes representative of the pattern across time points for sampling gene expression across time points in the RNAseq experiment, the means of the three root replicates per plant/tissue layer were calculated and divided by the standard error. Linear models of DM and TC by time point were fit. The Euclidean distance between each standardized mean and the regression line was calculated and the genotypes were ranked by mean distance across tissue layers and time points. The 4 genotypes with the highest rank average between the DM and TC models, indicating that they most closely follow the overall trend of DM and TC across time points, were selected.
+```{r}
+plotdata <- joined_df %>% filter(!is.na(timept)) %>% 
+  mutate(timept_numeric = as.numeric(gsub("MAP", "", timept)))  %>%
+  filter(!is.na(total_carotenoids), !is.na(dry_matter)) %>%   
+  filter(dry_matter < 60) %>%
+  group_by(genotypeID, plant, timept_numeric, layer) %>%
+  summarise(mean_TC = mean(total_carotenoids), se_TC = sd(total_carotenoids)/length(total_carotenoids),
+            mean_phytoene = mean(Phytoene), se_phytoene = sd(Phytoene)/length(Phytoene),
+            mean_BC = mean(Beta.Carotene), se_BC = sd(Beta.Carotene)/length(Beta.Carotene),
+            mean_DM = mean(dry_matter), se_DM = sd(dry_matter)/length(dry_matter),
+            nobs_TC = length(total_carotenoids), nobs_DM = length(dry_matter)) %>%  
+  filter(nobs_TC == 3 & nobs_DM == 3) 
+
+complete_obs_genos <- plotdata %>%
+  filter(genotypeID %in% names(table(plotdata$genotypeID))[(table(plotdata$genotypeID) == 8)])
+
+
+
+#[don't] divide means by standard error [but code to do it commented out]
+plotdata_scaled <- plotdata %>%
+  group_by(genotypeID, timept_numeric, layer) %>%
+  filter(!is.na(se_DM) & !is.na(se_phytoene))  %>% # remove sample with only a single datapoint so SE is NA
+  reframe(mean_TC_scaled = mean_TC, #/ se_TC,
+            mean_phytoene_scaled = mean_phytoene, #/ se_phytoene,
+            mean_BC_scaled = mean_BC, #/ se_BC,
+            mean_DM_scaled = mean_DM) %>% # / se_DM) %>%
+  filter(!is.na(mean_phytoene_scaled)) #remove observations where SE is 0 and can't be scaled 
+
+TCscaledmod <- lm(mean_TC_scaled ~ timept_numeric*layer + genotypeID, data=plotdata_scaled)
+fitted_TCscaled <- predict(TCscaledmod)
+distance_TC <- sqrt( (plotdata_scaled$mean_TC_scaled - fitted_TCscaled) ^2)
+
+phytoscaledmod <- lm(mean_phytoene_scaled ~ timept_numeric*layer + genotypeID, data=plotdata_scaled)
+fitted_phytoscaled <- predict(phytoscaledmod)
+distance_phytoene <- sqrt( (plotdata_scaled$mean_phytoene_scaled - fitted_phytoscaled) ^2)
+
+BCscaledmod <- lm(mean_BC_scaled ~ timept_numeric*layer + genotypeID, data=plotdata_scaled)
+fitted_BCscaled <- predict(BCscaledmod)
+distance_BC <- sqrt( (plotdata_scaled$mean_BC_scaled - fitted_BCscaled) ^2)
+
+DMscaledmod <- lm(mean_DM_scaled ~ timept_numeric*layer + genotypeID, data=plotdata_scaled)
+fitted_DMscaled <- predict(DMscaledmod)
+distance_DM <- sqrt( (plotdata_scaled$mean_DM_scaled - fitted_DMscaled) ^2)
+
+genoranks <- cbind(plotdata_scaled[,c("genotypeID", "timept_numeric", "layer")], 
+                   distance_DM = distance_DM,
+                   distance_TC = distance_TC,
+                   distance_phytoene = distance_phytoene,
+                   distance_BC = distance_BC) %>%
+  group_by(genotypeID) %>%
+  summarise(distance_DM = mean(distance_DM)/sd(distance_DM), 
+            distance_TC = mean(distance_TC)/sd(distance_TC), 
+            distance_phytoene = mean(distance_phytoene)/sd(distance_phytoene), 
+            distance_BC = mean(distance_BC)/sd(distance_BC),
+            total_phyto_DM_distance = sum(distance_DM, distance_phytoene)) %>%
+  filter(genotypeID %in% complete_obs_genos$genotypeID) %>% #select only genotypes that have all samples present
+  arrange(distance_DM) %>% mutate(DM_rank = 1:nrow(.)) %>%
+  arrange(distance_TC) %>% mutate(TC_rank = 1:nrow(.)) %>%
+  rowwise() %>% mutate(avg_rank = mean(c(DM_rank, TC_rank))) %>% ungroup() %>%
+  arrange(avg_rank) %>% 
+  slice_head(n=4)
+
+
+plotdata <- plotdata %>% mutate(selected = 
+                                  case_when(genotypeID %in% genoranks$genotypeID ~ "yes", T ~ "no"))
+
+ggplot(plotdata, aes(timept_numeric, mean_TC)) +
+  geom_point(aes(shape=layer)) +
+  geom_smooth(data = plotdata %>% filter(layer=="inner"), aes(lty = "inner"), method = "lm", linewidth = 0.5, color="darkgray", se=F) +
+  geom_smooth(data = plotdata %>% filter(layer=="outer"), aes(lty = "outer"), method = "lm", linewidth = 0.5, color="darkgray", se=F) +
+  scale_linetype_manual(name = "Linear model layer", values = c("inner" = "dashed", "outer" = "solid")) +
+  geom_point(data = plotdata %>% filter(selected=="yes"), aes(color=genotypeID, shape=layer), size=3) +
+  xlab("time point (MAP)") + ylab("mean TC") +
+  
+  geom_abline(intercept = coef(TCscaledmod)["(Intercept)"] + coef(TCscaledmod)["layerouter"] + coef(TCscaledmod)["genotypeIDX1_54"], 
+              slope = coef(TCscaledmod)["timept_numeric"] + coef(TCscaledmod)["timept_numeric:layerouter"],
+              linewidth = 0.7, color="#7CAE00", lty = "solid") +
+  geom_abline(intercept = coef(TCscaledmod)["(Intercept)"] + coef(TCscaledmod)["genotypeIDX1_54"],
+              slope = coef(TCscaledmod)["timept_numeric"],
+              linewidth = 0.7, color="#7CAE00", lty = "dashed") +
+  
+  geom_abline(intercept = coef(TCscaledmod)["(Intercept)"] + coef(TCscaledmod)["layerouter"] + coef(TCscaledmod)["genotypeIDC17"],
+              slope = coef(TCscaledmod)["timept_numeric"] + coef(TCscaledmod)["timept_numeric:layerouter"],
+              linewidth = 0.7, color="#F8766D", lty = "solid") +
+  geom_abline(intercept = coef(TCscaledmod)["(Intercept)"] + coef(TCscaledmod)["genotypeIDC17"],
+              slope = coef(TCscaledmod)["timept_numeric"],
+              linewidth = 0.7, color="#F8766D", lty = "dashed") +
+  
+  geom_abline(intercept = coef(TCscaledmod)["(Intercept)"] +  coef(TCscaledmod)["layerouter"] + coef(TCscaledmod)["genotypeIDX11_68"] ,
+              slope = coef(TCscaledmod)["timept_numeric"] + coef(TCscaledmod)["timept_numeric:layerouter"],
+              linewidth = 0.7, color="#00BFC4", lty = "solid") +
+  geom_abline(intercept = coef(TCscaledmod)["(Intercept)"] + coef(TCscaledmod)["genotypeIDX11_68"],
+              slope = coef(TCscaledmod)["timept_numeric"],
+              linewidth = 0.7, color="#00BFC4", lty = "dashed") +
+  
+  geom_abline(intercept = coef(TCscaledmod)["(Intercept)"]  + coef(TCscaledmod)["layerouter"] + coef(TCscaledmod)["genotypeIDX2_24"],
+              slope = coef(TCscaledmod)["timept_numeric"]+ coef(TCscaledmod)["timept_numeric:layerouter"],
+              linewidth = 0.7, color="#C77CFF", lty = "solid") +
+  geom_abline(intercept = coef(TCscaledmod)["(Intercept)"] + coef(TCscaledmod)["genotypeIDX2_24"],
+              slope = coef(TCscaledmod)["timept_numeric"],
+              linewidth = 0.7, color="#C77CFF", lty = "dashed")
+  
+
+
+ggplot(plotdata, aes(timept_numeric, mean_DM)) +   
+  geom_point(aes(shape=layer)) +
+  geom_smooth(data = plotdata %>% filter(layer=="inner"), aes(lty = "inner"), method = "lm", linewidth = 0.5, color="darkgray", se=F) +
+  geom_smooth(data = plotdata %>% filter(layer=="outer"), aes(lty = "outer"), method = "lm", linewidth = 0.5, color="darkgray", se=F) +
+  geom_point(data = plotdata %>% filter(selected=="yes"), aes(color=genotypeID, shape=layer), size=3) +
+  scale_linetype_manual(name = "Linear model layer", values = c("inner" = "dashed", "outer" = "solid")) +
+  xlab("time point (MAP)") + ylab("mean DM") +
+    geom_abline(intercept = coef(DMscaledmod)["(Intercept)"] + coef(DMscaledmod)["layerouter"] + coef(DMscaledmod)["genotypeIDX1_54"], 
+              slope = coef(DMscaledmod)["timept_numeric"] + coef(DMscaledmod)["timept_numeric:layerouter"],
+              linewidth = 0.7, color="#7CAE00", lty = "solid") +
+  geom_abline(intercept = coef(DMscaledmod)["(Intercept)"] + coef(DMscaledmod)["genotypeIDX1_54"],
+              slope = coef(DMscaledmod)["timept_numeric"],
+              linewidth = 0.7, color="#7CAE00", lty = "dashed") +
+  
+  geom_abline(intercept = coef(DMscaledmod)["(Intercept)"] + coef(DMscaledmod)["layerouter"] + coef(DMscaledmod)["genotypeIDC17"],
+              slope = coef(DMscaledmod)["timept_numeric"] + coef(DMscaledmod)["timept_numeric:layerouter"],
+              linewidth = 0.7, color="#F8766D", lty = "solid") +
+  geom_abline(intercept = coef(DMscaledmod)["(Intercept)"] + coef(DMscaledmod)["genotypeIDC17"],
+              slope = coef(DMscaledmod)["timept_numeric"],
+              linewidth = 0.7, color="#F8766D", lty = "dashed") +
+  
+  geom_abline(intercept = coef(DMscaledmod)["(Intercept)"] +  coef(DMscaledmod)["layerouter"] + coef(DMscaledmod)["genotypeIDX11_68"] ,
+              slope = coef(DMscaledmod)["timept_numeric"] + coef(DMscaledmod)["timept_numeric:layerouter"],
+              linewidth = 0.7, color="#00BFC4", lty = "solid") +
+  geom_abline(intercept = coef(DMscaledmod)["(Intercept)"] + coef(DMscaledmod)["genotypeIDX11_68"],
+              slope = coef(DMscaledmod)["timept_numeric"],
+              linewidth = 0.7, color="#00BFC4", lty = "dashed") +
+  
+  geom_abline(intercept = coef(DMscaledmod)["(Intercept)"]  + coef(DMscaledmod)["layerouter"] + coef(DMscaledmod)["genotypeIDX2_24"],
+              slope = coef(DMscaledmod)["timept_numeric"]+ coef(DMscaledmod)["timept_numeric:layerouter"],
+              linewidth = 0.7, color="#C77CFF", lty = "solid") +
+  geom_abline(intercept = coef(DMscaledmod)["(Intercept)"] + coef(DMscaledmod)["genotypeIDX2_24"],
+              slope = coef(DMscaledmod)["timept_numeric"],
+              linewidth = 0.7, color="#C77CFF", lty = "dashed")
+
+ggplot(plotdata, aes(timept_numeric, mean_phytoene)) +
+  geom_point(aes(shape=layer)) +
+  geom_smooth(data = plotdata %>% filter(layer=="inner"), aes(lty = "inner"), method = "lm", linewidth = 0.7, color="black", se=F) +
+  geom_smooth(data = plotdata %>% filter(layer=="outer"), aes(lty = "outer"), method = "lm", linewidth = 0.7, color="black", se=F) +
+  geom_point(data = plotdata %>% filter(selected=="yes"), aes(color=genotypeID, shape=layer), size=3) +
+  scale_linetype_manual(name = "layer", values = c("inner" = "dashed", "outer" = "solid")) +
+  xlab("time point (MAP)") + ylab("mean phytoene")
+
+ggplot(plotdata, aes(timept_numeric, mean_BC)) +
+  geom_point(aes(shape=layer)) +
+  geom_smooth(data = plotdata %>% filter(layer=="inner"), aes(lty = "inner"), method = "lm", linewidth = 0.7, color="black", se=F) +
+  geom_smooth(data = plotdata %>% filter(layer=="outer"), aes(lty = "outer"), method = "lm", linewidth = 0.7, color="black", se=F) +
+  geom_point(data = plotdata %>% filter(selected=="yes"), aes(color=genotypeID, shape=layer), size=3) +
+  scale_linetype_manual(name = "layer", values = c("inner" = "dashed", "outer" = "solid")) +
+  xlab("time point (MAP)") + ylab("mean beta-carotene")
+
+```
+
+
+  
+  
+  
+  
+
+#T tests for inner/outer layer
+
+```{r}
+t.test(inner_df$total_carotenoids, outer_df$total_carotenoids)
+# significantly less total carotenoids in outer layers compared to inner
+
+t.test(inner_df$dry_matter, outer_df$dry_matter)
+# no significant difference between DM content in inner vs outer layers 
+
+t.test(inner_df$Beta.Carotene, outer_df$Beta.Carotene)
+# significantly less beta carotene in outer layers compared to inner
+
+t.test(inner_df$Phytoene, outer_df$Phytoene)
+# significantly less phytoene in outer layers compared to inner
+
+```
+
+
+
+#Linear Models 
+
+##model_1 : effect of carotenoids on DM 
+```{r}
+model_1 <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept)
+summary(model_1)
+plot(joined_df$total_carotenoids, joined_df$dry_matter) #check linear relationship
+hist(residuals(model_1))
+
+```
+- increasing TC by one ug/g has a significant negative effect on DM content (-0.05 %) after accounting for root layer, block number, and timepoint. 
+- after accounting for TC, root layer, and block number, there is a significant decrease in DM content across timepoints.
+- layer doesn't significantly contribute to the variation in DM content after accounting for TC, block number, and timepoint 
+
+##model_2 : effect of DM on TC
+```{r}
+model_2 <- lm(data = joined_df, total_carotenoids ~ dry_matter + layer + block + timept)
+summary(model_2)
+hist(residuals(model_2))
+```
+- increasing DM by 1% reduces TC content by -0.68 ug/g. DM has a significant negative effect on TC after accounting for root layer, block number, and timepoint.
+- TC content is significantly reduced in the outer layer compared to the inner layer after accounting for DM content, block number, and timepoint. 
+
+##pairwise correlation of carotenoids 
+```{r}
+cor(joined_df %>% dplyr::select(Phytoene:Lutein, total_carotenoids, total_violaxanthin), use = "pairwise.complete.obs")
+
+
+# average % beta carotene:
+mean(joined_df$Beta.Carotene/joined_df$total_carotenoids, na.rm=T)
+2 * sd(joined_df$Beta.Carotene/joined_df$total_carotenoids, na.rm=T)
+
+```
+- Violaxanthins have low correlations to other some carotenoids, and are slightly negatively correlated with zeta carotene. 
+
+##model_3 : effect of DM on total_violaxanthin 
+```{r}
+model_3 <- lm(data = joined_df, total_violaxanthin ~ dry_matter + layer + block + timept + total_carotenoids)
+summary(model_3)
+#cor.test(joined_df$total_violaxanthin, joined_df$total_carotenoids)
+
+```
+- After accounting for total carotenoids & experimental factors, DM has a positive relationship with total violas.
+
+
+##model_4 : effect on DM, TC:Layer
+- is the effect of TC on DM dependent of the root layer?
+```{r}
+model_4 <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + total_carotenoids:layer + block + timept)
+summary(model_4)
+
+#F test with/without interaction term 
+model_4test <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept)
+anova_TClayer_DM <- anova(model_4test, model_4)
+anova_TClayer_DM
+```
+- the interaction between carotenoids and layer is (marginally) important in predicting dry matter. 
+
+### plot effect of TC on DM across layers 
+
+```{r}
+summary(model_4)$coefficients
+
+#B of tc:layer on DM from model_4
+tclayerinner <- model_4$coefficients["total_carotenoids"]
+tclayerouter <- model_4$coefficients["total_carotenoids:layerouter"]
+
+#adding tclayerinner value, right now taking it as = 0 
+tclayers <- c(tclayerinner, tclayerouter+tclayerinner)
+
+#create df with new column inner and outer 
+tclayers_df <- data.frame(tclayers, layers = c("inner", "outer"))
+
+#extracting standard errors from model_4
+se_tclayerinner <- summary(model_4)$coefficients["total_carotenoids",2]
+se_tclayerouter <- summary(model_4)$coefficients["total_carotenoids:layerouter",2]
+
+#variances from model_4
+var_tclayerinner <- se_tclayerinner^2
+var_tclayerouter <- se_tclayerouter^2
+
+#FIXING VARIANCES 
+
+#getting covariances 
+tclayers_covariances <- vcov(model_4)[2,c("total_carotenoids:layerouter")]
+
+#fixing the variances summing the var of tclayerinner
+#formula: var(x+y) = var(x)+var(y)+2cov(x,y)
+varfix_tclayerinner <- var_tclayerinner
+varfix_tclayerouter <- var_tclayerinner + var_tclayerouter +
+  2*tclayers_covariances
+
+#standard errors fixed
+sefix_tclayerinner <- se_tclayerinner
+sefix_tclayerouter <- sqrt(varfix_tclayerouter)
+
+std_errorslayers <- c(sefix_tclayerinner, sefix_tclayerouter)
+
+tclayers_df <- tclayers_df %>% 
+  mutate(std_errors = std_errorslayers)
+
+#plot 
+ggplot(data = tclayers_df)+
+  aes(x = layers, y = tclayers)+
+  geom_point()+
+  geom_errorbar(
+    aes(ymin = tclayers - 2*std_errors,
+        ymax = tclayers + 2*std_errors, width=.2,
+        ))
+
+
+```
+
+- the effect of carotenoids on DM  is less negative in the outer layers.
+
+
+### model_4 effect on DM, TC:layer with genotypes 
+
+```{r}
+#effect of TC:layer on DM + genotypes  
+model_4B <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + total_carotenoids:layer + block + timept + genotypeID)
+summary(model_4B)
+
+#without TC:layer but with genotype 
+model_4Btest <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept + genotypeID)
+
+#F test 
+anova_TClayergen <- anova(model_4B, model_4Btest)
+anova_TClayergen
+
+#now with genotype as random effect 
+model_4C <- lmer(data = joined_df, dry_matter ~ total_carotenoids + layer + total_carotenoids:layer + block + timept + (1|genotypeID))
+
+model_4Ctest <- lmer(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept + (1|genotypeID))
+
+anova_4C<- anova(model_4C, model_4Ctest)
+anova_4C
+
+```
+
+
+
+
+##model_5 : effect on  DM, TC:Timept
+- is the effect of TC on DM dependent on timepoint?
+
+```{r}
+model_5 <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept + total_carotenoids:timept)
+summary(model_5)
+
+#F test with/wihtout interaction term 
+model_5test <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept)
+summary(model_5test)
+
+anova_5 <- anova(model_5, model_5test)
+anova_5
+
+
+#just TC
+model_i <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept)
+summary(model_i)
+
+```
+The interaction between TC and time point is not significant in the F-test
+
+
+###plot effect of TC on DM over timepoint
+```{r}
+summary(model_5)$coefficients
+
+#B of tc:timpt on DM from model_5
+tctimept1 <- model_5$coefficients["total_carotenoids"]
+tctimept2 <- model_5$coefficients["total_carotenoids:timept7_MAP"]
+tctimept3 <- model_5$coefficients["total_carotenoids:timept8_MAP"]  
+tctimept4 <- model_5$coefficients["total_carotenoids:timept9_MAP"]
+
+tctimepts <- c(tctimept2, tctimept3, tctimept4)
+#add TC value, currently is taking tc:timept1 as = 0
+tc_tctimepts <- c(tctimept1, tctimepts + tctimept1)
+
+#create df with new column 1:4 
+tc_tctimepts_df <- data.frame(tc_tctimepts, timept = c(1:4))
+
+#extracting standard errors from model_5
+se_tctimept1 <- summary(model_5)$coefficients["total_carotenoids",2]
+se_tctimept2 <- summary(model_5)$coefficients["total_carotenoids:timept7_MAP",2]
+se_tctimept3 <- summary(model_5)$coefficients["total_carotenoids:timept8_MAP",2]
+se_tctimept4 <- summary(model_5)$coefficients["total_carotenoids:timept9_MAP",2]
+
+#variances from model_5
+var_tctimept1 <- se_tctimept1^2
+var_tctimept2 <- se_tctimept2^2
+var_tctimept3 <- se_tctimept3^2
+var_tctimept4 <- se_tctimept4^2
+
+#FIXING VARIANCES 
+
+#getting covariances 
+tccovariances <- vcov(model_5)[2,c("total_carotenoids:timept7_MAP","total_carotenoids:timept8_MAP", "total_carotenoids:timept9_MAP")]
+
+#fixing the variances summing the var of tctimept1
+#formula: var(x+y) = var(x)+var(y)+2cov(x,y)
+varfix_tctimept1 <- var_tctimept1
+varfix_tctimept2 <- var_tctimept1 + var_tctimept2 +
+  2*tccovariances["total_carotenoids:timept2"]
+varfix_tctimept3 <- var_tctimept1 + var_tctimept3 +
+  2*tccovariances["total_carotenoids:timept3"]
+varfix_tctimept4 <- var_tctimept1 + var_tctimept4 +
+  2*tccovariances["total_carotenoids:timept4"]
+
+#standard errors fixed
+sefix_tctimept1 <- se_tctimept1
+sefix_tctimept2 <- sqrt(varfix_tctimept2)
+sefix_tctimept3 <- sqrt(varfix_tctimept3)
+sefix_tctimept4 <- sqrt(varfix_tctimept4)
+
+std_errors <- c(sefix_tctimept1, sefix_tctimept2, sefix_tctimept3,
+                sefix_tctimept4)
+
+tc_tctimepts_df <- tc_tctimepts_df %>%
+  mutate(std_errors = std_errors)
+
+
+#plot 
+ggplot(data = tc_tctimepts_df)+
+  aes(x = timept, y = tc_tctimepts)+
+  geom_point()+
+  geom_errorbar(
+    aes(ymin = tc_tctimepts - 2*std_errors,
+        ymax = tc_tctimepts + 2*std_errors, width=.2,
+        ))+
+  labs(x = "Timepoint",
+       y = "Estimate coefficients")
+
+```
+
+- the effect of TC on DM becomes more negative in later timepoints of development after accounting for the effect of root layer and block.
+
+
+
+
+##model_6 :  effect of DM on TC, with DM:Layer
+- is the effect of DM on TC dependent of layer? 
+```{r}
+model_6 <- lm(data = joined_df, total_carotenoids ~ dry_matter*layer +  block + timept)
+summary(model_6)
+```
+
+##model_7 : effect of DM on TC, DM:Timept
+- is the effect of DM on TC dependent of timepoint? 
+```{r}
+model_7 <- lm(data = joined_df,  total_carotenoids ~ dry_matter + layer + block + timept + dry_matter*timept)
+summary(model_7)
+```
+
+
+
+
+
+#Mixed Model: 
+##Genotype categories as random effect in DM 
+
+```{r}
+mixmod_1 <- lmer(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept + (1 | genotype.category))
+summary(mixmod_1)
+
+```
+###Getting the pvalue of mixed model (genotype categories) 
+
+```{r}
+mixmod_1pval <- lmerTest::lmer(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept + (1 | genotype.category))
+
+summary(mixmod_1pval)
+
+```
+
+##Genotypes as random effect on DM 
+
+```{r}
+#make mixed model with genotypes (not category and no total carotenoids)
+mixmod_2 <- lmer(data = joined_df, dry_matter ~  layer + block + timept + (1 | genotypeID))
+summary(mixmod_2)
+```
+
+
+###DM BLUPS
+- extract random effects from the mixed model (genotype as random effect on DM)
+
+```{r}
+DM_BLUPS <- ranef(mixmod_2) 
+
+DM_BLUPS
+```
+
+#F-Tests 
+- to determine if certain terms are necessary in our models. We create full and reduced models and compare them with anova tests.
+
+##model_8 :  effect of technician on TC
+```{r}
+#this will be the "full" model to model_2
+model_8 <- lm(data = joined_df, total_carotenoids ~ dry_matter + layer + block + timept + technician)
+summary(model_8)
+
+#F-test 
+anova_technicianTC <- anova(model_8, model_2)
+anova_technicianTC
+```
+- technician does not significantly improve the model fit for TC
+
+##model_9 : effect of block on TC
+```{r}
+#this will be the "reduced" model to model_2 
+model_9 <- lm(data = joined_df, total_carotenoids ~ dry_matter + layer + timept)
+summary(model_9)
+
+#F-test
+anova_blockTC <- anova(model_9, model_2)
+anova_blockTC
+```
+- block does not significantly improve the model fit for TC 
+
+##model_10 : effect of block on DM
+```{r}
+#this will be the "reduced" model to model_1 
+model_10 <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + timept)
+summary(model_10)
+
+#F-test 
+anova_blockDM <- anova(model_10, model_1)
+anova_blockDM
+```
+
+- block does significantly improve the model fit for DM 
+
+
+## model_11 : efect of timepoint in TC 
+```{r}
+#this will be the "reduced" model to model_2
+model_11 <- lm(data = joined_df, total_carotenoids ~ dry_matter + layer + block)
+
+#F-test
+anova_timeptTC <- anova(model_11, model_2)
+anova_timeptTC
+
+```
+- timepoint does significantly improve the model fit for TC 
+
+
+## model_12 : efect of timepoint in DM 
+```{r}
+#this will be the "reduced" model to model_1
+model_12 <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block)
+
+#F-test
+anova_timeptTC <- anova(model_12, model_1)
+anova_timeptTC
+```
+- timepoint does significantly improve the model fit for DM
+
+
+
+## model_13 : effect of genotypes in DM 
+
+```{r}
+df_genotypes <- joined_df %>%
+  dplyr::select(dry_matter, total_carotenoids, layer, block, timept, genotypeID) %>% na.omit()
+
+model_13 <- lm(data = df_genotypes, dry_matter ~ total_carotenoids + layer +
+            block + timept)
+model_14 <- lm(data = df_genotypes, dry_matter ~ total_carotenoids + layer +
+            block + timept + genotypeID)
+
+summary(model_13)
+summary(model_14)
+
+#F-test
+anova_genotypeDM <- anova(model_13, model_14)
+anova_genotypeDM
+```
+
+## model_15: effect of phytoene in DM
+- to help verify the hypothesis that phyotene accumulating may be promoting the degradation or inhibition of starch by the change of amyloplasts to chromoplasts?
+
+```{r}
+#this is the "full" model to model_1 
+model_15 <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block + timept + Phytoene)
+
+summary(model_15)
+
+
+#F test 
+anova_phytoeneDM <- anova(model_1, model_15)
+anova_phytoeneDM
+
+#cor.test
+cor.test(joined_df$Phytoene, joined_df$dry_matter)
+
+t.test(inner_df$Phytoene, outer_df$Phytoene)
+
+```
+- phytoene does improve the model's fit to explain the variation of DM even after accounting for the effect of TC on DM. 
+
+## model_16: genotype as random effect but with/wo TC 
+
+```{r}
+model_16 <- lmer(data = df_genotypes, dry_matter ~ total_carotenoids + layer + block + timept + (1|genotypeID))
+summary(model_16)
+
+model_16test <- lmer(data = df_genotypes, dry_matter ~ layer + block + timept + (1|genotypeID))
+
+anova_16 <- anova(model_16, model_16test)
+anova_16
+```
+TC does not have a significantly negative effect on DM after accounting for genotype.
+(Evidence against (?) the hypothesis of a physiological, non-genetic trade off)
+
+#Principal Component Analysis (PCA)
+```{r}
+
+#removing NAs for PCA 
+clean_joined_df<- joined_df %>% drop_na(3:9) %>% filter(!is.na(genotype.category))
+colnames(clean_joined_df)[3:9]
+
+#performing PCA on carotenoids 
+pca <- prcomp(clean_joined_df[,3:9], scale = TRUE)
+pca
+summary(pca)
+
+#percentage of variation each PC accounts for in the original data 
+pca.var <- pca$sdev^2 
+pca.var.per <- round(pca.var / sum(pca.var)*100, 1) 
+
+
+#Scree Plot 
+barplot(pca.var.per, 
+        main = "Scree Plot", 
+        xlab = "Principal Component", 
+        ylab = "Percent Variation")
+
+
+```
+- PC1 and PC2 combined account for ~87% of the variance in the original data.
+
+##PCA plot clustering by layer 
+```{r}
+library(ggfortify)
+
+#building data frame 
+pca.data <- as.data.frame(pca$x[, 1:2]) # extract first two PCs
+pca.data.layer <- cbind(pca.data, clean_joined_df$layer) # add layer to df
+colnames(pca.data.layer) <- c("PC1", "PC2", "layer") #change column names 
+
+#plot 
+ggplot(pca.data.layer)+
+  aes(PC1, PC2, color = layer, shape = layer)+
+  geom_point()+
+  coord_fixed()+ 
+  labs(x = paste0("PC1: ", summary(pca)$importance[2,1]*100, "%"),
+       y = paste0("PC2: ", summary(pca)$importance[2,2]*100, "%"))
+
+#plot with ggfortify
+pca.loadings <- pca$rotation
+autoplot(pca, data = clean_joined_df, color = 'layer', loadings = TRUE, loadings.label = 1)
+
+
+       
+```
+- zeta, phytoene, phytophluene, and beta have the most influence in PC1, account for majority of the variance in the original data ??
+
+
+##PCA plot clustering by genotype
+```{r}
+#building data frame 
+pca.data.genotype <- cbind(pca.data, clean_joined_df$genotypeID) # add genotype to df
+colnames(pca.data.genotype) <- c("PC1", "PC2", "genotypeID") #change column names 
+
+#plot 
+ggplot(pca.data.genotype)+
+  aes(PC1, PC2, color = genotypeID)+
+  geom_point()+
+  coord_fixed()+ 
+  labs(x = paste0("PC1: ", summary(pca)$importance[2,1]*100, "%"),
+       y = paste0("PC2: ", summary(pca)$importance[2,2]*100, "%"))
+
+
+# Get loadings and manually place labels
+loadings_df <- as.data.frame(pca$rotation[, 1:2])
+loadings_df$varname <- rownames(loadings_df)
+loadings_df$PC2[loadings_df$varname=="Violaxanthin.peak.2"] <- loadings_df$PC2[loadings_df$varname=="Violaxanthin.peak.2"]*1.1 #nudge up slightly to prevent overlapping labels
+
+
+
+#plot with ggfortify
+autoplot(pca, data = clean_joined_df, color = 'genotype.category', 
+         loadings = TRUE, loadings.label = F, 
+         loadings.col = "black", loadings.label.col ="black", loadings.legend.name="test") +
+  geom_text(data = loadings_df, aes(x = PC1*0.3, y = PC2*0.3, label = varname),
+            size = 3, hjust=1.1, color = "black") +
+  scale_color_discrete(name = "Genotype category")
+
+ggsave("plot_pca_genotype_fixedlabels.png", width = 8.5, height = 6.5, dpi = 400)
+
+```
+
+###PCA plot clustering by genotype (trying to group African, Latin American, & Hybrids)
+```{r}
+clean_joined_df <- clean_joined_df %>% 
+  mutate(genotype.category = case_when(
+    startsWith(genotypeID, "A") ~ "African",
+    startsWith(genotypeID, "C") ~ "Latin American",
+    startsWith(genotypeID, "X") ~ "Hybrid"))
+
+pca.data.genotypecat <- cbind(pca.data, clean_joined_df$genotype.category) # add genotype categories to df
+colnames(pca.data.genotypecat) <- c("PC1", "PC2", "genotype.category") #change column names 
+
+#plot 
+ggplot(pca.data.genotypecat)+
+  aes(PC1, PC2, color = genotype.category)+
+  geom_point()+
+  coord_fixed()+ 
+  labs(x = paste0("PC1: ", summary(pca)$importance[2,1]*100, "%"),
+       y = paste0("PC2: ", summary(pca)$importance[2,2]*100, "%"))
+ stat_ellipse(geom="polygon", level=0.95, alpha=0.2) #adding a stat
+ 
+ 
+
+#plot with ggfortify
+plot_pca_genotype <- autoplot(pca, data = clean_joined_df, color = 'genotype.category', loadings = TRUE, loadings.label = F)+
+  labs(color = "Genotype")
+
+plot_pca_genotype
+ggsave("plot_pca_genotype.png", width = 8.5, height = 6.5, dpi = 400)
+
+```
+- to read: ej. zeta carotene is negatively correlated to lutein? Lutein and viola closely related.
+- ?? zeta, beta, phytoene and phytofluene influence PC1 while lutein and violas PC2?
+
+### model_17: PC1 and PC2 on DM 
+
+```{r}
+clean_joined_df <- clean_joined_df %>% 
+  mutate(PC1 = pca$x[,1],
+         PC2 = pca$x[,2])
+
+model_17 <- lmer(data = clean_joined_df, dry_matter ~ layer + block + timept + PC1 + PC2 + (1|genotypeID)) 
+summary(model_17)
+
+
+```
+
+## model_18: effect of timepoint:TC interaction with genotype
+
+```{r}
+model_18 <- lmer(data = clean_joined_df, dry_matter ~ timept*total_carotenoids + layer + block + (1|genotypeID))
+summary(model_18)
+
+model_18test <- lmer(data = clean_joined_df, dry_matter ~ total_carotenoids + timept + layer + block + (1|genotypeID))
+
+anova_18 <- anova(model_18, model_18test)
+anova_18
+```
+
+
+## model_19: effect of cis-carotenes 
+
+```{r}
+clean_joined_df <- clean_joined_df %>%
+  mutate(totalciscarotenes = Phytoene + Phytofluene + Zeta.Carotene, 
+         totalxanthophylls = total_violaxanthin + Lutein,
+         totalothercarotenoids = total_violaxanthin + Lutein + Beta.Carotene)
+
+
+model_19 <- lmer(data = clean_joined_df, dry_matter ~ totalciscarotenes + totalothercarotenoids + timept + layer + block + (1|genotypeID))
+summary(model_19)
+
+model_19test <- lmer(data = clean_joined_df, dry_matter ~ totalothercarotenoids + timept + layer + block + (1|genotypeID))
+
+anova_19 <- anova(model_19, model_19test)
+anova_19
+```
+
+
+
+
+#Phytoene:TC relationship with timepoint
+
+```{r}
+clean_dftimept <- clean_joined_df %>% group_by(timept) %>%
+  summarise(phy_ratio = mean(Phytoene/total_carotenoids),
+            phy_ratio_sd = sd(Phytoene/total_carotenoids))
+
+
+ggplot(data = clean_dftimept)+
+  aes(x = timept, y = phy_ratio)+
+  geom_col()+
+  geom_errorbar(aes(ymin = phy_ratio - 2*phy_ratio_sd,
+    ymax = phy_ratio + 2*phy_ratio_sd))
+
+
+clean_dftimept2 <- clean_joined_df %>% group_by(timept) %>%
+  summarise(PPZB_ratio = mean(Phytoene+Phytofluene+Zeta.Carotene+Beta.Carotene/total_violaxanthin+Lutein),
+            PPZB_ratio_sd = sd(Phytoene+Phytofluene+Zeta.Carotene+Beta.Carotene/total_violaxanthin+Lutein))
+            
+
+ggplot(data = clean_dftimept2)+
+  aes(x = timept, y = PPZB_ratio)+
+  geom_col()+
+  geom_errorbar(aes(ymin = PPZB_ratio - 2*PPZB_ratio_sd,
+    ymax = PPZB_ratio + 2*PPZB_ratio_sd))
+
+
+```
+
+
+
+#TC/DM relationship by tissue layer 
+
+```{r}
+plot_TCDM_layer <- ggplot(data = joined_df %>% filter(!is.na(layer)))+
+  aes(x = total_carotenoids, y = dry_matter, color = layer)+
+  geom_point(alpha=0.8)+
+  geom_smooth(method = lm, linetype = "dashed", se = FALSE, fullrange = TRUE)+
+  xlab("Total carotenoids (μg/g DW)")+
+  ylab("Dry matter (%)") + 
+  ggtitle("Year 2 trial")
+
+
+plot_TCDM_layer
+ggsave("plot_TCDM_layer.png", width = 8.5, height = 6.5, dpi = 400)
+
+```
+
+#TC/DM relationship by timepoints??
+
+```{r}
+plot_TCDM_timept <- ggplot(data = joined_df %>% filter(dry_matter < 55))+
+  aes(x = total_carotenoids, y = dry_matter, color = timept)+
+  geom_point()+
+  geom_smooth(method = lm, linetype = "dashed", se = FALSE, fullrange = TRUE)+
+  xlab("Total carotenoids (μg/g DW)")+
+  ylab("Dry matter (%)")+
+  labs(color = "timepoint")+
+  scale_color_discrete(labels = c('6 MAP', '7 MAP', '8 MAP', '9 MAP', 'NA'))
+
+plot_TCDM_timept
+ggsave("plot_TCDM_timept.png", width = 8.5, height = 6.5, dpi = 400)
+```
+
+#TC/DM relationship by genotype categories 
+```{r}
+
+plot_TCDM_genotypecat <- ggplot(data = joined_df)+
+  aes(x = total_carotenoids, y = dry_matter, color = genotype.category)+
+  geom_point()+
+  geom_smooth(method = lm, linetype = "dashed", se = FALSE, fullrange = TRUE)+
+  xlab("Total carotenoids (μg/g)")+
+  ylab("Dry matter (%)")+
+  labs(color = "Genotype")
+
+plot_TCDM_genotypecat
+ggsave("plot_TCDM_genotypecat.png", width = 8.5, height = 6.5, dpi = 400)
+
+```
+#Boxplots
+##TC over timepoint
+
+```{r}
+ggplot(data = joined_df)+
+  aes(x = timept, y = total_carotenoids)+
+  geom_boxplot()
+```
+##DM over timepoints
+```{r}
+ggplot(joined_df)+
+  aes(x = timept, y = dry_matter)+
+  geom_boxplot()
+```
+## DM based on genotype categories??
+
+```{r}
+ggplot(joined_df)+
+  aes(x = genotype.category, y = dry_matter)+
+  geom_point()
+
+```
+#Carotenoids over timepoint (all of them)
+
+```{r}
+multivariate_model1 <- lm(cbind(Violaxanthin.peak.1, Violaxanthin.peak.2, Lutein) ~ timept, data = joined_df)
+summary(multivariate_model1)
+
+multivariate_model2 <- lm(cbind(Phytoene, Phytofluene, Zeta.Carotene, Beta.Carotene) ~ timept, data = joined_df)
+summary(multivariate_model2)
+#This model will assess the effect of timept on all three response variables simultaneously. 
+```
+
+# Heritability 
+- broad sense heritability (we're using genotype as a factor, includes total genetic variance)
+- formula (Vg/Vg + Ve)
+
+```{r}
+her_modelDM <- lmer(data = joined_df, dry_matter ~ layer + block + timept + (1|genotype))
+
+her_modelTC <- lmer(data = joined_df, total_carotenoids ~ layer + block + timept + (1|genotype))
+
+summary(her_modelDM)
+heritabilityDM <- as.data.frame((summary(her_modelDM))$varcor)^2
+summary(her_modelTC) 
+```
+
+
