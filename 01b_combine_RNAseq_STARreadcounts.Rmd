@@ -1,0 +1,447 @@
+---
+title: "01_combine_RNAseq_STARreadcounts"
+output: html_document
+date: "2025-01-30"
+---
+
+About:
+
+- Inputs: individual gene count files from STAR: `./RNAseq/STARalignedreads/*_ReadsPerGene*`
+- Outputs: 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Set-up: load libraries and define path
+```{r}
+library(tidyverse)
+library(DESeq2)
+library(data.table)
+library(sva)
+#BiocManager::install("apeglm")
+
+dir <- "/workdir/ssv42/RNAseq/"
+dir2 <- "/workdir/ssv42/RNAseq_yr2"
+set.seed(14850)
+```
+
+
+
+Read in and combine the STAR Mesculenta v8-aligned gene count summary for 2022 plates (TCDM_1 and TCDM_2):
+column 1: gene ID
+column 2: counts for unstranded RNA-seq.
+column 3: counts for the 1st read strand 
+column 4: counts for the 2nd read strand 
+
+```{r}
+### Make read counts matrix for year 1 data
+library(data.table)
+
+#get list of all the files
+filelist <- list.files(paste0(dir, 'STAR_v8alignedreads/'), "*ReadsPerGene.out.tab$", full.names = T)
+
+#initiate the dataframe with the first sample data, selecting 1st read strand for FWD strand
+countData <- data.frame(fread(filelist[1]))[c(1,3)]
+
+#append the rest of the samples' count data
+for(i in 2:length(filelist)) {
+  #print(i)
+  countData <- cbind(countData, data.frame(fread(filelist[i]))[3])
+  #get number uniquely mapping reads from metadata
+}
+
+#Separate first 4 lines metadata, count data starts on the 5th line
+counts <- countData[c(5:nrow(countData)),]
+countMetaData <- countData[1:4,2:ncol(countData)] #first 4 rows, excluding GeneID column
+countMetaData <- rbind(countMetaData, colSums(counts[,2:ncol(counts)]))
+rownames(countMetaData) <- c(countData$V1[1:4], "N_genecounts")
+
+#Convert file name to sample name
+colnames(counts) <- c("GeneID", gsub("/workdir/ssv42/RNAseq/STAR_v8alignedreads//2[0-9]{5}_HY5[A-Z0-9]{6}_", "", filelist) %>% gsub("_[A-Z]{6}_S[0-9]+_R1_001_trimmed_ReadsPerGene.out.tab", "", .) )
+#write.csv(colnames(counts), file="../ssv42/RNAseq/data/sampleIDnameslist.csv")
+
+#Change geneID column to rownames
+rownames(counts) <- NULL
+counts <- column_to_rownames(counts, var="GeneID")
+colnames(countMetaData) <- colnames(counts)
+
+
+
+### Filtering samples and genes
+
+# Get number of uniquely mapping reads from STAR log files
+logfilelist <- list.files(paste0(dir, 'STAR_v8alignedreads/'), "*Log.final.out$", full.names = T)
+
+extract_unique_reads <- function(log_file) {
+  # Read the file
+  log_content <- readLines(log_file)
+  # Find the line containing uniquely mapped reads
+  unique_reads_line <- grep("Uniquely mapped reads number", log_content, value = TRUE)
+  # Extract the numeric value
+  unique_reads <- as.numeric(gsub(".*\\|\\s*", "", unique_reads_line))
+  return(unique_reads)
+}
+unique_reads_counts <- sapply(logfilelist, extract_unique_reads)
+countMetaData <- rbind(countMetaData, N_uniquemapped = unique_reads_counts)
+
+
+# Filter out individuals with less than 100k mapped reads
+cutoff1 <- 100000
+lowNmap_samples <- which(countMetaData["N_uniquemapped",] <= cutoff1)
+counts_Nmapfilt <- counts[,-lowNmap_samples] 
+
+hist(as.numeric(countMetaData["N_uniquemapped",]), main="total number of uniquely mapping reads per sample", breaks=80)
+abline(v=cutoff1, col="red", lty="dashed")
+
+
+# Filter out individuals with too few expressed genes (>10 counts / gene for that sample)
+#identify genes with >10 copies per sample
+ExpressedGeneTFMatrix <- counts_Nmapfilt >= 10
+GenesExprPerSample <- colSums(ExpressedGeneTFMatrix)
+#examine distribution of number of genes expressed per sample
+hist(GenesExprPerSample)
+#identify & filter out samples with too few genes expressed
+cutoff <- 10000
+todrop_samples <- which(GenesExprPerSample < cutoff)
+hist(GenesExprPerSample, main="number of genes expressed (>=10 counts) per sample", breaks=40)
+abline(v=cutoff, col="red", lty="dashed")
+
+#identify & filter out genes with nonzero counts in at least 20 samples
+NonzeroGeneTFMatrix <- counts_Nmapfilt != 0
+todrop_genes <- which(rowSums(NonzeroGeneTFMatrix) < 20)
+hist(rowSums(NonzeroGeneTFMatrix), main="Number of samples in which a gene is nonzero", breaks=20)
+abline(v=20, col="red", lty="dashed")
+
+
+#apply filters
+counts_Ngenefilt <- counts_Nmapfilt[-todrop_genes, -todrop_samples]
+
+#check results
+dim(counts_Ngenefilt) 
+#COL40: 20535 genes, 149 samples
+#v8: 18942 genes, 147 samples (original filter)
+#v8: 20739 genes, 147 samples (new filter with nonzero gene counts in at least 20 samples)
+#percent samples passed:
+dim(counts_Ngenefilt)[2]/190 
+
+#print samples that passed filters:
+#colnames(counts_Ngenefilt)
+
+
+#Write out gene counts matrix
+write.table(counts_Ngenefilt, file=paste0(dir, "TCDM1-2_Mescv8_genecountmatrix_filt10kgenes.txt"), quote=F, sep='\t', row.names=T, col.names=T)
+saveRDS(counts_Ngenefilt, file=paste0(dir, "TCDM1-2_Mescv8_genecountmatrix_filt10kgenes.RDS"))
+
+```
+
+Get sample metadata
+```{r}
+#extract metadata from sampleID name string
+sample_metadata <- str_split_fixed(colnames(counts_Ngenefilt), "_", n=7) %>% as.data.frame()
+colnames(sample_metadata) <- c("project","plate","wellID","family","progeny","root","layer")
+sample_metadata$fullID <- colnames(counts_Ngenefilt)
+sample_metadata$sampleID <- gsub("TCDM_[0-9]_[A-Z][0-9][0-9]_", "", sample_metadata$fullID)
+sample_metadata$plateID <- paste0(sample_metadata$project, "_", sample_metadata$plate)
+sample_metadata$genotype <- paste0(sample_metadata$family, "_", sample_metadata$progeny) %>%
+  str_replace(., "^(A.*|C.*)_[0-9]$", "\\1") #remove progeny tag from parents
+metadata <- sample_metadata %>% dplyr::select(fullID, wellID, sampleID, plateID, genotype, root, layer)
+metadata$timept <- "5MAP" #everything from 2022 harvested at one timepoint
+metadata$year <- "2022"
+
+#join with greenhouse metadata
+harvdat22 <- read.csv(paste0(dir, "data/2_Greenhouse_dec21tomay22_layout_cassava_harvest_data.csv")) %>%
+  mutate(sampleID = gsub("X8_41.5", "X8_415", sample_ID)) #make name alias
+harvdat22_tojoin <- harvdat22 %>% dplyr::select(sampleID, block, harvest_date) %>%
+  mutate(block = as.character(block))
+
+metadata <- left_join(metadata, harvdat22_tojoin, by="sampleID")  %>%
+  mutate(timept = as.character(timept))
+#"many-to-many" warning is fine; there is a duplicate sample (C14_2_1_i)
+
+#join with extraction batch info
+extr_batch_metadata <- read.csv(paste0(dir, "data/extraction_metadata_yr1.csv")) %>%
+  mutate(SampleID = gsub("41\\.5", "415", SampleID)) %>%
+  dplyr::select(-genotype)
+
+metadata1 <- left_join(metadata, extr_batch_metadata, by=c("sampleID"="SampleID")) %>%
+  filter(!(wellID == "G09" & TubeNum == "104"), !(wellID == "F11" & TubeNum == "54")) %>% #fix duplicates
+  mutate(genotype = case_when(genotype=="X4_24" ~ "X4_42", T ~ genotype)) #fix mislabeling
+                       
+saveRDS(metadata1, file=paste0(dir, "analysis/TCDM1-2_filtsample_metadata.RDS"))
+```
+
+
+Read in and combine the STAR Mesculenta v8-aligned R1 gene count summary for 2024 plates (TCDM_3 and TCDM_4):
+column 1: gene ID
+column 2: counts for unstranded RNA-seq.
+column 3: counts for the 1st read strand 
+column 4: counts for the 2nd read strand 
+
+```{r}
+### Make read counts matrix for year 2 data
+dir2 <- "/workdir/ssv42/RNAseq_yr2/"
+
+#get list of all the files
+filelist2 <- list.files(paste0(dir2, 'STARalignedreads/'), "*ReadsPerGene.out.tab$", full.names = T)
+
+#initiate the dataframe with the first sample data, selecting 1st read strand for FWD strand
+countData2 <- data.frame(fread(filelist2[1]))[c(1,3)]
+
+#append the rest of the samples' count data
+for(i in 2:length(filelist2)) {
+  #print(i)
+  countData2 <- cbind(countData2, data.frame(fread(filelist2[i]))[3])
+  #get number uniquely mapping reads from metadata
+}
+
+#Separate first 4 lines metadata, count data starts on the 5th line
+counts2 <- countData2[c(5:nrow(countData2)),]
+countMetaData2 <- countData2[1:4,2:ncol(countData2)] #first 4 rows, excluding GeneID column
+countMetaData2 <- rbind(countMetaData2, colSums(counts2[,2:ncol(counts2)]))
+rownames(countMetaData2) <- c(countData2$V1[1:4], "N_genecounts")
+
+#Convert file name to sample name
+colnames(counts2) <- c("GeneID", gsub("/workdir/ssv42/RNAseq_yr2/STARalignedreads//[0-9]_", "", filelist2) %>% gsub("_10479813_22MM3HLT4_L3_R1_trimmed2_ReadsPerGene.out.tab", "", .) )
+
+#Change geneID column to rownames
+rownames(counts2) <- NULL
+counts2 <- column_to_rownames(counts2, var="GeneID")
+colnames(countMetaData2) <- colnames(counts2)
+
+
+### Filtering samples and genes
+
+# Get number of uniquely mapping reads from STAR log files
+logfilelist2 <- list.files(paste0(dir2, 'STARalignedreads/'), "*Log.final.out$", full.names = T)
+
+extract_unique_reads <- function(log_file) {
+  # Read the file
+  log_content <- readLines(log_file)
+  # Find the line containing uniquely mapped reads
+  unique_reads_line <- grep("Uniquely mapped reads number", log_content, value = TRUE)
+  # Extract the numeric value
+  unique_reads <- as.numeric(gsub(".*\\|\\s*", "", unique_reads_line))
+  return(unique_reads)
+}
+unique_reads_counts2 <- sapply(logfilelist2, extract_unique_reads)
+countMetaData2 <- rbind(countMetaData2, N_uniquemapped = unique_reads_counts2)
+
+
+# Filter out individuals with less than 100k mapped reads
+cutoff1 <- 100000
+lowNmap_samples2 <- which(countMetaData2["N_uniquemapped",] <= cutoff1)
+counts2_Nmapfilt <- counts2[,-lowNmap_samples2] 
+
+hist(as.numeric(countMetaData2["N_uniquemapped",]), main="total number of uniquely mapping reads per sample", breaks=100)
+abline(v=cutoff1, col="red", lty="dashed")
+
+
+# Filter out individuals with too few expressed genes (>10 counts / gene for that sample)
+#identify genes with >10 copies per sample
+ExpressedGeneTFMatrix2 <- counts2_Nmapfilt >= 10
+GenesExprPerSample2 <- colSums(ExpressedGeneTFMatrix2)
+
+#identify & filter out samples with too few genes expressed
+cutoff <- 10000
+todrop_samples2 <- which(GenesExprPerSample2 < cutoff)
+hist(GenesExprPerSample2, main="number of genes expressed (>=10 counts) per sample", breaks=40)
+abline(v=cutoff, col="red", lty="dashed")
+
+#identify & filter out genes with nonzero counts in at least 20 samples
+NonzeroGeneTFMatrix2 <- counts2_Nmapfilt != 0
+todrop_genes2 <- which(rowSums(NonzeroGeneTFMatrix2) < 20)
+hist(rowSums(NonzeroGeneTFMatrix2), main="Number of samples in which a gene is nonzero", breaks=20)
+abline(v=20, col="red", lty="dashed")
+
+
+#apply filters
+counts2_Ngenefilt <- counts2_Nmapfilt[-todrop_genes2, -todrop_samples2]
+
+#check results
+dim(counts2_Ngenefilt) 
+#v8: 20890 genes, 160 samples
+#w new filters: 21178 genes, 160 sampels
+#percent samples passed:
+cat(round(dim(counts2_Ngenefilt)[2]/190 * 100), "% of samples passed filters")
+
+#print samples that passed filters:
+#colnames(counts2_Ngenefilt)
+#print samples that were dropped:
+#GenesExprPerSample2[todrop_samples2]
+#countMetaData2["N_uniquemapped",lowNmap_samples2]
+
+#Write out gene counts matrix
+write.table(counts2_Ngenefilt, file=paste0(dir2, "TCDM3-4_Mescv8_R1_genecountmatrix_filt10kgenes.txt"), quote=F, sep='\t', row.names=T, col.names=T)
+saveRDS(counts2_Ngenefilt, file=paste0(dir2, "TCDM3-4_Mescv8_R1_genecountmatrix_filt10kgenes.RDS"))
+
+```
+
+Get year 2 sample metadata
+```{r}
+#extract metadata from sampleID name string
+sample2_metadata <- data.frame(fullID = colnames(counts2_Ngenefilt))
+sample2_metadata$wellID =  str_extract(colnames(counts2_Ngenefilt), "^[A-Z][0-9][0-9]") 
+sample2_metadata$sampleID <- str_extract(colnames(counts2_Ngenefilt), "^[A-Z][0-9][0-9]_(.*)", group = 1)
+sample2_metadata$plant <- str_extract(sample2_metadata$sampleID, "^[0-9]{3}")
+sample2_metadata$block <- str_sub(sample2_metadata$plant, 1, 1)
+sample2_metadata$root <- str_extract(sample2_metadata$sampleID, "_rt([0-9])_", group = 1)
+sample2_metadata$layer <- str_extract(sample2_metadata$sampleID, "[a-z]$")
+sample2_metadata$genotype <- str_extract(sample2_metadata$sampleID, "^[0-9]{3}_([A-Z][0-9].*)_rt", group = 1)
+endofplate3 <- grep("H12", sample2_metadata$wellID)[1]
+sample2_metadata$plateID <- c( rep("TCDM3", endofplate3), rep("TCDM4", nrow(sample2_metadata)-endofplate3) )
+sample2_metadata$year <- "2024"
+
+
+#join with greenhouse metadata to get timept & other info
+harvdat23 <- read.csv(paste0(dir2, "data/3_Greenhouse_layout_developmental_trial_Nov22_to_August23_Harvest_data .csv")) %>%
+  mutate(corrected_sampleID = gsub("X8_41.5", "X8_415", corrected_sampleID)) #make name alias
+harvdat23_tojoin <- harvdat23 %>% dplyr::select(sampleID=corrected_sampleID, timept, harvest_date, tubeID)
+
+#join with extraction batch info
+extr_batch_metadata2 <- read.csv(paste0(dir2, "data/extraction_metadata_yr2.csv")) %>%
+  dplyr::select("sampleID" = sample_ID, RNA_extraction_date, "Well_concentration_nguL" = "Concentration.ng.ul.", mean_nguL, mean260.280, "wellID" = Well, "Plate.Name")
+
+metadata2 <- left_join(sample2_metadata, harvdat23_tojoin, by="sampleID") %>%
+  left_join(extr_batch_metadata2) %>% mutate(timept = as.character(timept) %>%
+           gsub("1", "6MAP", .) %>% gsub("2", "7MAP", .) %>% gsub("3", "8MAP", .) %>% gsub("4", "9MAP", .)) %>%
+  mutate(RNA_extraction_date = as.character(RNA_extraction_date)) %>%
+  rename('Plate.Name' = 'PlateName')
+
+saveRDS(metadata2, file=paste0(dir2, "analysis/TCDM3-4_filtsample_metadata.RDS"))
+```
+
+
+Combine year 1 and year 2 data
+```{r}
+countsmat1 <- readRDS(file=paste0(dir,  "TCDM1-2_Mescv8_genecountmatrix_filt10kgenes.RDS"))
+countsmat2 <- readRDS(file=paste0(dir2, "TCDM3-4_Mescv8_R1_genecountmatrix_filt10kgenes.RDS"))
+
+#join datasets: transpose first to get gene names in columns
+countsmat1_T <- as.data.frame(t(countsmat1)) %>% rownames_to_column(var = "SampleID")
+countsmat2_T <- as.data.frame(t(countsmat2)) %>% rownames_to_column(var = "SampleID")
+
+counts_joined <- suppressMessages(full_join(countsmat1_T, countsmat2_T)) %>% #suppressing messages so it doesn't print out all column/gene names
+  dplyr::select(where(~ all(!is.na(.)))) %>% #remove any columns with NAs -- genes only in one set
+  column_to_rownames(var = "SampleID") %>% t() %>% as.data.frame()
+
+#check dimensions:
+dim(counts_joined)[2] == dim(countsmat1)[2] + dim(countsmat2)[2] 
+
+#see how many NAs we have -- decided to drop for now by removing columns with NAs above
+#colSums(is.na(counts_joined))
+#rowSums(is.na(counts_joined))
+#748 genes from yr 2 dataset missing in yr 1; 309 genes from yr 1 dataset missing in yr 2
+#confirm all NAs were removed:
+sum(is.na(counts_joined)) == 0
+
+dim(counts_joined)
+#now we have 20430 genes expressed in both datasets and 307 samples
+
+
+#join metadata:
+metadata1 <- readRDS(file=paste0(dir, "analysis/TCDM1-2_filtsample_metadata.RDS"))
+metadata2 <- readRDS(file=paste0(dir2, "analysis/TCDM3-4_filtsample_metadata.RDS"))
+
+metadata_joined <- full_join(metadata1, metadata2) %>%
+  dplyr::select(-c(X, PlateName,TubeNum, tubeID, plant)) %>%
+  mutate(RNA_extraction_date = gsub("\\/", "_", RNA_extraction_date) %>% gsub("23-Jul","07_23",.)) #fix date formatting
+
+#check proper joining:
+nrow(metadata1) + nrow(metadata2) == nrow(metadata_joined)
+all(is.na(metadata_joined$RNA_extraction_date) == F)
+
+#remove sample with missing metadata -- tubeID did not match greenhouse notes
+nametoremove <- metadata_joined[which(is.na(metadata_joined$block)),"fullID"] #TCDM_2_D09_C14_4_3_o
+counts_joined_filt <- counts_joined %>% dplyr::select(-all_of(nametoremove))
+metadata_joined_filt <- metadata_joined %>% filter(!fullID %in% nametoremove) 
+
+#make sure factor variables are set properly
+metadata_joined_filt <- metadata_joined_filt %>% mutate(
+  layer = as.factor(layer), genotype = as.factor(genotype), timept = as.factor(timept),
+  block = as.factor(block), plateID = as.factor(plateID), year = as.factor(year), 
+  root = as.numeric(root), harvest_date = as.factor(harvest_date),
+  RNA_extraction_date = as.factor(RNA_extraction_date))
+#root as numeric because roots were harvested in order of largest first
+
+#save joined files
+saveRDS(counts_joined_filt, file = paste0(dir2, "analysis/TCDM1-4_joined_intersectgenes_Mescv8_genecountmatrix.RDS"))
+saveRDS(metadata_joined_filt, file = paste0(dir2, "analysis/TCDM1-4_joined_metadata.RDS"))
+
+
+
+#save metadata spreadsheet for uploading to NCBI:
+metadata_tojoin <- metadata_joined %>% mutate(plateID = gsub("TCDM3","TCDM_3",plateID) %>%
+                                                gsub("TCDM4","TCDM_4",.)) %>%
+  mutate(Sample_Name = paste0(plateID, "_", sampleID) %>% gsub("X4_24", "X4_42", .))
+
+BioAttributes <- read.csv("./RNAseq/data/Sample_BioAttributes_forNCBIupload.csv") %>%
+  mutate(Sample_Name = gsub("TCDM","TCDM_", Sample_Name)) %>%
+  mutate(Sample_Name = gsub("X8_41.5", "X8_415", Sample_Name) %>%
+           gsub("X4_24", "X4_42", .)) %>%
+  right_join(metadata_tojoin, by="Sample_Name") %>%
+  dplyr::select(Sample_Name:Tissue)
+
+write.csv(BioAttributes, file="./RNAseq/data/BioAttributes_filtered.csv")
+
+
+accessionIDkey <- read.csv("./RNAseq/data/genotype_full_name_key.csv")
+filenamelist <- read.csv("./RNAseq/data/Fastq_filename_list.csv") 
+filenamelist_sep <- str_split_fixed(filenamelist$Filename, "_", n=12)
+filenamelist_sampleIDs <- filenamelist_sep %>%
+  as.data.frame() %>%
+  rowwise() %>%
+  mutate(fullID = case_when(
+    V3 == "TCDM" ~ paste(c_across(V3:V9), collapse = "_"),
+    V1 %in% c("3", "4") ~ paste(c_across(V2:V7), collapse = "_") %>% gsub("_1047981.*","",.),
+    TRUE ~ NA
+  )) %>%
+  ungroup() %>% dplyr::select(fullID) %>% cbind(filenamelist) 
+
+
+
+metadata_SRA <- metadata_tojoin %>% left_join(accessionIDkey, by=c("genotype" = "Tag")) %>% 
+  left_join(filenamelist_sampleIDs, by="fullID") %>%
+  mutate(Filename=gsub("_trim1", "", Filename)) %>%
+  mutate(commonID = case_when(plateID %in% c("TCDM3", "TCDM4") ~ 
+                                paste0("TCDM_", str_extract(plateID, "[0-9]"), "_", fullID),
+                              T ~ fullID) ) %>%
+  mutate(design_description = paste0(
+  "SampleID: ", fullID, "; RNAseq Plate ID: ", plateID, "; RNAseq Plate Well ID: ",  wellID, " Year: ", year, "; Accession: ", Accession, "; Block: ", block, "; Root: ", root, 
+  "; Tissue layer: ", gsub("i","inner",layer) %>% gsub("o", "outer", .), "; Greenhouse grown in 10in pot in Ithaca NY USA; Harvested ", timept )  ) %>%
+  dplyr::select(Sample_Name, commonID, design_description, Filename) %>%
+  group_by(Sample_Name, commonID, design_description) %>%
+  mutate(file_id = paste0("filname_", row_number())) %>%  # create a column to pivot by
+  pivot_wider(names_from = file_id, values_from = Filename)
+
+write.csv(metadata_SRA, file=paste0(dir, "data/TCDM1-4_sample_metadata_forNCBISRA.csv"))
+```
+
+
+
+
+
+
+
+#OLD
+# For COL40 aligned reads:
+Read in the more descriptive gene annotations
+```{r}
+mRNAdesc <- fread(paste0("/workdir/ssv42/COL40_assembly/Mesc_COL40_DSC118.v1.hap2.mRNAonly.gff3"))
+
+# Extract gene IDs
+geneIDs <- rownames(counts_filt)
+
+# Use sapply (with progressbar) to match the geneID with its longer annotation 
+mRNAannotations <- pbapply::pbsapply(geneIDs, function(gene) {
+  matches <- grep(gene, mRNAdesc$V9, value = TRUE)
+  if (length(matches) > 0) matches[1] else NA  # Return the first match or NA if no match
+})
+
+# Combine into annotations df
+gene_annotations <- data.frame(geneID = geneIDs, mRNAannotation = mRNAannotations, stringsAsFactors = FALSE)
+
+
+
+```
+

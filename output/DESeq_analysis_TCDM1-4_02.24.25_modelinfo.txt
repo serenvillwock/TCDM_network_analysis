@@ -1,0 +1,2 @@
+~
+genotype + layer + root + block + timept + total_carotenoids + dry_matter + Phytoene + mean_nguL + V1 + V2 + V3 + V4 + V5 + V6 + V7 + V8 + V9 + V10

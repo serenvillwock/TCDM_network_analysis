@@ -1,0 +1,3197 @@
+---
+title: "03_WGCNA_network_analysis"
+output: html_document
+date: "2025-03-14"
+---
+# Setup
+Load packages
+```{r}
+library(tidyverse)
+library(DESeq2)
+library(data.table)
+library(WGCNA) #BiocManager::install("impute")
+allowWGCNAThreads() #allow multi-threading
+
+
+dir <- "/workdir/ssv42/RNAseq/"
+dir2 <- "/workdir/ssv42/RNAseq_yr2/"
+set.seed(14850)
+```
+
+Get partitioned gene expression estimates
+Get LFC coefficient matrix from DESeq2 & extract genotypic, non-genotypic, and overall (SV-adjusted) estimates
+```{r}
+deseq_wsv_analysis <- readRDS(file=paste0(dir2, "output/DEseq_analysis_w7SVfactors.RDS"))
+LFCest <- readRDS(file=paste0(dir2, "output/coefficients_from7SVmodel_log2FC_estimates.RDS")) %>% as.data.frame()
+
+#extract genotype coefficients ("expression BLUEs"), add intercept to every column
+genoLFCs <- LFCest[,c(1, grep("genotype", colnames(LFCest)))] %>%
+  mutate(across(-1, ~ .x + Intercept)) %>%
+  dplyr::rename("genotype_A03" = "Intercept") %>%
+  dplyr::rename_with(~ gsub("_vs_A03", "", .)  )
+
+saveRDS(genoLFCs, file= paste0(dir2, "output/genotypicLFCestimates.RDS") )
+
+
+
+#extract non-genotypic coefficients (sum of every other coefficient besides genotypes and SVs, plus residuals)
+log2residuals <- readRDS(file=paste0(dir2, "output/residuals_from7SVmodel_log2scale_estimates.RDS"))
+metadata_phenos_scaled_sv <- readRDS(file=paste0(dir2, "output/metadata_phenos_scaled_wsvs.RDS"))
+model_matrix <- model.matrix(deseq_wsv_analysis@design, metadata_phenos_scaled_sv)
+rownames(model_matrix) <- metadata_phenos_scaled_sv$fullID
+
+#confirm matching sample order in residuals and model matrix dataframes:
+all(colnames(log2residuals) == rownames(model_matrix))
+
+#calculate non-genotypic estimates
+nongeno_model_matrix <- as.data.frame(model_matrix) %>%  dplyr::select(!contains("genotype")) %>%
+  dplyr::select(-c(V1:V7)) 
+nongeno_coefs <- LFCest  %>%  dplyr::select(!contains("genotype")) %>% dplyr::select(-c(V1:V7))
+nongeno_estimates <- (as.matrix(nongeno_coefs) %*% t(nongeno_model_matrix)) + log2residuals
+
+saveRDS(nongeno_estimates, file= paste0(dir2, "output/nongenotypicLFCestimates.RDS") )
+
+
+
+# calculate overall estimates (adjusted for SVs)
+overall_model_matrix <- as.data.frame(model_matrix) %>%  dplyr::select(-c(V1:V7)) 
+overall_coefs <- LFCest  %>%  dplyr::select(-c(V1:V7))
+overall_estimates <- (as.matrix(overall_coefs) %*% t(overall_model_matrix)) + log2residuals
+
+saveRDS(overall_estimates, file= paste0(dir2, "output/overallLFCestimates.RDS") )
+
+
+
+## For year 2 subset:
+yr2_model_coefs <- as.data.frame(readRDS(file=paste0(dir2, "output/coefficients_from_yr2_6SVmodel_log2FC_estimates.RDS")))
+deseq_wsv_yr2_analysis <- readRDS(file=paste0(dir2, "output/DEseq_analysis_year2subset_w6SVfactors.RDS"))
+metadata_yr2_sv <- readRDS(file=paste0(dir2, "output/metadata_phenotypes_year2subset_wSVs.RDS"))
+log2residuals_2 <- readRDS(file=paste0(dir2, "output/residuals_from_yr2_6SVmodel_log2scale_estimates.RDS"))
+
+model_matrix_2 <- model.matrix(deseq_wsv_yr2_analysis@design, metadata_yr2_sv)
+rownames(model_matrix_2) <- metadata_yr2_sv$fullID
+
+# calculate year 2 overall estimates (adjusted for SVs)
+overall_yr2_model_matrix <- as.data.frame(model_matrix_2) %>%  dplyr::select(-c(V1:V6)) 
+overall_yr2_coefs <- yr2_model_coefs  %>%  dplyr::select(-c(V1:V6))
+overall_yr2_estimates <- (as.matrix(overall_yr2_coefs) %*% t(overall_yr2_model_matrix)) + log2residuals_2
+
+saveRDS(overall_yr2_estimates, file= paste0(dir2, "output/overall_year2subset_LFCestimates.RDS") )
+```
+
+Get partitioned metabolite estimates
+```{r, eval=F}
+metadata_joined_phenos <- readRDS(file = paste0(dir2, "analysis/TCDM1-4_joined_metadata_phenos.RDS")) %>%
+  mutate(fullID = case_when(is.na(fullID) ~ paste0("NONSEQ_" , sampleID), T ~ fullID )) %>%
+  mutate(fullID = gsub("X4_24","X4_42",fullID)) #fix labeling error from yr 1
+
+#Log2-transform the metabolite data:
+phenos_log2 <- metadata_joined_phenos %>% mutate( #make differences non-negative for log transformation
+  i_o_diff_DM = i_o_diff_DM + 100,
+  i_o_diff_TC = i_o_diff_TC + 100) %>%
+  mutate(across(c(
+  Phytoene:Lutein, total_carotenoids:dry_matter, percent_bcarotene:i_o_diff_DM),
+                ~ log2(. + 0.5 * min(.[. > 0], na.rm = TRUE)))) %>%
+                      # add a small value (half of the min non-zero value) to prevent log2(0)
+    mutate(root = as.factor(root), block = as.factor(block)) 
+
+## Carotenoid traits:
+#Carotenoid data subset
+carot_data <- phenos_log2 %>% dplyr::select(fullID:harvest_date, carot_extraction_date, 
+                                    Phytoene:Zeta.Carotene, Violaxanthin.peak.1:Lutein,
+                                    total_carotenoids:total_violaxanthin,
+                                    percent_bcarotene:ratio_viola_bc,
+                                    i_o_diff_TC) %>%
+  filter(!is.na(total_carotenoids))
+
+#Pull out carotenoid compound/trait names
+carot_traits <- colnames(carot_data)[13:ncol(carot_data)]
+saveRDS(carot_traits, file=paste0(dir2, "data/carotenoid_trait_names.RDS"))
+
+#initiate coefficient estimate storage
+carot_trait_coefs <- matrix(nrow=93, ncol = length(carot_traits))
+carot_residuals <- matrix(nrow = nrow(carot_data), ncol = length(carot_traits) )
+#loop through each trait and fit linear model
+for(i in seq_along(carot_traits)){
+  
+  traiti <- carot_traits[i]
+  print(traiti)
+  
+  traiti_mod <- lm( formula( paste0(traiti, "~ 1 + genotype + block + layer + root + year/timept + carot_extraction_date") ),  
+                      data = carot_data)
+  
+  #extract coefficients and save to matrix
+  traiti_coefs <- traiti_mod$coefficients
+  carot_trait_coefs[,i] <- traiti_coefs
+  
+  #extract residuals and save to matrix
+  carot_resids_i <- residuals(traiti_mod)
+  carot_residuals[as.numeric(rownames(traiti_mod$model)),i] <- carot_resids_i
+}
+
+carot_trait_coefs <- as.data.frame(carot_trait_coefs) 
+rownames(carot_trait_coefs) <- names(traiti_coefs)
+colnames(carot_trait_coefs) <- carot_traits
+
+rownames(carot_residuals) <- carot_data$fullID
+colnames(carot_residuals) <- carot_traits
+carot_residuals[is.na(carot_residuals)] <- 0
+
+
+saveRDS(carot_trait_coefs, file=paste0(dir2, "output/log2_carotenoid_coefficients.RDS"))
+saveRDS(carot_residuals, file=paste0(dir2, "output/log2_carotenoid_residuals.RDS"))
+
+
+# Predict carotenoid overall, genetic, and non-genetic effects
+carot_model_matrix <- model.matrix(formula("total_carotenoids ~ 1 + genotype + block + layer + root + year/timept + carot_extraction_date"), data=carot_data)
+rownames(carot_model_matrix) <- carot_data$fullID
+
+# Confirm matching sample order in residuals and model matrix dataframes:
+all( rownames(carot_residuals) == rownames(carot_model_matrix) )
+
+# Partition estimates into genotypic, nongenotypic, and overall 
+carot_geno_coefs <- as.data.frame(t(carot_trait_coefs)) %>% 
+  dplyr::select(c("(Intercept)", contains("genotype")))
+carot_geno_estimates <- carot_geno_coefs
+saveRDS(carot_geno_estimates, file= paste0(dir2, "output/carotenoid_traits_genotypic_log2_estimates.RDS") )
+
+carot_nongeno_model_matrix <- as.data.frame(carot_model_matrix) %>% 
+  dplyr::select(!contains("genotype")) %>%
+  dplyr::select(!contains("carot_extraction"))
+carot_nongeno_coefs <- as.data.frame(t(carot_trait_coefs)) %>% 
+  dplyr::select(!contains("genotype")) %>%
+  dplyr::select(!contains("carot_extraction"))
+carot_nongeno_coefs[is.na(carot_nongeno_coefs)] <- 0
+carot_nongeno_estimates <- as.matrix(carot_nongeno_model_matrix) %*% t(as.matrix(carot_nongeno_coefs)) + carot_residuals
+saveRDS(carot_nongeno_estimates, file= paste0(dir2, "output/carotenoid_traits_nongenotypic_log2_estimates.RDS") )
+
+
+carot_overall_model_matrix <- as.data.frame(carot_model_matrix) %>%
+  dplyr::select(!contains("carot_extraction"))
+carot_overall_coefs <- as.data.frame(t(carot_trait_coefs)) %>%
+  dplyr::select(!contains("carot_extraction"))
+carot_overall_coefs[is.na(carot_overall_coefs)] <- 0
+carot_overall_estimates <- as.matrix(carot_overall_model_matrix) %*% t(as.matrix(carot_overall_coefs)) + carot_residuals 
+saveRDS(carot_overall_estimates, file= paste0(dir2, "output/carotenoid_traits_overall_log2_estimates.RDS") )
+
+
+
+
+## Dry matter traits:
+carb_data <- phenos_log2 %>% dplyr::select(fullID:harvest_date, dry_date, dry_matter, i_o_diff_DM) %>%
+  filter(!is.na(dry_matter))
+
+carb_traits <- c("dry_matter", "i_o_diff_DM")
+saveRDS(carb_traits, file=paste0(dir2, "data/carbohydrate_trait_names.RDS"))
+
+
+#Fit dry matter models:
+dm_mod <- lm( dry_matter ~ 1 + genotype + block + layer + root + year:timept + dry_date,  
+                      data = carb_data)
+
+dm_io_mod <- lm( i_o_diff_DM ~ 1 + genotype + block + layer + root + year:timept + dry_date,  
+                      data = carb_data)
+
+
+#extract coefficients and save to matrix
+dm_coefs <- data.frame("dry_matter" = dm_mod$coefficients, "i_o_diff_DM" = dm_io_mod$coefficients)
+
+#extract residuals and save to matrix
+dm_residuals <- matrix(nrow = nrow(carb_data), ncol = 2)
+dm_residuals[as.numeric(rownames(dm_mod$model)),1] <- residuals(dm_mod)
+dm_residuals[as.numeric(rownames(dm_io_mod$model)),2] <- residuals(dm_io_mod)
+dm_residuals[is.na(dm_residuals)] <- 0
+colnames(dm_residuals) <- c("dry_matter", "i_o_diff_DM")
+rownames(dm_residuals) <- carb_data$fullID
+
+
+# Predict carbohydrate overall, genetic, and non-genetic effects
+dm_model_matrix <- model.matrix(formula("dry_matter ~ 1 + genotype + block + layer + root + year:timept + dry_date"), data=phenos_log2)
+rownames(dm_model_matrix) <- carb_data$fullID
+
+#confirm rownames are in the same order across model matrix and residuals matrix
+all(rownames(dm_model_matrix) == rownames(dm_residuals))
+
+
+# Partition estimates into genotypic, nongenotypic, and overall 
+dm_geno_coefs <- as.data.frame(t(dm_coefs)) %>% 
+  dplyr::select(c("(Intercept)", contains("genotype")))
+dm_geno_estimates <- dm_geno_coefs
+saveRDS(dm_geno_estimates, file= paste0(dir2, "output/carbohydrate_traits_genotypic_log2_estimates.RDS") )
+
+
+dm_nongeno_model_matrix <- as.data.frame(dm_model_matrix) %>% 
+  dplyr::select(!contains("genotype")) %>%
+  dplyr::select(!contains("dry_date"))
+dm_nongeno_coefs <- as.data.frame(t(dm_coefs)) %>% 
+  dplyr::select(!contains("genotype")) %>%
+  dplyr::select(!contains("dry_date"))
+dm_nongeno_coefs[is.na(dm_nongeno_coefs)] <- 0
+dm_nongeno_estimates <- as.matrix(dm_nongeno_model_matrix) %*% t(as.matrix(dm_nongeno_coefs)) + dm_residuals
+saveRDS(dm_nongeno_estimates, file= paste0(dir2, "output/carbohydrate_traits_nongenotypic_log2_estimates.RDS") )
+
+
+dm_overall_model_matrix <- as.data.frame(dm_model_matrix) %>%
+  dplyr::select(!contains("dry_date"))
+dm_overall_coefs <- as.data.frame(t(dm_coefs)) %>%
+  dplyr::select(!contains("dry_date"))
+dm_overall_coefs[is.na(dm_overall_coefs)] <- 0
+dm_overall_estimates <- as.matrix(dm_overall_model_matrix) %*% t(as.matrix(dm_overall_coefs)) + dm_residuals 
+saveRDS(dm_overall_estimates, file= paste0(dir2, "output/carbohydrate_traits_overall_log2_estimates.RDS") )
+
+
+
+## Starch and sugar traits:
+#log2 transform starch and sugar data
+sugardata <- read.csv(file=paste0(dir, "data/all_carbohydrate_data_fornetwork.csv")) %>%
+  # add a small value to make sure values are all positive for log2 transformation
+   mutate(across(c(meansuc_mg_g:mean_starch_mg_g), ~ log2(. + 1.1*abs(min(., na.rm=T))))) %>%
+  mutate(block = as.factor(block), root = as.factor(rootnum), layer=gsub("both",NA,layer), 
+         genotype=gsub("X8_41.5","X8_415",genotype) %>% gsub("X4_24","X4_42", .)) %>%
+  mutate(SampleID = gsub("X8_41.5","X8_415",SampleID) %>% gsub("X4_24","X4_42", .))  %>% #fix for consistent naming
+  left_join(metadata_joined_phenos %>% dplyr::select(fullID, sampleID), by=c("SampleID" = "sampleID")) %>%
+  mutate(fullID = case_when(is.na(fullID) ~ paste0("NONSEQ_" , SampleID), T ~ fullID ))
+  
+sugar_traits <- colnames(sugardata)[2:5]
+
+
+#loop through each trait and fit linear model
+for(i in seq_along(sugar_traits)){
+  
+  traiti <- sugar_traits[i]
+  print(traiti)
+  
+  traiti_mod <- lm( formula( paste0(traiti, "~ 1 + genotype + block + layer + root + year + PlateName") ),  
+                      data = sugardata)
+  
+  #extract coefficients and save to matrix
+  traiti_coefs <- traiti_mod$coefficients
+  if(i == 1){sugar_trait_coefs <- as.data.frame(t(traiti_coefs))} else{
+  sugar_trait_coefs <- full_join(sugar_trait_coefs, as.data.frame(t(traiti_coefs)))
+  }
+}
+
+rownames(sugar_trait_coefs) <- sugar_traits
+
+# Partition estimates into genotypic, nongenotypic, and overall 
+sugar_geno_estimates <- sugar_trait_coefs %>% 
+  dplyr::select(c("(Intercept)", contains("genotype")))
+saveRDS(sugar_geno_estimates, file= paste0(dir2, "output/starch_sugars_genotypic_log2_estimates.RDS") )
+
+sugar_model_matrix <- model.matrix(formula(" ~ 1 + genotype + block + layer + root + year + PlateName"), data=sugardata)
+rownames(sugar_model_matrix) <- sugardata$fullID[as.numeric(rownames(sugar_model_matrix))]
+
+sugar_nongeno_model_matrix <- as.data.frame(sugar_model_matrix) %>% 
+  dplyr::select(!contains("genotype")) %>%
+  dplyr::select(!contains("PlateName"))
+sugar_nongeno_coefs <- sugar_trait_coefs %>% 
+  dplyr::select(!contains("genotype")) %>%
+  dplyr::select(!contains("PlateName")) %>%
+  mutate(block1 = 0) %>% dplyr::select(all_of(colnames(sugar_nongeno_model_matrix))) #make sure columns are in same order
+sugar_nongeno_coefs[is.na(sugar_nongeno_coefs)] <- 0
+sugar_nongeno_estimates <- as.matrix(sugar_nongeno_model_matrix) %*% t(as.matrix(sugar_nongeno_coefs)) 
+
+saveRDS(sugar_nongeno_estimates, file= paste0(dir2, "output/starch_sugars_nongenotypic_log2_estimates.RDS") )
+
+
+sugar_overall_model_matrix <- as.data.frame(sugar_model_matrix) %>%
+  dplyr::select(!contains("PlateName"))
+sugar_overall_coefs <- sugar_trait_coefs %>%
+  dplyr::select(!contains("PlateName")) %>%
+  mutate(block1 = 0) %>% dplyr::select(all_of(colnames(sugar_overall_model_matrix))) #make sure columns are in same order
+sugar_overall_coefs[is.na(sugar_overall_coefs)] <- 0
+sugar_overall_estimates <- as.matrix(sugar_overall_model_matrix) %*% t(as.matrix(sugar_overall_coefs))
+saveRDS(sugar_overall_estimates, file= paste0(dir2, "output/starch_sugars_overall_log2_estimates.RDS") )
+
+
+
+
+
+### Join all phenotypic estimates:
+metabolite_geno_estimates <- full_join(carot_geno_estimates %>% rownames_to_column("trait"), 
+                                       dm_geno_estimates %>% rownames_to_column("trait")) %>%
+  full_join(sugar_geno_estimates %>% dplyr::select(all_of(colnames(carot_geno_estimates))) %>% rownames_to_column("trait"))
+
+colnames(metabolite_geno_estimates) <- gsub("genotype", "genotype_", colnames(metabolite_geno_estimates))
+saveRDS(metabolite_geno_estimates, file= paste0(dir2, "output/all_metabolite_traits_genotypic_log2_estimates.RDS") )
+
+metabolite_nongeno_estimates <- merge(carot_nongeno_estimates, dm_nongeno_estimates, by = "row.names", all = TRUE) %>% 
+  as.data.frame() %>% column_to_rownames("Row.names") %>%
+  merge(., sugar_nongeno_estimates, by="row.names", all=TRUE) %>% as.data.frame() %>% 
+  filter(Row.names %in% unique(c(rownames(carot_nongeno_estimates), rownames(dm_nongeno_estimates)))) %>%
+  t() %>% as.data.frame() %>% janitor::row_to_names(row_number=1) %>% mutate(across(everything(), as.numeric))
+saveRDS(metabolite_nongeno_estimates, file= paste0(dir2, "output/all_metabolite_traits_nongenotypic_log2_estimates.RDS") )
+
+metabolite_overall_estimates <- merge(carot_overall_estimates, dm_overall_estimates, by = "row.names", all = TRUE) %>% 
+   as.data.frame() %>% column_to_rownames("Row.names") %>%
+   merge(., sugar_overall_estimates, by="row.names", all=TRUE) %>% as.data.frame() %>% 
+  filter(Row.names %in% unique(c(rownames(carot_overall_estimates), rownames(dm_overall_estimates)))) %>%
+  t() %>% as.data.frame() %>% janitor::row_to_names(row_number=1) %>% mutate(across(everything(), as.numeric))
+saveRDS(metabolite_overall_estimates, file= paste0(dir2, "output/all_metabolite_traits_overall_log2_estimates.RDS") )
+
+```
+
+Identify carotenoid and carbohydrate genes by annotation
+```{r, eval=F}
+#Get GOterms for a priori candidate genes involved in carotenoid and carbohydrate metabolism
+carotPWY <- fread("./Mesc671_v8_assembly/annotation/Carotenoid_metabolism_PWYannotations.csv") %>%
+  distinct(.)
+carotGO <- fread("./Mesc671_v8_assembly/annotation/Carotenoid_metabolism_GOannotations.csv") %>%
+  distinct(.)
+carbPWY <- fread("./Mesc671_v8_assembly/annotation/StarchPWYterms.csv") %>%
+  distinct(.)
+carbGO <- fread("./Mesc671_v8_assembly/annotation/StarchGOterms.csv") %>%
+  distinct(.)
+
+#read in genome annotations
+v8_gene_annotations <- fread("./Mesc671_v8_assembly/annotation/Mesculenta_671_v8.1.annotation_info.txt")
+pthways <- fread("./Mesc671_v8_assembly/annotation/Mesculenta_v8.1_PWY_desc_annotations.txt")
+
+# Use select() to get the descriptions
+library(GO.db)
+GOtermdescriptions <- AnnotationDbi::select(
+  GO.db,
+  keys = (v8_gene_annotations %>% separate_rows(GO, sep = " ") %>% dplyr::select(GO) %>% distinct())$GO,
+  columns = c("TERM"), 
+  keytype = "GOID"
+) %>% distinct()
+
+GO_wide <-  str_split(v8_gene_annotations$GO, " ", simplify=T)
+colnames(GO_wide) <- paste0("GO_", 1:ncol(GO_wide))
+
+fullgene_annotations <- cbind(v8_gene_annotations, GO_wide) %>%
+  pivot_longer(cols= GO_1:GO_13, names_to="GOtermnumber", values_to="GOterm") %>%
+  left_join(GOtermdescriptions, by = c("GOterm"="GOID")) %>%
+  distinct(locusName, GOterm, .keep_all=TRUE) %>%
+  left_join(., pthways, by=c("locusName" = "Gene Name")) %>%
+  mutate(class = case_when( `Pathway ID` %in% carotPWY$Pathways  ~ "carot",
+                           `Pathway ID` %in% carbPWY$Pathway ~ "carb",
+                           GOterm %in% carotGO$Goterm ~ "carot",
+                           GOterm %in% carbGO$GOTerm ~ "carb",
+                           T ~ NA)) %>% 
+  group_by(locusName) %>% summarise(
+    Pathways = str_c(unique(`Pathway ID`), collapse = "; "),
+    Pathways_Desc = str_c(unique(`Pathway Description`), collapse = "; "),
+    GODescription = str_c(unique(na.omit(TERM)), collapse = "; "),
+    class = unique(str_c(na.omit(class)))[1],
+    across( c(Description, GO, KOG, KO, Pfam, Panther, `Best-hit-arabi-defline`), ~ first(unique(.x))) )
+    
+saveRDS(fullgene_annotations, file=paste0(dir2, "output/fullgene_annotations_wcarot-carb_class.RDS"))
+write.csv((fullgene_annotations %>% mutate(Description = gsub(",",";",Description))), 
+          file=paste0(paste0(dir2, "output/fullgene_annotations_wcarot-carb_class.csv")))
+
+
+gene_car_membership <- fullgene_annotations %>%
+  distinct(locusName, Description, class ) %>%
+  filter(class != "NA")
+
+saveRDS(gene_car_membership, file=paste0(dir2, "output/carotenoid_carbohydrate_gene_list.RDS"))
+
+
+#check how many genes in each class
+table(gene_car_membership$class)
+
+
+# manually check pathway coverage
+#View(overall_modules_annot %>% filter(class == "carot"))
+#View(gene_car_membership %>% filter(class == "carb"))
+```
+
+
+# Construct overall network
+Read in overall estimates (SV-adjusted, log2-normalized count data):
+```{r}
+#read in variance-transformed normalized count data for overall network (year and 5 SVs regressed out)
+overall_estimates <- readRDS(file=paste0(dir2, "output/overallLFCestimates.RDS")) %>% as.data.frame() %>%
+  rownames_to_column("trait")
+
+#spot check to confirm approximate normal distribution of log2 count data: looks good
+#hist(overall_estimates[15,])
+
+#read in log2 overall estimates for metabolite data
+metabolite_overall_estimates <- readRDS(file= paste0(dir2, "output/all_metabolite_traits_overall_log2_estimates.RDS")) %>%
+  dplyr::select(all_of(intersect(colnames(.), colnames(overall_estimates)))) %>%
+  rownames_to_column("trait")
+
+overall_estimates_all <- full_join(as.data.frame(overall_estimates), metabolite_overall_estimates) %>%
+  column_to_rownames("trait")
+#warning suppressed so it doesn't print out all column names
+
+#transpose so genotypes in rows and genes/metabolites in columns
+overallcounts_t <- t(overall_estimates_all)
+
+#check everything is numeric
+all(apply(overallcounts_t, 2, is.numeric))
+
+#check variance across samples
+gene_vars <- apply(overallcounts_t, 2, var)
+hist(gene_vars, breaks=100, main="distribution of gene variance")
+#gene_vars[1:7] #some have NaNs -- why?
+# I have -Inf in my counts data
+# confirm all -Inf are removed after adding a small positive value to the zero counts in residuals calculation
+sum(is.infinite(gene_vars)) == 0
+
+#manually check gene with very high variance to see if I need to remove
+hist(overallcounts_t[,which.max(gene_vars)], breaks=50, xlab="SV-corrected log2 counts", 
+     main="expression of gene with highest \nvariance across samples")
+
+#check metabolite vs. gene variance
+gene_only_vars <- apply(overallcounts_t[,1:20430], 2, function(x) var(x, na.rm=T))
+hist(gene_only_vars, breaks=100, main="distribution of gene variance", xlim=c(0,15))
+
+metab_only_vars <- apply(overallcounts_t[,20431:20446], 2, function(x) var(x, na.rm=T))
+hist(metab_only_vars, main="distribution of metabolite variance", breaks=10)
+
+
+
+#check for outliers with WGCNA function:
+gsg <-goodSamplesGenes(overallcounts_t, verbose=3)
+#gsg$allOK
+#looks good
+
+#exclude the starch/sugar metabolites which have too many NAs
+overallcounts_t <- overallcounts_t[,gsg$goodGenes]
+```
+
+Pick power for network correlations
+The “power” parameter defines the exponent used when transforming the correlation values, which affects number of modules identified
+```{r, eval=FALSE}
+# Choose a set of soft-thresholding powers
+powers = c(1:20) #seq(from = 1, to = 40, by = 5)
+
+allowWGCNAThreads() 
+# Call the network topology analysis function
+sft = pickSoftThreshold(
+  overallcounts_t,   # <= Input data
+  powerVector = powers,
+  verbose = 5,
+  networkType = "unsigned",
+  corFnc="bicor")
+
+saveRDS(sft, file=paste0(dir2, "output/picksoftthres_overall_gene-metabolite.RDS"))
+```
+
+Plot power threshold graphs
+```{r}
+powers = c(1:20)
+sft <- readRDS(paste0(dir2, "output/picksoftthres_overall_gene-metabolite.RDS"))
+
+par(mfrow = c(1,2)); cex1 = 0.9
+
+#png(paste0(dir2, "figures/overallnetwork_gene-metabolite_softthresholdpower_R2.png"))
+  plot(sft$fitIndices[, 1],
+       -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
+       xlab = "Soft Threshold (power)",
+       ylab = "Scale Free Topology Model Fit, signed R^2",
+       main = paste("Scale independence")
+  )
+  text(sft$fitIndices[, 1],
+       -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
+       labels = powers, cex = cex1, col = "red"
+  )
+  abline(h = 0.85, col = "red")
+#dev.off()
+
+
+#png(paste0(dir2, "figures/overallnetwork_gene-metabolite_softthresholdpower_connectivity.png"))
+  plot(sft$fitIndices[, 1],
+       sft$fitIndices[, 5],
+       xlab = "Soft Threshold (power)",
+       ylab = "Mean Connectivity",
+       type = "n",
+       main = paste("Mean connectivity")
+  )
+  text(sft$fitIndices[, 1],
+       sft$fitIndices[, 5],
+       labels = powers,
+       cex = cex1, col = "red")
+#dev.off()
+
+```
+
+Construct overall network with WGCNA
+Topological Overlap Matrix (TOM) is a function of the adjacency matrix (correlation-based) and connectivity (sum of adjacencies), adding information about the context of the genes within the cluster, to be more robust to spurious correlations.
+High TOM = genes are directly connected and/or they share many neighbors.
+TOM-based dissimilarity (1 - TOM) is then used for clustering genes into modules.
+```{r}
+picked_power_ovrl <- 7
+temp_cor <- cor       
+cor <- WGCNA::cor         # Force it to use WGCNA cor function (fix a namespace conflict issue)
+
+#impute NAs
+overallcounts_t_imputed <- impute::impute.knn(overallcounts_t)$data
+```
+```{r, eval=F}
+system.time({
+overall_netwk <- blockwiseModules(overallcounts_t_imputed,                
+                          
+                          # == Adjacency Function ==
+                          power = picked_power_ovrl,       
+                          networkType = "unsigned",   #includes both positive and negative correlations
+                          corType = "bicor",  #more robust to outliers than pearson correlation
+                          nThreads = 38,
+
+                          # == Tree and Block Options ==
+                          randomSeed = 14850,
+                          deepSplit = 3, #value between 0 and 4, sensitivity to module splitting
+                          pamRespectsDendro = F,
+                          minModuleSize = 30,
+                          maxBlockSize = ncol(overallcounts_t_imputed), #allow for running in 1 block since we have enough computational power
+
+                          # == Module Adjustments ==
+                          reassignThreshold = 0.05,
+                          mergeCutHeight = 0.25,
+
+                          # == TOM == Archive the run results in TOM file (saves time)            
+                          saveTOMs = T,
+                          saveTOMFileBase = paste0("/workdir/ssv42/RNAseq_yr2/output/overall_gene-metab_ntwk_pwr",picked_power_ovrl, "_"),
+
+                          # == Output Options
+                          numericLabels = T,
+                          verbose = 2)
+})
+
+cor <- temp_cor # Return original cor function 
+
+saveRDS(overall_netwk, file=paste0(dir2, "output/overall_gene-metabolite_netwk.RDS"))
+```
+
+Look at the overall network modules
+```{r}
+overall_netwk <- readRDS(file=paste0(dir2, "output/overall_gene-metabolite_netwk.RDS"))
+
+# Convert labels to colors for plotting
+mergedColors = labels2colors(overall_netwk$colors)
+
+blockselection <- 1 
+
+# Plot the dendrogram and the module colors underneath
+plotDendroAndColors(
+  overall_netwk$dendrograms[[blockselection]],
+  mergedColors[overall_netwk$blockGenes[[blockselection]]],
+  "Module colors",
+  dendroLabels = FALSE,
+  hang = 0.03,
+  addGuide = TRUE,
+  guideHang = 0.05 )
+
+ggsave(file=paste0(dir2, "figures/overall_gene-metabolite_network_dendrogram_block", blockselection, ".png"))
+
+
+overall_module_df <- data.frame(
+  gene_id = names(overall_netwk$colors),
+  colors = labels2colors(overall_netwk$colors)
+)
+
+#Get TOM
+load(paste0(overall_netwk$TOMFiles))
+overall_TOM <- as.matrix(TOM)
+
+
+#export gene overall_module_df
+write_delim(overall_module_df,
+            file = paste0(dir2, "output/overall_gene-metabolite_network_gene_modules.txt"),
+            delim = "\t")
+```
+
+Test trait/module associations for overall network
+Correlate module eigengenes with phenotypes (centered and scaled)
+```{r}
+# Get Module Eigengenes per cluster
+MEs0 <- moduleEigengenes(overallcounts_t, mergedColors)$eigengenes
+
+# Reorder modules so similar modules are next to each other
+MEs0 <- orderMEs(MEs0);
+#colnames(MEs0) <- gsub("ME", "", colnames(MEs0))
+module_order = names(MEs0) %>% gsub("ME", "", .)
+
+# Read in phenotypes
+metadata_phenos_scaled <- readRDS(file=paste0(dir2, "output/scaled_pheno_data.RDS"))
+#confirm sample order is the same: 
+all(metadata_phenos_scaled$fullID == rownames(MEs0))
+#combine with module eigengenes 
+MEs0_wphenos <- cbind(MEs0,  
+    (metadata_phenos_scaled %>% dplyr::select(Phytoene:Zeta.Carotene, Violaxanthin.peak.1:Lutein,
+                        total_carotenoids:dry_matter, i_o_diff_TC))  ) 
+
+# calculate correlations
+MEs0_wphenos_cormat <- cor(MEs0_wphenos, use="pairwise.complete.obs")
+MEs0_wphenos_cormat <- as.data.frame(MEs0_wphenos_cormat) 
+MEs0_wphenos_cormat$module <- rownames(MEs0_wphenos_cormat)
+MEs_wphenos_cormat <- MEs0_wphenos_cormat %>% pivot_longer(-module, names_to="phenotype") %>%
+  filter(!str_detect(phenotype, "ME")) %>% 
+  filter(str_detect(module, "ME")) %>%
+  mutate(module = gsub("ME","", module)) %>%
+  mutate(phenotype = factor(phenotype, levels=c("Phytoene", "Phytofluene", "Zeta.Carotene", "Beta.Carotene", "Lutein", 
+                                     "Violaxanthin.peak.1", "Violaxanthin.peak.2", "total_carotenoids",
+                                    "totalpre", "total_violaxanthin", "ratio_bc_v", "i_o_diff_TC", "dry_matter")) )
+
+
+ggplot(MEs_wphenos_cormat, aes(y=phenotype, x=module, fill=value)) +
+  geom_tile() +
+  theme_bw() +
+  scale_fill_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "white") +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  labs(title = "Module-trait Relationships from Overall Network", y = "Modules", fill="corr")
+
+ggsave(filename=paste0(dir2, "figures/overall_gene-metabolite_ntwk_module_trait_correlations.png"), height=6, width=18, units="in")
+
+```
+
+Merge module results with gene annotations to test how often carot/carb genes cluster together:
+```{r}
+fullgene_annotations <- readRDS(file=paste0(dir2, "output/fullgene_annotations_wcarot-carb_class.RDS"))
+carb_traits <- readRDS(file=paste0(dir2, "data/carbohydrate_trait_names.RDS"))
+carot_traits <- readRDS(file=paste0(dir2, "data/carotenoid_trait_names.RDS"))
+
+
+#merge annotations with overall network module dataframe
+overall_modules_annot <- overall_module_df %>% 
+  mutate(locusName = gsub(".v8.1", "", gene_id)) %>%
+  left_join(., fullgene_annotations) %>%
+  mutate(class = case_when(gene_id %in% carot_traits ~ "carot", gene_id %in% carb_traits ~ "carb", T ~ class)) %>%
+  mutate(gene_metabolite = ifelse(grepl("Manes", locusName), "gene", "metabolite"))
+
+#check how many genes in each class
+table(overall_modules_annot %>% filter(gene_metabolite == "gene") %>% dplyr::select(class))
+
+#check which modules carotenoid genes/metabolites are in
+table(overall_modules_annot %>% filter(class=="carot") %>% dplyr::select(colors) )
+
+#check carotenoid superpathway genes specifically
+table(overall_modules_annot %>% filter(grepl("CAROTENOID-PWY", Pathways)) %>% dplyr::select(colors))
+overall_modules_annot %>% filter(grepl("CAROTENOID-PWY", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+#check which modules carbohydrate genes are in
+table(overall_modules_annot %>% filter(class=="carb") %>% dplyr::select(colors) )
+
+#check starch synthesis pathway genes specifically
+table(overall_modules_annot %>% filter(grepl("PWY-622", Pathways)) %>% dplyr::select(colors) )
+overall_modules_annot %>% filter(grepl("PWY-622", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+#check starch degradation pathway genes specifically
+table(overall_modules_annot %>% filter(grepl("PWY-6724", Pathways)) %>% dplyr::select(colors) )
+overall_modules_annot %>% filter(grepl("PWY-6724", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+```
+
+Select modules of interest from overall network and export for Cytoscape
+```{r}
+#check module sizes
+table(overall_module_df$colors)
+
+#identify modules most associated with the metabolite phenotypes
+top_associations <- MEs_wphenos_cormat %>% group_by(phenotype) %>%
+  slice_max(abs(value), n=1) 
+
+top_modules <- unique((top_associations %>% filter(abs(value) > 0.5))$module)
+print(top_modules)
+
+overall_modules_of_interest <- "purple" #top_modules #or select one #"turquoise"
+
+# Pull out list of genes in that module
+submod_overall <- overall_module_df %>%
+  subset(colors %in% overall_modules_of_interest)
+
+row.names(overall_module_df) = overall_module_df$gene_id
+
+# Subset TOM matrix for modules of interest
+colnames(overall_TOM) <- overall_module_df$gene_id
+rownames(overall_TOM) <- overall_module_df$gene_id
+
+subset_overallTOM <- overall_TOM[rownames(overall_TOM) %in% submod_overall$gene_id,
+                                colnames(overall_TOM) %in% submod_overall$gene_id]
+
+#decide on threshold for edge weights to include for cytoscape visualization
+hist(subset_overallTOM[upper.tri(subset_overallTOM)], breaks = 100, main = "TOM Edge Weights")
+
+# Compute the threshold at the 75th percentile
+edge_weights <- subset_overallTOM[upper.tri(subset_overallTOM)]
+threshold_75 <- quantile(edge_weights, 0.75)
+print(threshold_75)
+
+# check dimensions
+dim(subset_overallTOM)
+format(object.size(subset_overallTOM), units="GB")
+
+#export subset for Cytoscape
+ Cyexport <- exportNetworkToCytoscape(subset_overallTOM,
+                          edgeFile = paste0(dir2, "output/overall_gene-metabolite_ntwk_purplemodule_CytoscapeInput-edges.txt"),
+                          nodeFile = paste0(dir2, "output/overall_gene-metabolite_ntwk_purplemodule_CytoscapeInput-nodes.txt"),
+                          weighted = TRUE, threshold = threshold_75,
+                          nodeNames = (colnames(subset_overallTOM) %>% gsub(".v8.1","",.)) ) #remove version tag from gene name
+
+#export gene annotations for Cytoscape
+subset_overallTOM_annot <- overall_modules_annot %>% 
+  filter(gene_id %in% unique(c(rownames(subset_overallTOM), colnames(subset_overallTOM)))) %>%
+  dplyr::select(gene_id, locusName, Description, colors, class, gene_metabolite, GO, GODescription, Pathways, Pathways_Desc, `Best-hit-arabi-defline`) %>%
+  mutate(Description = gsub(",",";",Description)) #remove commas to not confuse cytoscape reading csv
+
+write.csv(subset_overallTOM_annot, file= paste0(dir2, "output/overall_gene-metabolite_ntwk_purplemodule_CytoscapeInput-nodes_annotations.csv"), row.names = F, quote=F)
+```
+
+Create subnetwork of only carotenoid and carbohydrate genes
+```{r}
+car_gene_subset <- overall_modules_annot %>% filter(!is.na(class)) %>%
+  mutate(Description = gsub(",",";",Description))
+
+# Subset TOM matrix for genes of interest
+overallTOM_car_genes <- overall_TOM[rownames(overall_TOM) %in% car_gene_subset$gene_id,
+                                colnames(overall_TOM) %in% car_gene_subset$gene_id]
+
+# Compute the threshold at the 75th percentile
+edge_weights <- overallTOM_car_genes[upper.tri(overallTOM_car_genes)]
+threshold_75 <- quantile(edge_weights, 0.75)
+print(threshold_75)
+
+#export subset for Cytoscape
+# Cyexport <- exportNetworkToCytoscape(overallTOM_car_genes,
+#                          edgeFile = paste0(dir2, "output/overall_gene-metabolite_ntwk_cargenes_CytoscapeInput-edges.txt"),
+#                          nodeFile = paste0(dir2, "output/overall_gene-metabolite_ntwk_cargenes_CytoscapeInput-nodes.txt"),
+#                          weighted = TRUE, threshold = threshold_75,
+#                          nodeNames = (colnames(overallTOM_car_genes) %>% gsub(".v8.1","",.)) ) #remove version tag from gene name
+
+write.csv(car_gene_subset, file=paste0(dir2, "output/overall_gene-metabolite_ntwk_cargenes_CytoscapeInput_annotations.csv"))
+
+carot_genes <- car_gene_subset %>% filter(class=="carot")
+carb_genes <- car_gene_subset %>% filter(class=="carb")
+```
+
+Calculate correlation matrix separately on genes of interest subset and carot/carb subset to preserve sign/direction information
+```{r}
+# purple module (with carotenoid metabolites):
+overall_modulesofinterest_bicor <- bicor(
+  overallcounts_t[,colnames(overallcounts_t) %in% submod_overall$gene_id],
+  use="pairwise.complete.obs" ) %>%
+  reshape2::melt()
+ 
+ colnames(overall_modulesofinterest_bicor) <- c("sourceNode", "targetNode", "bicor")
+
+overall_modulesofinterest_bicor_Cyto <- overall_modulesofinterest_bicor %>%
+  mutate(across(sourceNode:targetNode, ~ gsub(".v8.1", "", .))) %>%
+  mutate(shared_name = paste0(sourceNode, " (interacts with) ", targetNode)) %>%
+  mutate(cor_direction = case_when(bicor > 0 ~ "+", bicor <= 0 ~ "-"))  %>%
+  mutate(source_class = case_when(sourceNode %in% carot_genes$locusName ~ "carot", T~NA),
+         target_class = case_when(targetNode %in% carot_genes$locusName ~ "carot", T~NA)) %>%
+  mutate(interaction_class = case_when(source_class == "carot" | target_class == "carot" ~ "carot-interaction", T~NA))
+
+write.csv(overall_modulesofinterest_bicor_Cyto,
+          file=paste0(dir2, "output/overall_gene-metabolite_ntwk_purplemodule_bicorrelations.csv"),
+          row.names = F)
+
+
+
+#carotenoid and carbohydrate gene subset
+overall_subset_bicor <- bicor(
+  overallcounts_t[,colnames(overallcounts_t) %in% car_gene_subset$gene_id],
+  use="pairwise.complete.obs" ) %>% 
+  reshape2::melt() 
+
+colnames(overall_subset_bicor) <- c("sourceNode", "targetNode", "bicor")
+
+overall_subset_bicor_Cyto <- overall_subset_bicor %>%
+  mutate(across(sourceNode:targetNode, ~ gsub(".v8.1", "", .))) %>%
+  mutate(shared_name = paste0(sourceNode, " (interacts with) ", targetNode)) %>%
+  mutate(source_class = case_when(sourceNode %in% carot_genes$locusName ~ "carot",
+                                  sourceNode %in% carb_genes$locusName ~ "carb", T~NA),
+         target_class = case_when(targetNode %in% carot_genes$locusName ~ "carot",
+                                  targetNode %in% carb_genes$locusName ~ "carb", T~NA)) %>%
+  mutate(interaction_class = case_when(source_class != target_class ~ "cross-class", T~NA)) %>%
+  mutate(cor_direction = case_when(bicor > 0 ~ "+", bicor <= 0 ~ "-"))
+
+write.csv(overall_subset_bicor_Cyto, 
+          file=paste0(dir2, "output/overall_gene-metabolite_ntwk_cargenes_bicorrelations.csv"), 
+          row.names = F)
+```
+
+Identify hub genes:
+```{r}
+#double check gene order is the same
+all(colnames(overallcounts_t_imputed) == overall_module_df$gene_id)
+
+overall_tophubs <- chooseTopHubInEachModule(overallcounts_t_imputed, 
+                                         colorh=overall_module_df$colors,
+                                         power = picked_power_ovrl, type="unsigned")
+
+overall_tophubs_df <- data.frame("hub" = overall_tophubs)
+overall_tophubs_df$module <- rownames(overall_tophubs_df) 
+overall_tophubs_annot <- overall_tophubs_df %>% left_join(overall_modules_annot, by=c("hub" = "gene_id"))
+
+#check the hub genes of the major carotenoid/carbohydrate modules
+#hubstocheck <- names(tail(sort(table(car_gene_subset$colors), descending=T), n=10))
+
+overall_hubs_topmodules <- overall_tophubs_annot %>% filter(module %in% overall_modules_of_interest)
+write.table(overall_hubs_topmodules, file=paste0(dir2, "output/overall_network_module_hubs.txt"))
+
+#correlation of purple hub gene (Manes.09G098760) with carotenoid gene/metabolites class in that module:
+carot_genes_purple <- overall_modules_annot %>% filter(colors=="purple" & class=="carot")
+
+purplehub_carot_cor <- cor(
+  overallcounts_t[,colnames(overallcounts_t) %in% c("Manes.09G098760.v8.1", carot_genes_purple$gene_id)],
+  use="pairwise.complete.obs" ) %>% 
+  reshape2::melt() %>% filter(Var1=="Manes.09G098760.v8.1")
+
+#Test of correlation between hub gene and total carotenoids
+cor.test(overallcounts_t[,"Manes.09G098760.v8.1"], overallcounts_t[,"total_carotenoids"])
+
+```
+
+Are carotenoid and carbohydrate genes more connected than would be expected by chance?
+```{r}
+#Subset for carotenoid/carbohydrate edges (excluding carot-carot and carb-carb edges)
+overallTOM_car_melt <- reshape2::melt(overallTOM_car_genes, varnames=c("node1", "node2"), value.name = "weight") %>%
+   #get only the first pairwise interaction by index
+  filter(as.integer(factor(node1, levels = rownames(overallTOM_car_genes))) <
+         as.integer(factor(node2, levels = colnames(overallTOM_car_genes)))) %>% 
+  left_join(., car_gene_subset %>% dplyr::select(gene_id, class, gene_metabolite), by=c("node1" = "gene_id")) %>%
+  left_join(., car_gene_subset %>% dplyr::select(gene_id, class, gene_metabolite), by=c("node2" = "gene_id")) %>%
+  filter(gene_metabolite.x != "metabolite" & gene_metabolite.y != "metabolite" ) %>%
+  filter(class.x != class.y) 
+
+#How many edges:
+nrow(overallTOM_car_melt)
+
+#How many carotenoid nodes:
+n_nodes <- nrow(car_gene_subset %>% filter(class=="carot" & gene_metabolite=="gene"))
+n_nodes
+
+#Get list of carbohydrate genes
+carb_genes <- car_gene_subset %>% filter(class=="carb" & gene_metabolite=="gene")
+nrow(carb_genes)
+
+#Sum the topological overlap weight (adjacency and connectivity) between the carotenoid and carbohydrate nodes
+observed_overall_TOsum <- sum(overallTOM_car_melt$weight)
+```
+
+A better null distribution: random set of genes that share the same network properties as the carotenoid/carbohydrate gene set, but that are in different pathways.
+```{r}
+#Get list of carbohydrate genes
+carb_genes <- car_gene_subset %>% filter(class=="carb" & gene_metabolite=="gene")
+carot_genes <- car_gene_subset %>% filter(class=="carot" & gene_metabolite=="gene")
+
+# Get total connectivity for each gene
+gene_connectivity <- rowSums(overall_TOM)
+carot_gene_connectivity <- gene_connectivity[carot_genes$gene_id]
+which.max(carot_gene_connectivity) #Manes.01G124200; PSY2
+mean(carot_gene_connectivity)
+
+carb_gene_connectivity <- gene_connectivity[carb_genes$gene_id]
+which.max(carb_gene_connectivity) #Manes.01G184000 starch synthase
+mean(carb_gene_connectivity)
+
+#Plot distribution of gene connectivities
+connectivity_df <- data.frame(
+  connectivity = c(gene_connectivity, carot_gene_connectivity, carb_gene_connectivity),
+  group = as.factor(c(rep("Overall", length(gene_connectivity)),
+            rep("Carotenoids", length(carot_gene_connectivity)),
+            rep("Carbohydrates", length(carb_gene_connectivity)))))
+
+ggplot(connectivity_df, aes(x = connectivity, fill = group)) +
+  geom_density(alpha = 0.4) +
+  scale_fill_manual(values = c("Overall" = "gray70", "Carotenoids" = "red", "Carbohydrates" = "blue")) +
+  scale_color_manual(values = c("Overall" = "gray40", "Carotenoids" = "darkred", "Carbohydrates" = "darkblue")) +
+  theme_minimal() + 
+  labs(title = "Distribution of gene connectivity values k",
+       x = "Overall gene connectivity", y = "Proportion of genes", fill = "Gene class")
+
+ggsave(file= paste0(dir2, "figures/connectivity_distributions_k.png"))
+
+
+# Create bins of genes by connectivity
+gene_bins <- cut(gene_connectivity, breaks = quantile(gene_connectivity, probs = seq(0, 1, 0.1)), include.lowest = TRUE)
+names(gene_bins) <- names(gene_connectivity) 
+levels(gene_bins)
+
+carot_bins <- gene_bins[carot_genes$gene_id]
+carb_bins <- gene_bins[carb_genes$gene_id]
+
+
+#Which metabolites have the highest connectivity? Hypothesis: the cis-carotenes
+tail(gene_connectivity, n=16)
+
+```
+Run permutations in parallel
+```{r, eval=F} 
+#Run node permutation test
+
+#Set up parallelism:
+library(furrr); library(future)
+library(purrr)
+options(future.globals.maxSize = 10 * 1024^3)  # 10 GB
+plan(multisession, workers=30)
+file.create("progress_log.txt")
+
+nsim <- 10000
+nbatches <- 30
+batch_size <- round(nsim/nbatches)
+batch_indices <- 1:nbatches
+
+overall_random_gene_results <- future_map(batch_indices, function(batch) {
+  
+  sum_batch <- numeric(batch_size)
+  mean_batch <- numeric(batch_size)
+  
+  for (i in 1:batch_size) {
+    random_kmatched_genes <- map2(carot_bins, names(carot_bins), ~ {
+      bin_x_genes <- names(gene_bins)[gene_bins == .x]
+      sample(setdiff(bin_x_genes, c(carot_genes$gene_id, carb_genes$gene_id)), 1)
+    }) %>% unlist()
+    
+    random_genes_carb_TOM <- overall_TOM[
+      rownames(overall_TOM) %in% random_kmatched_genes,
+      colnames(overall_TOM) %in% carb_genes$gene_id
+    ]
+    
+    sum_batch[i] <- sum(random_genes_carb_TOM)
+    mean_batch[i] <- mean(random_genes_carb_TOM)
+    
+    # --- Add progress printing inside the batch ---
+    if (i %% 50 == 0 || i == batch_size) {  # every 50 simulations, or at the end
+      cat(paste0(Sys.time(), " - Batch ", batch, 
+                 ": Completed ", i, " of ", batch_size, " simulations\n"), 
+          file = "progress_log.txt", 
+          append = TRUE)
+    }
+  }
+  list(sum = sum_batch, mean = mean_batch)
+}, .options = furrr_options(seed = TRUE))
+
+
+# Combine and save results
+sum_4_overall <- unlist(map(overall_random_gene_results, "sum"))
+mean_4_overall <- unlist(map(overall_random_gene_results, "mean"))
+
+saveRDS(sum_4_overall, file=paste0(dir2, "output/overall_ntwk_node_permutation_TOMsum_store_4_overall_batched.RDS"))
+saveRDS(mean_4_overall, file=paste0(dir2, "output/overall_ntwk_node_permutation_TOMmean_store_4_overall_batched.RDS"))
+```
+```{r}
+sum_4_overall <- readRDS(file=paste0(dir2, "output/overall_ntwk_node_permutation_TOMsum_store_3_overall_batched.RDS"))
+mean_4_overall <- readRDS(file=paste0(dir2, "output/overall_ntwk_node_permutation_TOMmean_store_3_overall_batched.RDS"))
+
+
+#Observed value:
+carot_carb_TOM <- overall_TOM[rownames(overall_TOM) %in% carot_genes$gene_id,
+                                colnames(overall_TOM) %in% carb_genes$gene_id]
+obs_carot_carb_sum <- sum(carot_carb_TOM)
+obs_carot_carb_mean <- mean(carot_carb_TOM)
+
+
+#View results:
+png(filename=paste0(dir2, "figures/overallTOM_sumTOM_k-matched-random_with-carbohydrate-genes.png"), width=6, height=4, units="in", res=300)
+hist(sum_4_overall, main="total TOM for random k-matched genes \nwith carbohydrate genes", 
+     xlab="sum(TOM)", breaks=60)
+abline( v = obs_carot_carb_sum, col="red", lty=2)
+dev.off()
+
+png(filename=paste0(dir2, "figures/overallTOM_meanTOM_k-matched-random_with-carbohydrate-genes.png"), width=6, height=4, units="in", res=300)
+hist(mean_4_overall, main="mean TOM for random k-matched genes \nwith carbohydrate genes", 
+     xlab="mean(TOM)", breaks=50)
+abline( v = obs_carot_carb_mean, col="red", lty=2)
+dev.off()
+
+
+#Calculate p-value:
+sum(sum_4_overall > obs_carot_carb_sum)/length(sum_4_overall)
+
+```
+
+Repeat the inverse way (keep carotenoid genes fixed and permute carbohydrate genes)
+```{r, eval=F} 
+#Set up parallelism:
+library(furrr); library(future)
+library(purrr)
+
+#Run node permutation test
+#Set up parallelism:
+options(future.globals.maxSize = 10 * 1024^3)  # 10 GB
+plan(multisession, workers=30)
+file.create("progress_log.txt")
+
+nsim <- 10000
+nbatches <- 30
+batch_size <- round(nsim/nbatches)
+batch_indices <- 1:nbatches
+
+overall_random_gene_results_carot <- future_map(batch_indices, function(batch) {
+  
+  sum_batch <- numeric(batch_size)
+  mean_batch <- numeric(batch_size)
+  
+  for (i in 1:batch_size) {
+    random_kmatched_genes <- map2(carb_bins, names(carb_bins), ~ {
+      bin_x_genes <- names(gene_bins)[gene_bins == .x]
+      sample(setdiff(bin_x_genes, c(carot_genes$gene_id, carb_genes$gene_id)), 1)
+    }) %>% unlist()
+    
+    random_genes_carot_TOM <- overall_TOM[
+      rownames(overall_TOM) %in% random_kmatched_genes,
+      colnames(overall_TOM) %in% carot_genes$gene_id
+    ]
+    
+    sum_batch[i] <- sum(random_genes_carot_TOM)
+    mean_batch[i] <- mean(random_genes_carot_TOM)
+    
+    # --- Add progress printing inside the batch ---
+    if (i %% 100 == 0 || i == batch_size) {  # every 100 simulations, or at the end
+      cat(paste0(Sys.time(), " - Batch ", batch, 
+                 ": Completed ", i, " of ", batch_size, " simulations\n"), 
+          file = "progress_log.txt", 
+          append = TRUE)
+    }
+  }
+  list(sum = sum_batch, mean = mean_batch)
+}, .options = furrr_options(seed = TRUE))
+
+
+# Combine and save results
+sum_4_overall_carot <- unlist(map(overall_random_gene_results_carot, "sum"))
+mean_4_overall_carot <- unlist(map(overall_random_gene_results_carot, "mean"))
+
+saveRDS(sum_4_overall_carot, file=paste0(dir2, "output/overall_ntwk_carb-node_permutation_TOMsum_store_batched.RDS"))
+saveRDS(mean_4_overall_carot, file=paste0(dir2, "output/overall_ntwk_carb-node_permutation_TOMmean_store_batched.RDS"))
+```
+```{r}
+sum_4_overall_carot <- readRDS(file=paste0(dir2, "output/overall_ntwk_carb-node_permutation_TOMsum_store_batched.RDS"))
+mean_4_overall_carot <- readRDS(file=paste0(dir2, "output/overall_ntwk_carb-node_permutation_TOMmean_store_batched.RDS"))
+
+#Observed value:
+carot_carb_TOM <- overall_TOM[rownames(overall_TOM) %in% carb_genes$gene_id,
+                                colnames(overall_TOM) %in% carot_genes$gene_id]
+obs_carot_carb_sum <- sum(carot_carb_TOM)
+obs_carot_carb_mean <- mean(carot_carb_TOM)
+
+#View results:
+png(filename=paste0(dir2, "figures/overallTOM_sumTOM_k-matched-random_with-carotenoid-genes.png"), width=6, height=4, units="in", res=300)
+hist(sum_4_overall_carot, main="total TOM for random k-matched genes \nwith carotenoid genes", 
+     xlab="sum(TOM)", breaks=30)
+abline( v = obs_carot_carb_sum, col="red", lty=2)
+dev.off()
+
+png(filename=paste0(dir2, "figures/overallTOM_meanTOM_k-matched-random_with-carotenoid-genes.png"), width=6, height=4, units="in", res=300)
+hist(mean_4_overall, main="mean TOM for random k-matched genes with \ncarotenoid genes", 
+     xlab="mean(TOM)", breaks=30)
+abline( v = obs_carot_carb_mean, col="red", lty=2)
+dev.off()
+
+
+#Calculate p-value:
+sum(sum_4_overall_carot > obs_carot_carb_sum)/length(sum_4_overall_carot)
+
+```
+
+
+Try keeping only carotenoid metabolites and permute carbohydrate genes
+```{r, eval=F}
+carot_metabolites <- carot_genes %>% filter(gene_metabolite=="metabolite")
+
+
+#Set up parallelism:
+library(furrr); library(future)
+library(purrr)
+
+#Run node permutation test
+#Set up parallelism:
+options(future.globals.maxSize = 10 * 1024^3)  # 10 GB
+plan(multisession, workers=30)
+file.create("progress_log.txt")
+
+nsim <- 10000
+nbatches <- 30
+batch_size <- round(nsim/nbatches)
+batch_indices <- 1:nbatches
+
+overall_random_gene_results_carot_metab <- future_map(batch_indices, function(batch) {
+  
+  sum_batch <- numeric(batch_size)
+  mean_batch <- numeric(batch_size)
+  
+  for (i in 1:batch_size) {
+    random_kmatched_genes <- map2(carb_bins, names(carb_bins), ~ {
+      bin_x_genes <- names(gene_bins)[gene_bins == .x]
+      sample(setdiff(bin_x_genes, c(carot_genes$gene_id, carb_genes$gene_id)), 1)
+    }) %>% unlist()
+    
+    random_genes_carot_TOM <- overall_TOM[
+      rownames(overall_TOM) %in% random_kmatched_genes,
+      colnames(overall_TOM) %in% carot_metabolites$gene_id
+    ]
+    
+    sum_batch[i] <- sum(random_genes_carot_TOM)
+    mean_batch[i] <- mean(random_genes_carot_TOM)
+    
+    # --- Add progress printing inside the batch ---
+    if (i %% 100 == 0 || i == batch_size) {  # every 100 simulations, or at the end
+      cat(paste0(Sys.time(), " - Batch ", batch, 
+                 ": Completed ", i, " of ", batch_size, " simulations\n"), 
+          file = "progress_log.txt", 
+          append = TRUE)
+    }
+  }
+  list(sum = sum_batch, mean = mean_batch)
+}, .options = furrr_options(seed = TRUE))
+
+
+# Combine and save results
+sum_4_overall_carot_metab <- unlist(map(overall_random_gene_results_carot_metab, "sum"))
+mean_4_overall_carot_metab <- unlist(map(overall_random_gene_results_carot_metab, "mean"))
+
+saveRDS(sum_4_overall_carot_metab, file=paste0(dir2, "output/overall_ntwk_carb-permutation_carotenoid-metabolites_TOMsum_store_batched.RDS"))
+saveRDS(mean_4_overall_carot_metab, file=paste0(dir2, "output/overall_ntwk_carb-permutation_carotenoid-metabolites_TOMmean_store_batched.RDS"))
+```
+```{r}
+sum_4_overall_carot_metab <- readRDS(file=paste0(dir2, "output/overall_ntwk_carb-permutation_carotenoid-metabolites_TOMsum_store_batched.RDS"))
+mean_4_overall_carot_metab <- readRDS(file=paste0(dir2, "output/overall_ntwk_carb-permutation_carotenoid-metabolites_TOMmean_store_batched.RDS"))
+
+#Observed value:
+carotmetab_carb_TOM <- overall_TOM[rownames(overall_TOM) %in% carb_genes$gene_id,
+                                colnames(overall_TOM) %in% carot_metabolites$gene_id]
+obs_carotmetab_carb_sum <- sum(carotmetab_carb_TOM)
+obs_carotmetab_carb_mean <- mean(carotmetab_carb_TOM)
+
+#View results:
+png(filename=paste0(dir2, "figures/overallTOM_sumTOM_k-matched-random_with-carotenoid-metabolites.png"), width=6, height=4, units="in", res=300)
+hist(sum_4_overall_carot_metab, main="total TOM for random k-matched genes \nwith carotenoid metabolites", 
+     xlab="sum(TOM)", breaks=30)
+abline( v = obs_carotmetab_carb_sum, col="red", lty=2)
+dev.off()
+
+png(filename=paste0(dir2, "figures/overallTOM_meanTOM_k-matched-random_with-carotenoid-metabolites.png"), width=6, height=4, units="in", res=300)
+hist(mean_4_overall_carot_metab, main="mean TOM for random k-matched genes with \ncarotenoid metabolites", 
+     xlab="mean(TOM)", breaks=30)
+abline( v = obs_carotmetab_carb_mean, col="red", lty=2)
+dev.off()
+
+
+#Calculate p-value:
+sum(sum_4_overall_carot_metab > obs_carotmetab_carb_sum)/length(sum_4_overall_carot_metab)
+
+```
+
+
+
+
+
+Characterization of strongest associators with carotenoid content:
+```{r}
+#check which modules carotenoid metabolites are in:-
+table(overall_modules_annot %>% filter(class=="carot" & gene_metabolite=="metabolite") %>% dplyr::select(colors))
+overall_modules_annot %>% filter(class=="carot" & gene_metabolite=="metabolite") %>% dplyr::select(colors, gene_id) %>%
+  rmarkdown::paged_table()
+
+#purple and grey
+purple_mod <- overall_modules_annot %>% filter(colors=="purple")
+nrow(purple_mod)
+
+#subset TOM for purple module
+TOM_purple <- overall_TOM[rownames(overall_TOM) %in% purple_mod$gene_id, 
+                          colnames(overall_TOM) %in% purple_mod$gene_id]
+TOM_purple_melted <- TOM_purple %>% 
+  reshape2::melt(varnames=c("node1", "node2"), value.name = "weight") %>%
+   #get only the first pairwise interaction by index
+  filter(as.integer(factor(node1, levels = rownames(TOM_purple))) <
+         as.integer(factor(node2, levels = colnames(TOM_purple)))) %>%
+  left_join(., overall_modules_annot %>% dplyr::select(gene_id, class, gene_metabolite, Description, GODescription), by=c("node1" = "gene_id")) %>%
+  left_join(., overall_modules_annot %>% dplyr::select(gene_id, class, gene_metabolite, Description, GODescription), by=c("node2" = "gene_id")) %>% 
+  arrange(-weight) #sort by connection strength
+
+write.csv(TOM_purple_melted, file=paste0(dir2, "output/Carotenoid_most_connected_genes_overall_purple_module.csv"))
+
+head(TOM_purple_melted %>% filter(class.x != class.y), n=25) %>% arrange(node1) #filter for carbohydrate/carotenoid interactions
+#top carbohydrate genes: F23N19.12, ACONITASE // ACONITATE HYDRATASE 1, PYRUVATE KINASE, PECTIN LYASE-LIKE PROTEIN 
+
+head(TOM_purple_melted %>% filter(class.y =="carot"), n=25) %>% arrange(node1) #filter for carotenoid class interactions
+
+
+head(TOM_purple_melted %>% filter(node2 =="Beta.Carotene"), n=25) %>% arrange(-weight) #filter for carotenoid class interactions
+
+top_TOM_TC_purple <- head(TOM_purple_melted %>% filter(gene_metabolite.x == "gene" & node2 =="total_carotenoids"), n=40) %>% arrange(-weight) #filter for carotenoid class interactions
+top_TOM_TC_purple
+
+
+### Overall top TOM with total carotenoids:
+top_TC_TOM <- data.frame(TOM_TC = overall_TOM[,colnames(overall_TOM)=="total_carotenoids"] %>% sort(., decreasing=T)) %>%
+  rownames_to_column("gene_id") %>% left_join(overall_modules_annot) %>% head(n=20)
+top_TC_TOM
+
+top_BC_TOM <- data.frame(TOM_BC = overall_TOM[,colnames(overall_TOM)=="Beta.Carotene"] %>% sort(., decreasing=T)) %>%
+  rownames_to_column("gene_id") %>% left_join(overall_modules_annot) %>% head(n=20)
+top_BC_TOM
+```
+
+```{r, eval=F}
+#Subset for strongest PSY2 interactions:
+turquoise_mod <- overall_modules_annot %>% filter(colors=="turquoise")
+
+TOM_PSY2 <- data.frame(TOM_PSY2 = overall_TOM[rownames(overall_TOM) %in% turquoise_mod$gene_id, 
+                          colnames(overall_TOM) == "Manes.01G124200.v8.1"]) %>%
+  rownames_to_column("gene_id") %>% left_join(overall_modules_annot) %>% arrange(-TOM_PSY2)
+
+#takes a while to run
+turquoisehub_PSY_cor <- Hmisc::rcorr(
+  overallcounts_t[,colnames(overallcounts_t) %in% c("Manes.01G124200.v8.1", turquoise_mod$gene_id)], type="pearson") 
+  
+turquoisehub_PSY_cor_r <- turquoisehub_PSY_cor$r %>% reshape2::melt() %>% filter(Var1=="Manes.01G124200.v8.1") %>% dplyr::select(-Var1) %>%
+  dplyr::rename("gene_id" = Var2, "cor" = value) %>% mutate(gene_id = as.character(gene_id))
+turquoisehub_PSY_cor_p <- turquoisehub_PSY_cor$P %>% reshape2::melt() %>% filter(Var1=="Manes.01G124200.v8.1") %>% dplyr::select(-Var1) %>%
+  dplyr::rename("gene_id" = Var2, "p" = value) %>% mutate(gene_id = as.character(gene_id))
+
+TOM_PSY2_wcorr <- merge(TOM_PSY2 %>% left_join(turquoisehub_PSY_cor_r), turquoisehub_PSY_cor_p, by="gene_id") %>% arrange(-TOM_PSY2)
+head(TOM_PSY2_wcorr, n=20)
+write.csv(head(TOM_PSY2_wcorr, n=20), file=paste0(dir2, "output/PSY2_most_connected_genes_overall.csv"))
+
+## note: since a lot of the most closely associated genes are related to general transcriptional regulation, maybe that is a sign that PSY2 is not really under any important gene-specific transcriptional regulation (which checks out with what we know so far) -- so maybe don't include this in the paper
+```
+
+
+
+
+
+
+
+
+
+#### end of overall network ####
+
+
+
+# Construct non-genetic network
+
+Read in non-genotypic estimates
+```{r}
+#read in variance-transformed normalized count data for non-genotypic network
+nongeno_estimates <- readRDS(file=paste0(dir2, "output/nongenotypicLFCestimates.RDS")) %>% as.data.frame() %>%
+  rownames_to_column("trait")
+
+#read in log2 non-genotypic estimates for metabolite data
+metabolite_nongeno_estimates <- readRDS(file= paste0(dir2, "output/all_metabolite_traits_nongenotypic_log2_estimates.RDS")) %>%
+  dplyr::select(all_of(intersect(colnames(.), colnames(overall_estimates)))) %>%
+  rownames_to_column("trait")
+
+nongeno_estimates_all <- suppressMessages(
+  full_join(as.data.frame(nongeno_estimates), metabolite_nongeno_estimates) %>%
+  column_to_rownames("trait") )
+#messages suppressed so it doesn't print out all column names
+
+#transpose so genotypes in rows and genes/metabolites in columns
+nongenocounts_t <- t(nongeno_estimates_all)
+
+#check everything is numeric
+all(apply(nongenocounts_t, 2, is.numeric))
+
+#check variance across samples
+gene_only_vars <- apply(nongenocounts_t[,1:20430], 2, function(x) var(x, na.rm=T))
+hist(gene_only_vars, breaks=100, main="distribution of gene variance", xlim=c(0,15))
+
+metab_only_vars <- apply(nongenocounts_t[,20431:20446], 2, function(x) var(x, na.rm=T))
+hist(metab_only_vars, main="distribution of metabolite variance", breaks=10)
+
+
+#check for outliers with WGCNA function:
+gsg <-goodSamplesGenes(nongenocounts_t, verbose=3)
+#gsg$allOK
+#looks good
+
+nongenocounts_t <- nongenocounts_t[,gsg$goodGenes] #exclude the starch/sugars with too many NAs
+```
+
+Pick power for correlations
+```{r, eval=FALSE}
+# Choose a set of soft-thresholding powers
+powers = c(1:20) #seq(from = 1, to = 40, by = 5)
+
+allowWGCNAThreads() 
+# Call the network topology analysis function
+sft = pickSoftThreshold(
+  nongenocounts_t,   # <= Input data
+  powerVector = powers,
+  verbose = 5,
+  networkType = "unsigned",
+  corFnc="bicor")
+
+saveRDS(sft, file=paste0(dir2, "output/picksoftthres_nongeno.RDS"))
+```
+
+Plot power threshold graphs
+```{r}
+sft <- readRDS(paste0(dir2, "output/picksoftthres_nongeno.RDS"))
+
+par(mfrow = c(1,2)); cex1 = 0.9
+powers = c(1:20)
+
+#png(file=paste0(dir2, "figures/nongeno_gene-metabolite_network_softthresholdpower_R2.png"))
+  plot(sft$fitIndices[, 1],
+       -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
+       xlab = "Soft Threshold (power)",
+       ylab = "Scale Free Topology Model Fit, signed R^2",
+       main = paste("Scale independence")
+  )
+  text(sft$fitIndices[, 1],
+       -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
+       labels = powers, cex = cex1, col = "red"
+  )
+  abline(h = 0.85, col = "red")
+#dev.off()
+
+
+#png(file=paste0(dir2, "figures/nongeno_gene-metabolite_network_softthresholdpower_connectivity.png"))
+plot(sft$fitIndices[, 1],
+       sft$fitIndices[, 5],
+       xlab = "Soft Threshold (power)",
+       ylab = "Mean Connectivity",
+       type = "n",
+       main = paste("Mean connectivity")
+  )
+  text(sft$fitIndices[, 1],
+       sft$fitIndices[, 5],
+       labels = powers,
+       cex = cex1, col = "red")
+#dev.off()
+
+  
+picked_power_nongeno <- 10
+
+```
+
+Construct non-genetic network with WGCNA
+```{r}
+#impute phenotypic NAs with k closest neighbor method
+nongenocounts_t_imputed <- impute::impute.knn(nongenocounts_t)$data
+
+```
+```{r, eval=F}
+nongeno_netwk <- blockwiseModules(nongenocounts_t_imputed,                
+                          
+                          # == Adjacency Function ==
+                          power = picked_power_nongeno,       
+                          networkType = "unsigned",   #includes both positive and negative correlations
+                          corType = "bicor",  #more robust to outliers than pearson correlation
+                          nThreads = 38,
+
+                          # == Tree and Block Options ==
+                          randomSeed = 14850,
+                          deepSplit = 3, #value between 0 and 4, sensitivity to module splitting
+                          pamRespectsDendro = F,
+                          minModuleSize = 30,
+                          maxBlockSize = ncol(nongenocounts_t_imputed), #allow for running in 1 block since we have enough computational power
+
+                          # == Module Adjustments ==
+                          reassignThreshold = 0.05,
+                          mergeCutHeight = 0.25,
+
+                          # == TOM == Archive the run results in TOM file (saves time)            
+                          saveTOMs = T,
+                          saveTOMFileBase = paste0("/workdir/ssv42/RNAseq_yr2/output/nongeno_gene-metaabolite_ntwk_pwr", 
+                          picked_power_nongeno, "_"),
+
+                          # == Output Options
+                          numericLabels = T,
+                          verbose = 2)
+
+saveRDS(nongeno_netwk, file=paste0(dir2, "output/nongeno_gene-metabolite_netwk.RDS"))
+```
+
+Look at non-genetic network modules:
+```{r, eval=F}
+# Convert labels to colors for plotting
+mergedColors = labels2colors(nongeno_netwk$colors)
+
+blockselection <- 1 
+
+# Plot the dendrogram and the module colors underneath
+plotDendroAndColors(
+  nongeno_netwk$dendrograms[[blockselection]],
+  mergedColors[nongeno_netwk$blockGenes[[blockselection]]],
+  "Module colors",
+  dendroLabels = FALSE,
+  hang = 0.03,
+  addGuide = TRUE,
+  guideHang = 0.05 )
+
+ggsave(file=paste0(dir2, "figures/nongeno_gene-metabolite_network_dendrogram_block", blockselection, ".png"))
+
+
+nongeno_module_df <- data.frame(
+  gene_id = names(nongeno_netwk$colors),
+  colors = labels2colors(nongeno_netwk$colors)
+)
+
+#Get TOM
+load(paste0(nongeno_netwk$TOMFiles))
+nongeno_TOM <- as.matrix(TOM)
+
+
+#export nongenotypic module dataframe
+write_delim(nongeno_module_df,
+            file = paste0(dir2, "output/nongeno_gene-metabolite_network_gene_modules.txt"),
+            delim = "\t")
+```
+
+Test associations between modules and phenotypes
+```{r}
+# Get Module Eigengenes per cluster
+MEs0 <- moduleEigengenes(nongenocounts_t, mergedColors)$eigengenes
+
+# Reorder modules so similar modules are next to each other
+MEs0 <- orderMEs(MEs0);
+module_order = names(MEs0) %>% gsub("ME", "", .)
+
+# Read in phenotypes
+metadata_phenos_scaled <- readRDS(file=paste0(dir2, "output/scaled_pheno_data.RDS"))
+#confirm sample order is the same: 
+all(metadata_phenos_scaled$fullID == rownames(MEs0))
+#combine with module eigengenes 
+MEs0_wphenos <- cbind(MEs0,  
+    (metadata_phenos_scaled %>% dplyr::select(Phytoene:Zeta.Carotene, Violaxanthin.peak.1:Lutein,
+                        total_carotenoids:dry_matter, i_o_diff_TC))  ) 
+
+# calculate correlations
+MEs0_wphenos_cormat <- cor(MEs0_wphenos, use="pairwise.complete.obs")
+MEs0_wphenos_cormat <- as.data.frame(MEs0_wphenos_cormat) 
+MEs0_wphenos_cormat$module <- rownames(MEs0_wphenos_cormat)
+MEs_wphenos_cormat <- MEs0_wphenos_cormat %>% pivot_longer(-module, names_to="phenotype") %>%
+  filter(!str_detect(phenotype, "ME")) %>% 
+  filter(str_detect(module, "ME")) %>%
+  mutate(module = gsub("ME","", module)) %>%
+  mutate(phenotype = factor(phenotype, levels=c("Phytoene", "Phytofluene", "Zeta.Carotene", "Beta.Carotene", "Lutein", 
+                                     "Violaxanthin.peak.1", "Violaxanthin.peak.2", "total_carotenoids",
+                                    "totalpre", "total_violaxanthin", "ratio_bc_v", "i_o_diff_TC", "dry_matter")) )
+
+
+ggplot(MEs_wphenos_cormat, aes(y=phenotype, x=module, fill=value)) +
+  geom_tile() +
+  theme_bw() +
+  scale_fill_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "white") +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  labs(title = "Module-trait Relationships from Non-genetic Network", y = "Modules", fill="corr")
+
+ggsave(filename=paste0(dir2, "figures/nongeno_gene-metabolite_ntwk_module_trait_correlations.png"),
+       height=6, width=18, units="in")
+
+```
+
+Merge network results with gene annotations
+```{r}
+nongeno_module_df <- fread(file = paste0(dir2, "output/nongeno_gene-metabolite_network_gene_modules.txt"))
+
+#merge annotations with non-genotypic network module dataframe
+nongeno_modules_annot <- nongeno_module_df %>% 
+  mutate(locusName = gsub(".v8.1", "", gene_id)) %>%
+  left_join(., fullgene_annotations) %>%
+  mutate(class = case_when(gene_id %in% carot_traits ~ "carot", gene_id %in% carb_traits ~ "carb", T ~ class)) %>%
+  mutate(gene_metabolite = ifelse(grepl("Manes", locusName), "gene", "metabolite"))
+
+#check how many genes in each class
+table(nongeno_modules_annot$class)
+
+#check which modules carotenoid gene/metabolites are in
+table(nongeno_modules_annot %>% filter(class=="carot") %>% dplyr::select(colors) )
+
+#check carotenoid superpathway genes specifically
+table(nongeno_modules_annot %>% filter(grepl("CAROTENOID-PWY", Pathways)) %>% dplyr::select(colors))
+nongeno_modules_annot %>% filter(grepl("CAROTENOID-PWY", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+#check which modules carbohydrate gene/metabolites are in
+table(nongeno_modules_annot %>% filter(class=="carb") %>% dplyr::select(colors) )
+
+#check starch synthesis pathway genes specifically
+table(nongeno_modules_annot %>% filter(grepl("PWY-622", Pathways)) %>% dplyr::select(colors) )
+nongeno_modules_annot %>% filter(grepl("PWY-622", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+#check starch degradation pathway genes specifically
+table(nongeno_modules_annot %>% filter(grepl("PWY-6724", Pathways)) %>% dplyr::select(colors) )
+nongeno_modules_annot %>% filter(grepl("PWY-6724", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+```
+
+Select modules of interest from non-genotypic network and export for Cytoscape
+```{r}
+load("/workdir/ssv42/RNAseq_yr2/output/nongeno_gene-metaabolite_ntwk_pwr10_-block.1.RData"); nongeno_TOM <- as.matrix(TOM)
+rownames(nongeno_TOM) <- colnames(overallcounts_t); colnames(nongeno_TOM) <- colnames(overallcounts_t)
+
+#check module sizes
+table(nongeno_module_df$colors)
+
+#identify modules most associated with the phenotypes
+top_associations <- MEs_wphenos_cormat %>% group_by(phenotype) %>%
+  slice_max(abs(value), n=1) 
+
+top_modules <- unique((top_associations %>% filter(abs(value) > 0.4))$module)
+print(top_modules)
+
+nongeno_modules_of_interest <- top_modules #or pick an individual color e.g. turquoise
+
+# Pull out list of genes in that module
+submod_nongeno <- nongeno_module_df %>%
+  subset(colors %in% nongeno_modules_of_interest)
+
+row.names(nongeno_module_df) <- nongeno_module_df$gene_id
+
+# Subset TOM matrix for modules of interest
+colnames(nongeno_TOM) <- nongeno_module_df$gene_id
+rownames(nongeno_TOM) <- nongeno_module_df$gene_id
+
+subset_nongenoTOM <- nongeno_TOM[rownames(nongeno_TOM) %in% submod_nongeno$gene_id,
+                                colnames(nongeno_TOM) %in% submod_nongeno$gene_id]
+
+# check dimensions
+dim(subset_nongenoTOM)
+format(object.size(subset_nongenoTOM), units="GB")
+
+# Compute the threshold at the 75th percentile
+edge_weights <- subset_nongenoTOM[upper.tri(subset_nongenoTOM)]
+threshold_75 <- quantile(edge_weights, 0.75)
+print(threshold_75)
+
+#export subset for Cytoscape
+Cyexport <- exportNetworkToCytoscape(subset_nongenoTOM,
+                         edgeFile = paste0(dir2, "output/nongeno_gene-metabolite_ntwk_modulesofinterest_CytoscapeInput-edges.txt"),
+                         nodeFile = paste0(dir2, "output/nongeno_gene-metabolite_ntwk_modulesofinterest_CytoscapeInput-nodes.txt"),
+                         weighted = TRUE, threshold = threshold_75,
+                         nodeNames = (colnames(subset_nongenoTOM) %>% gsub(".v8.1","",.)) ) #remove version tag from gene name
+
+#export gene annotations for Cytoscape
+subset_nongenoTOM_annot <- nongeno_modules_annot %>% 
+  filter(gene_id %in% unique(c(rownames(subset_nongenoTOM), colnames(subset_nongenoTOM)))) %>%
+  dplyr::select(gene_id, locusName, Description, colors, class, gene_metabolite) %>%
+  mutate(Description = gsub(",",";",Description)) #remove commas to not confuse cytoscape reading csv
+
+write.csv(subset_nongenoTOM_annot, file= paste0(dir2, "output/nongeno_gene-metabolite_ntwk_modulesofinterest_CytoscapeInput-nodes_annotations.csv"), row.names = F, quote=F)
+```
+
+Create subnetwork of only carotenoid and carbohydrate genes
+```{r}
+car_gene_subset <- nongeno_modules_annot %>% filter(!is.na(class)) %>%
+  mutate(Description = gsub(",",";",Description))
+
+# Subset TOM matrix for genes of interest
+nongenoTOM_car_genes <- nongeno_TOM[rownames(nongeno_TOM) %in% car_gene_subset$gene_id,
+                                colnames(nongeno_TOM) %in% car_gene_subset$gene_id]
+
+# Compute the threshold at the 75th percentile
+edge_weights <- nongenoTOM_car_genes[upper.tri(nongenoTOM_car_genes)]
+threshold_75 <- quantile(edge_weights, 0.75)
+print(threshold_75)
+
+#export subset for Cytoscape
+Cyexport <- exportNetworkToCytoscape(nongenoTOM_car_genes,
+                         edgeFile = paste0(dir2, "output/nongeno_gene-metabolite_ntwk_cargenes_CytoscapeInput-edges.txt"),
+                         nodeFile = paste0(dir2, "output/nongeno_gene-metabolite_ntwk_cargenes_CytoscapeInput-nodes.txt"),
+                         weighted = TRUE, threshold = threshold_75,
+                         nodeNames = (colnames(nongenoTOM_car_genes) %>% gsub(".v8.1","",.)) ) #remove version tag from gene name
+
+write.csv(car_gene_subset, file=paste0(dir2, "output/nongeno_gene-metabolite_ntwk_cargenes_CytoscapeInput_annotations.csv"))
+```
+
+Calculate correlation matrix separately on genes of interest subset to preserve sign/direction information
+```{r}
+nongeno_subset_bicor <- bicor(
+  nongenocounts_t[,colnames(nongenocounts_t) %in% car_gene_subset$gene_id],
+  use="pairwise.complete.obs") %>% 
+  reshape2::melt() 
+
+colnames(nongeno_subset_bicor) <- c("sourceNode", "targetNode", "bicor")
+
+nongeno_subset_bicor_Cyto <- nongeno_subset_bicor %>%
+  mutate(across(sourceNode:targetNode, ~ gsub(".v8.1", "", .))) %>%
+  mutate(shared_name = paste0(sourceNode, " (interacts with) ", targetNode)) %>%
+  mutate(cor_direction = case_when(bicor > 0 ~ "+", bicor <= 0 ~ "-")) %>%
+  mutate(source_class = case_when(sourceNode %in% carot_genes$locusName ~ "carot",
+                                  sourceNode %in% carb_genes$locusName ~ "carb", T~NA),
+         target_class = case_when(targetNode %in% carot_genes$locusName ~ "carot",
+                                  targetNode %in% carb_genes$locusName ~ "carb", T~NA)) %>%
+  mutate(interaction_class = case_when(source_class != target_class ~ "cross-class", T~NA))
+
+write.csv(nongeno_subset_bicor_Cyto, 
+          file=paste0(dir2, "output/nongeno_gene-metabolite_netwk_cargene-subset_bicorrelations.csv"), 
+          row.names = F)
+```
+
+Identify hub genes:
+```{r}
+#double check gene order is the same
+all(colnames(nongenocounts_t_imputed) == nongeno_module_df$gene_id)
+
+nongeno_tophubs <- chooseTopHubInEachModule(nongenocounts_t_imputed, 
+                                         colorh=nongeno_module_df$colors,
+                                         power = picked_power_nongeno, type="unsigned")
+
+nongeno_tophubs_df <- data.frame("hub" = nongeno_tophubs)
+nongeno_tophubs_df$module <- rownames(nongeno_tophubs_df) 
+nongeno_tophubs_annot <- nongeno_tophubs_df %>% left_join(nongeno_modules_annot, by=c("hub" = "gene_id"))
+
+#check the hub genes of the major carotenoid/carbohydrate modules
+hubstocheck <- names(tail(sort(table(car_gene_subset$colors), descending=T), n=10))
+
+nongeno_hubs_topmodules <- nongeno_tophubs_annot %>% filter(module %in% nongeno_modules_of_interest)
+```
+
+Are carotenoid and carbohydrate genes more connected than would be expected by chance?
+```{r}
+#Subset for carotenoid/carbohydrate edges (excluding carot-carot and carb-carb edges)
+nongenoTOM_car_melt <- reshape2::melt(nongenoTOM_car_genes, varnames=c("node1", "node2"), value.name = "weight") %>%
+   #get only the first pairwise interaction by inex
+  filter(as.integer(factor(node1, levels = rownames(nongenoTOM_car_genes))) <
+         as.integer(factor(node2, levels = colnames(nongenoTOM_car_genes)))) %>% 
+  left_join(., car_gene_subset %>% dplyr::select(gene_id, class, gene_metabolite), by=c("node1" = "gene_id")) %>%
+  left_join(., car_gene_subset %>% dplyr::select(gene_id, class, gene_metabolite), by=c("node2" = "gene_id")) %>%
+  filter(gene_metabolite.x != "metabolite" & gene_metabolite.y != "metabolite" ) %>%
+  filter(class.x != class.y) 
+
+#How many edges:
+nrow(nongenoTOM_car_melt)
+
+#How many carotenoid nodes:
+n_nodes <- nrow(car_gene_subset %>% filter(class=="carot" & gene_metabolite=="gene"))
+n_nodes
+
+#Get list of carbohydrate genes
+carb_genes <- car_gene_subset %>% filter(class=="carb" & gene_metabolite=="gene")
+
+#Sum the topological overlap weight (adjacency and connectivity) between the carotenoid and carbohydrate nodes
+observed_nongeno_TOsum <- sum(nongenoTOM_car_melt$weight)
+
+
+
+
+#Get list of carbohydrate genes
+carb_genes <- car_gene_subset %>% filter(class=="carb" & gene_metabolite=="gene")
+carot_genes <- car_gene_subset %>% filter(class=="carot" & gene_metabolite=="gene")
+
+# Get total connectivity for each gene
+gene_connectivity <- rowSums(nongeno_TOM)
+carot_gene_connectivity <- gene_connectivity[carot_genes$gene_id]
+which.max(carot_gene_connectivity) 
+mean(carot_gene_connectivity)
+
+carb_gene_connectivity <- gene_connectivity[carb_genes$gene_id]
+which.max(carb_gene_connectivity)
+mean(carb_gene_connectivity)
+
+#Plot distribution of gene connectivities
+connectivity_df <- data.frame(
+  connectivity = c(gene_connectivity, carot_gene_connectivity, carb_gene_connectivity),
+  group = as.factor(c(rep("Overall", length(gene_connectivity)),
+            rep("Carotenoids", length(carot_gene_connectivity)),
+            rep("Carbohydrates", length(carb_gene_connectivity)))))
+
+ggplot(connectivity_df, aes(x = connectivity, fill = group)) +
+  geom_density(alpha = 0.4) +
+  scale_fill_manual(values = c("Overall" = "gray70", "Carotenoids" = "red", "Carbohydrates" = "blue")) +
+  scale_color_manual(values = c("Overall" = "gray40", "Carotenoids" = "darkred", "Carbohydrates" = "darkblue")) +
+  theme_minimal() + 
+  labs(title = "Distribution of nongenotypic gene connectivity values k",
+       x = "Overall gene connectivity", y = "Proportion of genes", fill = "Gene class")
+
+ggsave(file= paste0(dir2, "figures/connectivity_distributions_k_nongeno_netwk.png"))
+
+
+# Create bins of genes by connectivity
+gene_bins <- cut(gene_connectivity, breaks = quantile(gene_connectivity, probs = seq(0, 1, 0.1)), include.lowest = TRUE)
+names(gene_bins) <- names(gene_connectivity) 
+levels(gene_bins)
+
+carot_bins <- gene_bins[carot_genes$gene_id]
+carb_bins <- gene_bins[carb_genes$gene_id]
+```
+Run permutation test with nongenetic TOM:
+Keep carotenoid genes fixed and permute carbohydrate genes
+```{r, eval=F}
+#Set up parallelism:
+library(furrr); library(future)
+library(purrr)
+
+#Run node permutation test
+#Set up parallelism:
+options(future.globals.maxSize = 10 * 1024^3)  # 10 GB
+plan(multisession, workers=30)
+file.create("progress_log.txt")
+
+nsim <- 10000
+nbatches <- 30
+batch_size <- round(nsim/nbatches)
+batch_indices <- 1:nbatches
+
+nongeno_random_gene_results_carot <- future_map(batch_indices, function(batch) {
+  
+  sum_batch <- numeric(batch_size)
+  mean_batch <- numeric(batch_size)
+  
+  for (i in 1:batch_size) {
+    random_kmatched_genes <- map2(carb_bins, names(carb_bins), ~ {
+      bin_x_genes <- names(gene_bins)[gene_bins == .x]
+      sample(setdiff(bin_x_genes, c(carot_genes$gene_id, carb_genes$gene_id)), 1)
+    }) %>% unlist()
+    
+    random_genes_carot_TOM <- nongeno_TOM[
+      rownames(nongeno_TOM) %in% random_kmatched_genes,
+      colnames(nongeno_TOM) %in% carot_genes$gene_id
+    ]
+    
+    sum_batch[i] <- sum(random_genes_carot_TOM)
+    mean_batch[i] <- mean(random_genes_carot_TOM)
+    
+    # --- Add progress printing inside the batch ---
+    if (i %% 100 == 0 || i == batch_size) {  # every 100 simulations, or at the end
+      cat(paste0(Sys.time(), " - Batch ", batch, 
+                 ": Completed ", i, " of ", batch_size, " simulations\n"), 
+          file = "progress_log.txt", 
+          append = TRUE)
+    }
+  }
+  list(sum = sum_batch, mean = mean_batch)
+}, .options = furrr_options(seed = TRUE))
+
+
+# Combine and save results
+sum_nongeno_carot <- unlist(map(nongeno_random_gene_results_carot, "sum"))
+mean_nongeno_carot <- unlist(map(nongeno_random_gene_results_carot, "mean"))
+
+saveRDS(sum_nongeno_carot, file=paste0(dir2, "output/nongeno_ntwk_carb-node_permutation_TOMsum_store_batched.RDS"))
+saveRDS(mean_nongeno_carot, file=paste0(dir2, "output/nongeno_ntwk_carb-node_permutation_TOMmean_store_batched.RDS"))
+```
+```{r}
+sum_nongeno_carot <- readRDS(file=paste0(dir2, "output/nongeno_ntwk_carb-node_permutation_TOMsum_store_batched.RDS"))
+mean_nongeno_carot <- readRDS(file=paste0(dir2, "output/nongeno_ntwk_carb-node_permutation_TOMmean_store_batched.RDS"))
+
+#Observed value:
+carot_carb_TOM <- nongeno_TOM[rownames(nongeno_TOM) %in% carb_genes$gene_id,
+                                colnames(nongeno_TOM) %in% carot_genes$gene_id]
+obs_carot_carb_sum <- sum(carot_carb_TOM)
+obs_carot_carb_mean <- mean(carot_carb_TOM)
+
+#View results:
+png(filename=paste0(dir2, "figures/nongenoTOM_sumTOM_k-matched-random_with-carotenoid-genes.png"), width=6, height=4, units="in", res=300)
+hist(sum_nongeno_carot, main="total non-genetic TOM for random genes \nk-matched genes with carotenoid genes", 
+     xlab="sum(TOM)", breaks=30)
+abline( v = obs_carot_carb_sum, col="red", lty=2)
+dev.off()
+
+png(filename=paste0(dir2, "figures/nongenoTOM_meanTOM_k-matched-random_with-carotenoid-genes.png"), width=6, height=4, units="in", res=300)
+hist(mean_nongeno_carot, main="mean non-genetic TOM for random genes \nk-matched with carotenoid genes", 
+     xlab="mean(TOM)", breaks=30)
+abline( v = obs_carot_carb_mean, col="red", lty=2)
+dev.off()
+
+
+#Calculate p-value:
+sum(sum_nongeno_carot > obs_carot_carb_sum)/length(sum_nongeno_carot)
+#0.94
+```
+
+Repeat permutations the other way, keeping carbohydrate genes fixed and permuting carotenoid genes
+```{r, eval=F}
+#Set up parallelism:
+library(furrr); library(future)
+library(purrr)
+
+#Run node permutation test
+#Set up parallelism:
+options(future.globals.maxSize = 10 * 1024^3)  # 10 GB
+plan(multisession, workers=30)
+file.create("progress_log.txt")
+
+nsim <- 10000
+nbatches <- 30
+batch_size <- round(nsim/nbatches)
+batch_indices <- 1:nbatches
+
+nongeno_random_gene_results_carb <- future_map(batch_indices, function(batch) {
+  
+  sum_batch <- numeric(batch_size)
+  mean_batch <- numeric(batch_size)
+  
+  for (i in 1:batch_size) {
+    random_kmatched_genes <- map2(carot_bins, names(carot_bins), ~ {
+      bin_x_genes <- names(gene_bins)[gene_bins == .x]
+      sample(setdiff(bin_x_genes, c(carot_genes$gene_id, carb_genes$gene_id)), 1)
+    }) %>% unlist()
+    
+    random_genes_carb_TOM <- nongeno_TOM[
+      rownames(nongeno_TOM) %in% random_kmatched_genes,
+      colnames(nongeno_TOM) %in% carb_genes$gene_id
+    ]
+    
+    sum_batch[i] <- sum(random_genes_carb_TOM)
+    mean_batch[i] <- mean(random_genes_carb_TOM)
+    
+    # --- Add progress printing inside the batch ---
+    if (i %% 100 == 0 || i == batch_size) {  # every 100 simulations, or at the end
+      cat(paste0(Sys.time(), " - Batch ", batch, 
+                 ": Completed ", i, " of ", batch_size, " simulations\n"), 
+          file = "progress_log.txt", 
+          append = TRUE)
+    }
+  }
+  list(sum = sum_batch, mean = mean_batch)
+}, .options = furrr_options(seed = TRUE))
+
+
+# Combine and save results
+sum_nongeno_carb <- unlist(map(nongeno_random_gene_results_carb, "sum"))
+mean_nongeno_carb <- unlist(map(nongeno_random_gene_results_carb, "mean"))
+
+saveRDS(sum_nongeno_carb, file=paste0(dir2, "output/nongeno_ntwk_carot-node_permutation_TOMsum_store_batched.RDS"))
+saveRDS(mean_nongeno_carb, file=paste0(dir2, "output/nongeno_ntwk_carot-node_permutation_TOMmean_store_batched.RDS"))
+```
+```{r}
+sum_nongeno_carb <- readRDS(file=paste0(dir2, "output/nongeno_ntwk_carot-node_permutation_TOMsum_store_batched.RDS"))
+mean_nongeno_carb <- readRDS(file=paste0(dir2, "output/nongeno_ntwk_carot-node_permutation_TOMmean_store_batched.RDS"))
+
+#Observed value:
+carot_carb_TOM <- nongeno_TOM[rownames(nongeno_TOM) %in% carb_genes$gene_id,
+                                colnames(nongeno_TOM) %in% carot_genes$gene_id]
+obs_carot_carb_sum <- sum(carot_carb_TOM)
+obs_carot_carb_mean <- mean(carot_carb_TOM)
+
+#View results:
+png(filename=paste0(dir2, "figures/nongenoTOM_sumTOM_k-matched-random_with-carbohydrate-genes.png"), width=6, height=4, units="in", res=300)
+hist(sum_nongeno_carb, main="total non-genetic TOM for random genes \nk-matched genes with carbohydrate genes", 
+     xlab="sum(TOM)", breaks=30)
+abline( v = obs_carot_carb_sum, col="red", lty=2)
+dev.off()
+
+png(filename=paste0(dir2, "figures/nongenoTOM_meanTOM_k-matched-random_with-carbohydrate-genes.png"), width=6, height=4, units="in", res=300)
+hist(mean_nongeno_carb, main="mean non-genetic TOM for random genes \nk-matched with carbohydrate genes", 
+     xlab="mean(TOM)", breaks=30)
+abline( v = obs_carot_carb_mean, col="red", lty=2)
+dev.off()
+
+
+#Calculate p-value:
+sum(sum_nongeno_carb > obs_carot_carb_sum)/length(sum_nongeno_carb)
+#p=0.83
+```
+
+
+#### end of non-genetic network ####
+
+
+
+
+
+
+# Construct genetic network
+Read in genotypic expression estimates (SV-adjusted, log2-normalized count data):
+```{r}
+#read in variance-transformed normalized count estimates for genetic effect on expression (non-genetic effect and SVs regressed out)
+geno_estimates <- readRDS(file=paste0(dir2, "output/genotypicLFCestimates.RDS")) %>% as.data.frame() %>%
+  rownames_to_column("trait")
+
+#read in log2 geno estimates for metabolite data
+metabolite_geno_estimates <- readRDS(file= paste0(dir2, "output/all_metabolite_traits_genotypic_log2_estimates.RDS")) %>%
+  dplyr::select(all_of(intersect(colnames(.), colnames(geno_estimates))))
+
+geno_estimates_all <- full_join(as.data.frame(geno_estimates), metabolite_geno_estimates) %>%
+  column_to_rownames("trait")
+
+
+#transpose so genotypes in rows and genes/metabolites in columns
+genocounts_t <- t(geno_estimates_all)
+
+#check everything is numeric
+all(apply(genocounts_t, 2, is.numeric))
+
+#check variance across samples
+gene_only_vars <- apply(genocounts_t[,1:20430], 2, function(x) var(x, na.rm=T))
+hist(gene_only_vars, breaks=500, main="distribution of gene variance", xlim=c(0,10))
+
+metab_only_vars <- apply(genocounts_t[,20431:20446], 2, function(x) var(x, na.rm=T))
+hist(metab_only_vars, main="distribution of metabolite variance", breaks=10)
+
+
+#check for outliers with WGCNA function:
+gsg <-goodSamplesGenes(genocounts_t, verbose=3)
+gsg$allOK
+#looks good
+
+
+#confirm no missingness so no need to impute:
+sum(is.na(genocounts_t)) == 0 
+```
+Pick power for correlations
+```{r, eval=FALSE}
+# Choose a set of soft-thresholding powers
+powers = c(1:20) 
+
+allowWGCNAThreads() 
+# Call the network topology analysis function
+sft = pickSoftThreshold(
+  genocounts_t,   # <= Input data
+  powerVector = powers,
+  verbose = 5,
+  networkType = "unsigned",
+  corFnc="bicor")
+
+saveRDS(sft, file=paste0(dir2, "output/picksoftthres_genotypic_gene-metabolite.RDS"))
+```
+Plot power threshold graphs
+```{r}
+sft <- readRDS(paste0(dir2, "output/picksoftthres_genotypic_gene-metabolite.RDS"))
+
+par(mfrow = c(1,2)); cex1 = 0.9
+
+png(file=paste0(dir2, "figures/geno_gene-metabolite_network_softthresholdpower_R2.png"))
+  plot(sft$fitIndices[, 1],
+       -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
+       xlab = "Soft Threshold (power)",
+       ylab = "Scale Free Topology Model Fit, signed R^2",
+       main = paste("Scale independence")
+  )
+  text(sft$fitIndices[, 1],
+       -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
+       labels = powers, cex = cex1, col = "red"
+  )
+  abline(h = 0.85, col = "red")
+dev.off()
+
+
+png(file=paste0(dir2, "figures/geno_gene-metabolite_network_softthresholdpower_connectivity.png"))
+plot(sft$fitIndices[, 1],
+       sft$fitIndices[, 5],
+       xlab = "Soft Threshold (power)",
+       ylab = "Mean Connectivity",
+       type = "n",
+       main = paste("Mean connectivity")
+  )
+  text(sft$fitIndices[, 1],
+       sft$fitIndices[, 5],
+       labels = powers,
+       cex = cex1, col = "red")
+dev.off()
+```
+Construct genetic network with WGCNA -- deepsplit 2
+```{r, eval=F}
+picked_power_geno <- 6
+
+geno_netwk <- blockwiseModules(genocounts_t,                
+                          
+                          # == Adjacency Function ==
+                          power = picked_power_geno,       
+                          networkType = "unsigned",   #includes both positive and negative correlations
+                          corType = "bicor",  #more robust to outliers than pearson correlation
+                          nThreads = 38,
+
+                          # == Tree and Block Options ==
+                          randomSeed = 14850,
+                          deepSplit = 2, #value between 0 and 4, sensitivity to module splitting
+                          pamRespectsDendro = F,
+                          minModuleSize = 30,
+                          maxBlockSize = ncol(genocounts_t), #allow for running in 1 block since we have enough computational power
+
+                          # == Module Adjustments ==
+                          reassignThreshold = 0.05,
+                          mergeCutHeight = 0.25,
+
+                          # == TOM == Archive the run results in TOM file (saves time)            
+                          saveTOMs = T,
+                          saveTOMFileBase = paste0("/workdir/ssv42/RNAseq_yr2/output/geno_gene-metabolite_ntwk_pwr", 
+                          picked_power_geno, "_ds2_"),
+
+                          # == Output Options
+                          numericLabels = T,
+                          verbose = 2)
+
+
+saveRDS(geno_netwk, file=paste0(dir2, "output/geno_gene-metabolite_netwk_ds2.RDS"))
+```
+Look at genetic network (deep split 2) modules:
+```{r}
+geno_netwk <- readRDS(file=paste0(dir2, "output/geno_gene-metabolite_netwk_ds2.RDS"))
+
+
+# Convert labels to colors for plotting
+mergedColors = labels2colors(geno_netwk$colors)
+
+blockselection <- 1 
+
+# Plot the dendrogram and the module colors underneath
+#png(file=paste0(dir2, "figures/geno_gene-metabolite_network_ds2_dendrogram_block", blockselection, ".png"),    width=8, height=5, units="in", res=400)
+plotDendroAndColors(
+  geno_netwk$dendrograms[[blockselection]],
+  mergedColors[geno_netwk$blockGenes[[blockselection]]],
+  "Module colors",
+  dendroLabels = FALSE,
+  hang = 0.03,
+  addGuide = TRUE,
+  guideHang = 0.05 )
+#dev.off()
+
+#print(geno_dendro)
+#geno_dendro
+
+
+geno_module_df <- data.frame(
+  gene_id = names(geno_netwk$colors),
+  colors = labels2colors(geno_netwk$colors)
+)
+
+#Get TOM
+load(paste0(geno_netwk$TOMFiles))
+geno_TOM <- as.matrix(TOM)
+
+
+#export genotypic module dataframe
+write_delim(geno_module_df,
+            file = paste0(dir2, "output/geno_gene-metabolite_network_ds2_gene_modules.txt"),
+            delim = "\t")
+```
+Test associations between genetic modules and phenotypes
+```{r}
+# Get Module Eigengenes per cluster
+MEs0_g <- moduleEigengenes(genocounts_t, mergedColors)$eigengenes
+
+# Reorder modules so similar modules are next to each other
+MEs_genetic <- orderMEs(MEs0_g);
+g_module_order = names(MEs0_g) %>% gsub("ME", "", .)
+
+# Read in phenotype BLUEs
+metabolite_geno_estimates <- readRDS(file= paste0(dir2, "output/all_metabolite_traits_genotypic_log2_estimates.RDS"))
+
+phenoBLUEs <- t(metabolite_geno_estimates %>% dplyr::select(-'(Intercept)') %>% column_to_rownames("trait")) %>%
+  as.data.frame()  %>% filter(rownames(.) %in% rownames(MEs_genetic))
+ 
+#confirm sample order is the same (ignoring underscore formatting differences): 
+all(gsub("_","",rownames(phenoBLUEs)) == gsub("_","",rownames(MEs_genetic)))
+
+#combine with module eigengenes
+MEs_genetic_wphenos <- cbind(MEs_genetic,  phenoBLUEs) 
+
+# calculate correlations
+MEs_genetic_wphenos_cormat <- cor(MEs_genetic_wphenos, use="pairwise.complete.obs")
+MEs_genetic_wphenos_cormat <- as.data.frame(MEs_genetic_wphenos_cormat) 
+MEs_genetic_wphenos_cormat$module <- rownames(MEs_genetic_wphenos_cormat)
+MEs_genetic_wphenos_df <- MEs_genetic_wphenos_cormat %>% pivot_longer(-module, names_to="phenotype") %>%
+  filter(!str_detect(phenotype, "ME")) %>% 
+  filter(str_detect(module, "ME")) %>%
+  mutate(module = gsub("ME","", module)) %>%
+  mutate(phenotype = factor(phenotype, levels=c("Phytoene", "Phytofluene", "Zeta.Carotene", "Beta.Carotene", "Lutein", "total_violaxanthin", "total_carotenoids", "i_o_diff_TC", "ratio_cis_bc", "ratio_viola_bc", "dry_matter", "i_o_diff_DM", "meansuc_mg_g", "meanglc_mg_g", "mean_starch_mg_g")) ) %>%
+  filter(!is.na(phenotype))
+
+ggplot(MEs_genetic_wphenos_df, aes(y=phenotype, x=module, fill=value)) +
+  geom_tile() +
+  theme_bw() +
+  scale_fill_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "white") +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  labs(title = "Module-trait Relationships from Genetic Network", 
+       y = "Phenotype", x = "Gene expression module", fill="corr")
+
+ggsave(filename=paste0(dir2, "figures/geno_gene-metabolite_ntwk_ds2_module_trait_correlations.png"),
+       height=6, width=18, units="in")
+```
+Merge genetic network results with gene annotations
+```{r}
+carb_traits <- c(carb_traits, "meansuc_mg_g", "mean_totalsugar", "meanglc_mg_g", "mean_starch_mg_g")
+
+#merge annotations with non-genotypic network module dataframe
+geno_modules_annot <- geno_module_df %>% 
+  mutate(locusName = gsub(".v8.1", "", gene_id)) %>%
+  left_join(., fullgene_annotations) %>%
+  mutate(class = case_when(gene_id %in% carot_traits ~ "carot", 
+                           gene_id %in% carb_traits ~ "carb", T ~ class)) %>%
+  mutate(gene_metabolite = ifelse(grepl("Manes", locusName), "gene", "metabolite"))
+
+#check how many genes/metabolites in each class
+table(geno_modules_annot$class)
+
+#check which modules carotenoid genes are in
+table(geno_modules_annot %>% filter(class=="carot") %>% dplyr::select(colors) )
+
+#check carotenoid superpathway genes specifically
+table(geno_modules_annot %>% filter(grepl("CAROTENOID-PWY", Pathways)) %>% dplyr::select(colors))
+geno_modules_annot %>% filter(grepl("CAROTENOID-PWY", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+#check which modules carbohydrate genes are in
+table(geno_modules_annot %>% filter(class=="carb") %>% dplyr::select(colors) )
+
+#check starch synthesis pathway genes specifically
+table(geno_modules_annot %>% filter(grepl("PWY-622", Pathways)) %>% dplyr::select(colors) )
+geno_modules_annot %>% filter(grepl("PWY-622", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+#check starch degradation pathway genes specifically
+table(geno_modules_annot %>% filter(grepl("PWY-6724", Pathways)) %>% dplyr::select(colors) )
+geno_modules_annot %>% filter(grepl("PWY-6724", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
+  rmarkdown::paged_table()
+
+```
+Select modules of interest from genotypic network and export for Cytoscape
+```{r}
+#check module sizes
+table(geno_module_df$colors)
+
+#identify modules most associated with the phenotypes
+geno_top_associations <- MEs_genetic_wphenos_df %>% group_by(phenotype) %>%
+  slice_max(abs(value), n=1) 
+
+geno_top_modules <- unique((geno_top_associations %>% filter(abs(value) > 0.5))$module)
+print(geno_top_modules)
+
+geno_modules_of_interest <- geno_top_modules #pick individual module or top_modules
+
+# Pull out list of genes in that module
+submod_geno <- geno_module_df %>%
+  subset(colors %in% geno_modules_of_interest)
+
+row.names(geno_module_df) <- geno_module_df$gene_id
+
+# Subset TOM matrix for modules of interest
+colnames(geno_TOM) <- geno_module_df$gene_id
+rownames(geno_TOM) <- geno_module_df$gene_id
+
+subset_genoTOM <- geno_TOM[rownames(geno_TOM) %in% submod_geno$gene_id,
+                                colnames(geno_TOM) %in% submod_geno$gene_id]
+
+# check dimensions
+dim(subset_genoTOM)
+format(object.size(subset_genoTOM), units="GB")
+
+# Compute the threshold at the 75th percentile
+edge_weights <- subset_genoTOM[upper.tri(subset_genoTOM)]
+threshold_75 <- quantile(edge_weights, 0.75)
+print(threshold_75)
+
+#export subset for Cytoscape
+Cyexport <- exportNetworkToCytoscape(subset_genoTOM,
+                         edgeFile = paste0(dir2, "output/geno_gene-metabolute_ntwk_ds2_modulesofinterest_CytoscapeInput-edges.txt"),
+                         nodeFile = paste0(dir2, "output/geno_gene-metabolite_ntwk_ds2_modulesofinterest_CytoscapeInput-nodes.txt"),
+                         weighted = TRUE, threshold = threshold_75,
+                         nodeNames = (colnames(subset_genoTOM) %>% gsub(".v8.1","",.)) ) #remove version tag from gene name
+
+#export gene annotations for Cytoscape
+subset_genoTOM_annot <- geno_modules_annot %>% 
+  filter(gene_id %in% unique(c(rownames(subset_genoTOM), colnames(subset_genoTOM)))) %>%
+  dplyr::select(gene_id, locusName, Description, colors, class, gene_metabolite) %>%
+  mutate(Description = gsub(",",";",Description)) #remove commas to not confuse cytoscape reading csv
+
+write.csv(subset_genoTOM_annot, file= paste0(dir2, "output/geno_gene-metabolite_ntwk_ds2_modulesofinterest_CytoscapeInput-nodes_annotations.csv"), row.names = F, quote=F)
+
+
+
+
+#Calculate correlation matrix separately on genes of interest subset to preserve sign/direction information
+geno_subset_bicor <- bicor(
+  genocounts_t[,colnames(genocounts_t) %in% submod_geno$gene_id] ) %>% 
+  reshape2::melt() 
+
+colnames(geno_subset_bicor) <- c("sourceNode", "targetNode", "bicor")
+
+geno_subset_bicor_Cyto <- geno_subset_bicor %>%
+  mutate(across(sourceNode:targetNode, ~ gsub(".v8.1", "", .))) %>%
+  mutate(shared_name = paste0(sourceNode, " (interacts with) ", targetNode)) %>%
+  mutate(cor_direction = case_when(bicor > 0 ~ "+", bicor <= 0 ~ "-"))
+
+write.csv(geno_subset_bicor_Cyto, 
+          file=paste0(dir2, "output/geno_gene-metabolite_ntwk_ds2_modulesofinterest__bicorrelations.csv"), 
+          row.names = F)
+```
+Create subnetwork of only carotenoid and carbohydrate genes/metabolites
+```{r}
+car_gene_subset <- geno_modules_annot %>% filter(!is.na(class)) %>%
+  mutate(Description = gsub(",",";",Description))
+
+carb_nodes <- geno_modules_annot %>% filter(class == "carb")
+carot_nodes <- geno_modules_annot %>% filter(class == "carot")
+
+# Subset TOM matrix for genes of interest
+genoTOM_car_genes <- geno_TOM[rownames(geno_TOM) %in% car_gene_subset$gene_id,
+                                colnames(geno_TOM) %in% car_gene_subset$gene_id]
+
+# Compute the threshold at the 75th percentile
+edge_weights <- genoTOM_car_genes[upper.tri(genoTOM_car_genes)]
+threshold_75 <- quantile(edge_weights, 0.75)
+print(threshold_75)
+
+#export subset for Cytoscape
+Cyexport <- exportNetworkToCytoscape(genoTOM_car_genes,
+                         edgeFile = paste0(dir2, "output/geno_gene-metabolite_ntwk_ds2_cargenes_CytoscapeInput-edges.txt"),
+                         nodeFile = paste0(dir2, "output/geno_gene-metabolite_ntwk_ds2_cargenes_CytoscapeInput-nodes.txt"),
+                         weighted = TRUE, threshold = threshold_75,
+                         nodeNames = (colnames(genoTOM_car_genes) %>% gsub(".v8.1","",.)) ) #remove version tag from gene name
+
+#export gene annotations for subset
+write.csv(car_gene_subset, file=paste0(dir2, "output/geno_gene-metabolite_ntwk_ds2_cargenes_CytoscapeInput_annotations.csv"))
+
+
+
+#Calculate correlation matrix separately on genes of interest subset to preserve sign/direction information
+geno_subset_bicor <- bicor(
+  genocounts_t[,colnames(genocounts_t) %in% car_gene_subset$gene_id] ) %>% 
+  reshape2::melt() 
+
+colnames(geno_subset_bicor) <- c("sourceNode", "targetNode", "bicor")
+
+geno_subset_bicor_Cyto <- geno_subset_bicor %>%
+  mutate(across(sourceNode:targetNode, ~ gsub(".v8.1", "", .))) %>%
+  mutate(shared_name = paste0(sourceNode, " (interacts with) ", targetNode)) %>%
+  mutate(cor_direction = case_when(bicor > 0 ~ "+", bicor <= 0 ~ "-")) %>%
+  mutate(source_class = case_when(sourceNode %in% carot_nodes$locusName ~ "carot",
+                                  sourceNode %in% carb_nodes$locusName ~ "carb", T~NA),
+         target_class = case_when(targetNode %in% carot_nodes$locusName ~ "carot",
+                                  targetNode %in% carb_nodes$locusName ~ "carb", T~NA)) %>%
+  mutate(interaction_class = case_when(source_class != target_class ~ "cross-class", T~NA))
+
+write.csv(geno_subset_bicor_Cyto, 
+          file=paste0(dir2, "output/geno_gene-metabolite_netwk_ds2_cargene-subset_bicorrelations.csv"), 
+          row.names = F)
+```
+
+Identify hub genes:
+```{r}
+#double check gene order is the same
+all(colnames(genocounts_t) == geno_module_df$gene_id)
+
+geno_tophubs <- chooseTopHubInEachModule(genocounts_t, 
+                                         colorh=geno_module_df$colors,
+                                         power = picked_power_geno, type="unsigned")
+
+geno_tophubs_df <- data.frame("hub_gene" = geno_tophubs)
+geno_tophubs_df$module <- rownames(geno_tophubs_df) 
+geno_tophubs_annot <- geno_tophubs_df %>% left_join(geno_modules_annot, by=c("hub_gene" = "gene_id"))
+
+#check the hub genes of the major carotenoid/carbohydrate modules
+geno_hubs_topmodules <- geno_tophubs_annot %>% filter(module %in% geno_top_modules)
+
+
+#hubGeneSignificance(datKME, GS)
+```
+
+Test whether carotenoid and carbohydrate genes (genes only bc I don't have a null set of metabolites) are more highly connected than expected by chance in the genetic network:
+```{r}
+#Subset for carotenoid/carbohydrate edges (excluding carot-carot and carb-carb edges)
+genoTOM_car_melt <- reshape2::melt(genoTOM_car_genes, varnames=c("node1", "node2"), value.name = "weight") %>%
+   #get only the first pairwise interaction by inex
+  filter(as.integer(factor(node1, levels = rownames(genoTOM_car_genes))) <
+         as.integer(factor(node2, levels = colnames(genoTOM_car_genes)))) %>% 
+  left_join(., car_gene_subset %>% dplyr::select(gene_id, class, gene_metabolite), by=c("node1" = "gene_id")) %>%
+  left_join(., car_gene_subset %>% dplyr::select(gene_id, class, gene_metabolite), by=c("node2" = "gene_id")) %>%
+  filter(gene_metabolite.x != "metabolite" & gene_metabolite.y != "metabolite" ) %>%
+  filter(class.x != class.y) 
+
+#How many edges:
+nrow(genoTOM_car_melt)
+
+#How many carotenoid nodes:
+n_nodes <- nrow(car_gene_subset %>% filter(class=="carot" & gene_metabolite=="gene"))
+n_nodes
+
+#Get list of carbohydrate genes
+carb_genes <- car_gene_subset %>% filter(class=="carb" & gene_metabolite=="gene")
+
+#Sum the topological overlap weight (adjacency and connectivity) between the carotenoid and carbohydrate nodes
+observed_geno_TOsum <- sum(genoTOM_car_melt$weight)
+
+
+
+
+#Get list of carbohydrate genes
+carb_genes <- car_gene_subset %>% filter(class=="carb" & gene_metabolite=="gene")
+carot_genes <- car_gene_subset %>% filter(class=="carot" & gene_metabolite=="gene")
+
+# Get total connectivity for each gene
+gene_connectivity <- rowSums(geno_TOM)
+carot_gene_connectivity <- gene_connectivity[carot_genes$gene_id]
+which.max(carot_gene_connectivity) 
+mean(carot_gene_connectivity)
+
+carb_gene_connectivity <- gene_connectivity[carb_genes$gene_id]
+which.max(carb_gene_connectivity)
+mean(carb_gene_connectivity)
+
+#Plot distribution of gene connectivities
+connectivity_df <- data.frame(
+  connectivity = c(gene_connectivity, carot_gene_connectivity, carb_gene_connectivity),
+  group = as.factor(c(rep("Overall", length(gene_connectivity)),
+            rep("Carotenoids", length(carot_gene_connectivity)),
+            rep("Carbohydrates", length(carb_gene_connectivity)))))
+
+ggplot(connectivity_df, aes(x = connectivity, fill = group)) +
+  geom_density(alpha = 0.4) +
+  scale_fill_manual(values = c("Overall" = "gray70", "Carotenoids" = "red", "Carbohydrates" = "blue")) +
+  scale_color_manual(values = c("Overall" = "gray40", "Carotenoids" = "darkred", "Carbohydrates" = "darkblue")) +
+  theme_minimal() + 
+  labs(title = "Distribution of genotypic gene connectivity values k",
+       x = "Overall gene connectivity", y = "Proportion of genes", fill = "Gene class")
+
+ggsave(file= paste0(dir2, "figures/connectivity_distributions_k_geno_netwk.png"))
+
+
+# Create bins of genes by connectivity
+gene_bins <- cut(gene_connectivity, breaks = quantile(gene_connectivity, probs = seq(0, 1, 0.1)), include.lowest = TRUE)
+names(gene_bins) <- names(gene_connectivity) 
+levels(gene_bins)
+
+carot_bins <- gene_bins[carot_genes$gene_id]
+carb_bins <- gene_bins[carb_genes$gene_id]
+```
+Run permutation test with nongenetic TOM:
+Keep carotenoid genes fixed and permute carbohydrate genes
+```{r, eval=F}
+#Set up parallelism:
+library(furrr); library(future)
+library(purrr)
+
+#Run node permutation test
+#Set up parallelism:
+options(future.globals.maxSize = 10 * 1024^3)  # 10 GB
+plan(multisession, workers=30)
+file.create("progress_log.txt")
+
+nsim <- 10000
+nbatches <- 30
+batch_size <- round(nsim/nbatches)
+batch_indices <- 1:nbatches
+
+geno_random_gene_results_carot <- future_map(batch_indices, function(batch) {
+  
+  sum_batch <- numeric(batch_size)
+  mean_batch <- numeric(batch_size)
+  
+  for (i in 1:batch_size) {
+    random_kmatched_genes <- map2(carb_bins, names(carb_bins), ~ {
+      bin_x_genes <- names(gene_bins)[gene_bins == .x]
+      sample(setdiff(bin_x_genes, c(carot_genes$gene_id, carb_genes$gene_id)), 1)
+    }) %>% unlist()
+    
+    random_genes_carot_TOM <- geno_TOM[
+      rownames(geno_TOM) %in% random_kmatched_genes,
+      colnames(geno_TOM) %in% carot_genes$gene_id
+    ]
+    
+    sum_batch[i] <- sum(random_genes_carot_TOM)
+    mean_batch[i] <- mean(random_genes_carot_TOM)
+    
+    # --- Add progress printing inside the batch ---
+    if (i %% 100 == 0 || i == batch_size) {  # every 100 simulations, or at the end
+      cat(paste0(Sys.time(), " - Batch ", batch, 
+                 ": Completed ", i, " of ", batch_size, " simulations\n"), 
+          file = "progress_log.txt", 
+          append = TRUE)
+    }
+  }
+  list(sum = sum_batch, mean = mean_batch)
+}, .options = furrr_options(seed = TRUE))
+
+
+# Combine and save results
+sum_geno_carot <- unlist(map(geno_random_gene_results_carot, "sum"))
+mean_geno_carot <- unlist(map(geno_random_gene_results_carot, "mean"))
+
+saveRDS(sum_geno_carot, file=paste0(dir2, "output/geno_ntwk_carb-node_permutation_TOMsum_store_batched.RDS"))
+saveRDS(mean_geno_carot, file=paste0(dir2, "output/geno_ntwk_carb-node_permutation_TOMmean_store_batched.RDS"))
+```
+```{r}
+sum_geno_carot <- readRDS(file=paste0(dir2, "output/geno_ntwk_carb-node_permutation_TOMsum_store_batched.RDS"))
+mean_geno_carot <- readRDS(file=paste0(dir2, "output/geno_ntwk_carb-node_permutation_TOMmean_store_batched.RDS"))
+
+#Observed value:
+carot_carb_TOM <- geno_TOM[rownames(geno_TOM) %in% carb_genes$gene_id,
+                                colnames(geno_TOM) %in% carot_genes$gene_id]
+obs_carot_carb_sum <- sum(carot_carb_TOM)
+obs_carot_carb_mean <- mean(carot_carb_TOM)
+
+#View results:
+png(filename=paste0(dir2, "figures/genoTOM_sumTOM_k-matched-random_with-carotenoid-genes.png"), width=6, height=4, units="in", res=300)
+hist(sum_geno_carot, main="total genetic TOM for random genes \nk-matched genes with carotenoid genes", 
+     xlab="sum(TOM)", breaks=30)
+abline( v = obs_carot_carb_sum, col="red", lty=2)
+dev.off()
+
+png(filename=paste0(dir2, "figures/genoTOM_meanTOM_k-matched-random_with-carotenoid-genes.png"), width=6, height=4, units="in", res=300)
+hist(mean_geno_carot, main="mean genetic TOM for random genes \nk-matched with carotenoid genes", 
+     xlab="mean(TOM)", breaks=30)
+abline( v = obs_carot_carb_mean, col="red", lty=2)
+dev.off()
+
+
+#Calculate p-value:
+sum(sum_geno_carot > obs_carot_carb_sum)/length(sum_geno_carot)
+#0.73
+```
+
+Repeat permutations the other way, keeping carbohydrate genes fixed and permuting carotenoid genes
+```{r, eval=F}
+#Set up parallelism:
+library(furrr); library(future)
+library(purrr)
+
+#Run node permutation test
+#Set up parallelism:
+options(future.globals.maxSize = 10 * 1024^3)  # 10 GB
+plan(multisession, workers=30)
+file.create("progress_log.txt")
+
+nsim <- 10000
+nbatches <- 30
+batch_size <- round(nsim/nbatches)
+batch_indices <- 1:nbatches
+
+geno_random_gene_results_carb <- future_map(batch_indices, function(batch) {
+  
+  sum_batch <- numeric(batch_size)
+  mean_batch <- numeric(batch_size)
+  
+  for (i in 1:batch_size) {
+    random_kmatched_genes <- map2(carot_bins, names(carot_bins), ~ {
+      bin_x_genes <- names(gene_bins)[gene_bins == .x]
+      sample(setdiff(bin_x_genes, c(carot_genes$gene_id, carb_genes$gene_id)), 1)
+    }) %>% unlist()
+    
+    random_genes_carb_TOM <- geno_TOM[
+      rownames(geno_TOM) %in% random_kmatched_genes,
+      colnames(geno_TOM) %in% carb_genes$gene_id
+    ]
+    
+    sum_batch[i] <- sum(random_genes_carb_TOM)
+    mean_batch[i] <- mean(random_genes_carb_TOM)
+    
+    # --- Add progress printing inside the batch ---
+    if (i %% 100 == 0 || i == batch_size) {  # every 100 simulations, or at the end
+      cat(paste0(Sys.time(), " - Batch ", batch, 
+                 ": Completed ", i, " of ", batch_size, " simulations\n"), 
+          file = "progress_log.txt", 
+          append = TRUE)
+    }
+  }
+  list(sum = sum_batch, mean = mean_batch)
+}, .options = furrr_options(seed = TRUE))
+
+
+# Combine and save results
+sum_geno_carb <- unlist(map(geno_random_gene_results_carb, "sum"))
+mean_geno_carb <- unlist(map(geno_random_gene_results_carb, "mean"))
+
+saveRDS(sum_geno_carb, file=paste0(dir2, "output/geno_ntwk_carot-node_permutation_TOMsum_store_batched.RDS"))
+saveRDS(mean_geno_carb, file=paste0(dir2, "output/geno_ntwk_carot-node_permutation_TOMmean_store_batched.RDS"))
+```
+```{r}
+sum_geno_carb <- readRDS(file=paste0(dir2, "output/geno_ntwk_carot-node_permutation_TOMsum_store_batched.RDS"))
+mean_geno_carb <- readRDS(file=paste0(dir2, "output/geno_ntwk_carot-node_permutation_TOMmean_store_batched.RDS"))
+
+#Observed value:
+carot_carb_TOM <- geno_TOM[rownames(geno_TOM) %in% carb_genes$gene_id,
+                                colnames(geno_TOM) %in% carot_genes$gene_id]
+obs_carot_carb_sum <- sum(carot_carb_TOM)
+obs_carot_carb_mean <- mean(carot_carb_TOM)
+
+#View results:
+png(filename=paste0(dir2, "figures/genoTOM_sumTOM_k-matched-random_with-carbohydrate-genes.png"), width=6, height=4, units="in", res=300)
+hist(sum_geno_carb, main="total genetic TOM for random genes \nk-matched genes with carbohydrate genes", 
+     xlab="sum(TOM)", breaks=30)
+abline( v = obs_carot_carb_sum, col="red", lty=2)
+dev.off()
+
+png(filename=paste0(dir2, "figures/genoTOM_meanTOM_k-matched-random_with-carbohydrate-genes.png"), width=6, height=4, units="in", res=300)
+hist(mean_geno_carb, main="mean genetic TOM for random genes \nk-matched with carbohydrate genes", 
+     xlab="mean(TOM)", breaks=30)
+abline( v = obs_carot_carb_mean, col="red", lty=2)
+dev.off()
+
+
+#Calculate p-value:
+sum(sum_geno_carb > obs_carot_carb_sum)/length(sum_geno_carb)
+#
+```
+
+
+
+
+
+
+
+
+
+
+#Comparison of networks:
+Mantel test for correlation between dissimilarity matrices from genetic and nongenetic networks:
+Use 1 -TOM to get dissimilarity matrix and as.dist() to take lower triangle.
+```{r}
+#subset geno and nongeno TOMs for carotenoid/carbohydrate genes (except starch/sugars since only in geno TOM)
+carnodes <- car_gene_subset %>% filter(!is.na(class) & !grepl("mean", gene_id )) 
+
+geno_car_TOM <- geno_TOM[rownames(geno_TOM) %in% carnodes$gene_id,
+                           colnames(geno_TOM) %in% carnodes$gene_id]
+nongeno_car_TOM <- nongeno_TOM[rownames(nongeno_TOM) %in% carnodes$gene_id,
+                                 colnames(nongeno_TOM) %in% carnodes$gene_id]
+
+#confirm same order
+all(rownames(geno_car_TOM) == rownames(nongeno_car_TOM))
+
+mantel_geno_nongeno_car_TOM <- ecodist::mantel(as.dist(1 - geno_car_TOM) ~ as.dist(1 - nongeno_car_TOM), nperm=1000, nboot = 10)
+mantel_geno_nongeno_car_TOM["pval3"] #pval3 is the two-tailed p-value (null: r = 0)
+write.table(mantel_geno_nongeno_car_TOM, file=paste0(dir2, "output/mantel_geno_nongeno_car_TOM.txt"))
+
+
+mantel_geno_nongeno_TOM <- ecodist::mantel(as.dist(1 - geno_TOM) ~ as.dist(1 - nongeno_TOM), nperm=10, nboot = 10)
+#pval3 is the two-tailed p-value (null: r = 0)
+mantel_geno_nongeno_TOM["pval3"]
+
+mantel_geno_nongeno_TOM_cargenes <-  ecodist::mantel(as.dist(1 -genoTOM_car_genes) ~ as.dist(1 - nongeno_TOM_car_genes), nperm=1000, nboot=500)
+
+
+
+
+
+```
+
+Genetic and non-genetic components of most significant associations
+```{r}
+#Load the TOMs
+load("/workdir/ssv42/RNAseq_yr2/output/overall_gene-metab_ntwk_pwr7_-block.1.RData"); overall_TOM <- as.matrix(TOM)
+rownames(overall_TOM) <- colnames(overallcounts_t); colnames(overall_TOM) <- colnames(overallcounts_t)
+load("/workdir/ssv42/RNAseq_yr2/output/nongeno_gene-metaabolite_ntwk_pwr10_-block.1.RData"); nongeno_TOM <- as.matrix(TOM)
+rownames(nongeno_TOM) <- colnames(overallcounts_t); colnames(nongeno_TOM) <- colnames(overallcounts_t)
+load("/workdir/ssv42/RNAseq_yr2/output/geno_gene-metabolite_ntwk_pwr6_ds2_-block.1.RData"); geno_TOM <- as.matrix(TOM)
+rownames(geno_TOM) <- colnames(overallcounts_t); colnames(geno_TOM) <- colnames(overallcounts_t)
+
+#OVERALL PURPLE MODULE: carotenoid metabolite-associated genes
+#Load the overall purple module with the carotenoid metabolites in them
+TOM_purple_melted_topBC <- read.csv(file=paste0(dir2, "output/Carotenoid_most_connected_genes_overall_purple_module.csv")) %>% 
+  filter(node2 == "Beta.Carotene" & gene_metabolite.x == "gene") %>% arrange(-weight) %>% head(n=40)
+
+# Get genetic and nongenetic components of these interactions:
+#Genetic first:
+TOM_purple_geno <- geno_TOM[rownames(geno_TOM) %in% TOM_purple_melted_topBC$node1, 
+                          colnames(geno_TOM) %in% TOM_purple_melted_topBC$node2] %>%
+  reshape2::melt(varnames=c("node1", "node2"), value.name = "weight")
+
+overallpurple_geno_cor <- Hmisc::rcorr(
+  genocounts_t[,colnames(genocounts_t) %in% c(TOM_purple_melted_topBC$node1, TOM_purple_melted_topBC$node2)], 
+  type="pearson") 
+  
+overallpurple_geno_cor_r <- overallpurple_geno_cor$r %>% reshape2::melt() %>% filter(Var1 %in% TOM_purple_melted_topBC$node1) %>% 
+  dplyr::rename("node1" = Var1, "node2" = Var2, "genetic_cor" = value)
+overallpurple_geno_cor_p <- overallpurple_geno_cor$P %>% reshape2::melt() %>% filter(Var1 %in% TOM_purple_melted_topBC$node1) %>% 
+  dplyr::rename("node1" = Var1, "node2" = Var2, "genetic_cor_p" = value)
+
+#Now nongenetic:
+TOM_purple_nongeno <- nongeno_TOM[rownames(nongeno_TOM) %in% TOM_purple_melted_topBC$node1, 
+                          colnames(nongeno_TOM) %in% TOM_purple_melted_topBC$node2] %>%
+  reshape2::melt(varnames=c("node1", "node2"), value.name = "weight")
+
+overallpurple_nongeno_cor <- Hmisc::rcorr(
+  nongenocounts_t[,colnames(nongenocounts_t) %in% c(TOM_purple_melted_topBC$node1, TOM_purple_melted_topBC$node2)], 
+  type="pearson") 
+  
+overallpurple_nongeno_cor_r <- overallpurple_nongeno_cor$r %>% reshape2::melt() %>% filter(Var1 %in% TOM_purple_melted_topBC$node1) %>% 
+  dplyr::rename("node1" = Var1, "node2" = Var2, "nongenetic_cor" = value)
+overallpurple_nongeno_cor_p <- overallpurple_nongeno_cor$P %>% reshape2::melt() %>% filter(Var1 %in% TOM_purple_melted_topBC$node1) %>% 
+  dplyr::rename("node1" = Var1, "node2" = Var2, "nongenetic_cor_p" = value)
+
+
+#Overall:
+overallpurple_overall_cor <- Hmisc::rcorr(
+  overallcounts_t[,colnames(overallcounts_t) %in% c(TOM_purple_melted_topBC$node1, TOM_purple_melted_topBC$node2)], 
+  type="pearson") 
+  
+overallpurple_overall_cor_r <- overallpurple_overall_cor$r %>% reshape2::melt() %>% filter(Var1 %in% TOM_purple_melted_topBC$node1) %>% 
+  dplyr::rename("node1" = Var1, "node2" = Var2, "overall_cor" = value)
+overallpurple_overall_cor_p <- overallpurple_overall_cor$P %>% reshape2::melt() %>% filter(Var1 %in% TOM_purple_melted_topBC$node1) %>% 
+  dplyr::rename("node1" = Var1, "node2" = Var2, "overall_cor_p" = value)
+
+
+TOM_purple_wcorr <- TOM_purple_melted_topBC %>% left_join(overallpurple_overall_cor_r) %>% left_join(overallpurple_overall_cor_p) %>% 
+  left_join(overallpurple_geno_cor_r) %>% left_join(overallpurple_geno_cor_p) %>% 
+  left_join(overallpurple_nongeno_cor_r) %>% left_join(overallpurple_nongeno_cor_p) %>% 
+  arrange(-weight)
+TOM_purple_wcorr
+
+write.csv(TOM_purple_wcorr, file=paste0(dir2,"output/carotenoids_module_purple_strongest_associations_genetic_nongenetic_cor_table.csv"))
+
+
+#OVERALL TURQUOISE MODULE: PSY2 gene
+TOM_PSY2 <- data.frame(TOM_PSY2 = overall_TOM[rownames(overall_TOM) %in% turquoise_mod$gene_id, 
+                          colnames(overall_TOM) == "Manes.01G124200.v8.1"]) %>%
+  rownames_to_column("gene_id") %>% left_join(overall_modules_annot) %>% arrange(-TOM_PSY2) %>%
+  head(n=50)
+
+#calculate overall correlations
+turquoisehub_PSY_overall_cor <- Hmisc::rcorr(
+  overallcounts_t[,colnames(overallcounts_t) %in% c("Manes.01G124200.v8.1", TOM_PSY2$gene_id)], type="pearson")
+
+turquoisehub_PSY_overall_cor_r <- turquoisehub_PSY_overall_cor$r %>% reshape2::melt() %>% filter(Var1=="Manes.01G124200.v8.1") %>% dplyr::select(-Var1) %>% dplyr::rename("gene_id" = Var2, "overall_cor" = value)
+turquoisehub_PSY_overall_cor_p <- turquoisehub_PSY_overall_cor$P %>% reshape2::melt() %>% filter(Var1=="Manes.01G124200.v8.1") %>% dplyr::select(-Var1) %>% dplyr::rename("gene_id" = Var2, "overall_p" = value)
+
+#calculate genetic correlations
+turquoisehub_PSY_geno_cor <- Hmisc::rcorr(
+  genocounts_t[,colnames(genocounts_t) %in% c("Manes.01G124200.v8.1", TOM_PSY2$gene_id)], type="pearson")
+
+turquoisehub_PSY_geno_cor_r <- turquoisehub_PSY_geno_cor$r %>% reshape2::melt() %>% filter(Var1=="Manes.01G124200.v8.1") %>% dplyr::select(-Var1) %>% dplyr::rename("gene_id" = Var2, "geno_cor" = value)
+turquoisehub_PSY_geno_cor_p <- turquoisehub_PSY_geno_cor$P %>% reshape2::melt() %>% filter(Var1=="Manes.01G124200.v8.1") %>% dplyr::select(-Var1) %>% dplyr::rename("gene_id" = Var2, "geno_p" = value)
+
+
+#calculate non-genetic correlations
+turquoisehub_PSY_nongeno_cor <- Hmisc::rcorr(
+  nongenocounts_t[,colnames(nongenocounts_t) %in% c("Manes.01G124200.v8.1", TOM_PSY2$gene_id)], type="pearson")
+
+turquoisehub_PSY_nongeno_cor_r <- turquoisehub_PSY_nongeno_cor$r %>% reshape2::melt() %>% filter(Var1=="Manes.01G124200.v8.1") %>% dplyr::select(-Var1) %>% dplyr::rename("gene_id" = Var2, "nongeno_cor" = value)
+turquoisehub_PSY_nongeno_cor_p <- turquoisehub_PSY_nongeno_cor$P %>% reshape2::melt() %>% filter(Var1=="Manes.01G124200.v8.1") %>% dplyr::select(-Var1) %>% dplyr::rename("gene_id" = Var2, "nongeno_p" = value)
+
+
+TOM_PSY2_wall_corr <- TOM_PSY2 %>% left_join(turquoisehub_PSY_overall_cor_r) %>% left_join(turquoisehub_PSY_overall_cor_p) %>% 
+  left_join(turquoisehub_PSY_geno_cor_r) %>% left_join(turquoisehub_PSY_geno_cor_p) %>% 
+  left_join(turquoisehub_PSY_nongeno_cor_r) %>% left_join(turquoisehub_PSY_nongeno_cor_p) %>% 
+  arrange(-TOM_PSY2)
+
+
+write.csv(TOM_PSY2_wall_corr, file=paste0(dir2,"output/PSY2_overall_module_strongest_associations_genetic_nongenetic_cor_table.csv"))
+```
+
+
+
+Compare modules: Are modules in the genetic TOM preserved in the nongenetic TOM?
+```{r}
+modulePreservation() 
+```
+Module stability?
+
+
+
+
+#Year 2 data only network
+
+Read in overall estimates (SV-adjusted, log2-normalized count data):
+```{r}
+#read in variance-transformed normalized count data for overall network (year and 5 SVs regressed out)
+overall_yr2_estimates <- readRDS(file=paste0(dir2, "output/overall_year2subset_LFCestimates.RDS")) %>% as.data.frame() %>%
+  rownames_to_column("trait")
+
+#spot check to confirm approximate normal distribution of log2 count data: looks good
+#hist(t(overall_yr2_estimates[15,2:ncol(overall_yr2_estimates)]))
+
+#read in log2 overall estimates for metabolite data
+metabolite_yr2_overall_estimates <- readRDS(file= paste0(dir2, "output/all_metabolite_traits_overall_log2_estimates.RDS")) %>%
+  dplyr::select(all_of(intersect(colnames(.), colnames(overall_yr2_estimates)))) %>%
+  rownames_to_column("trait")
+
+overall_yr2_estimates_all <- full_join(as.data.frame(overall_yr2_estimates), metabolite_yr2_overall_estimates) %>%
+  filter(! trait %in% c("meansuc_mg_g", "mean_totalsugar", "meanglc_mg_g", "mean_starch_mg_g")) %>%  #remove missing carbohyhdrate data
+  column_to_rownames("trait")
+
+#transpose so genotypes in rows and genes/metabolites in columns
+overallyr2counts_t <- t(overall_yr2_estimates_all)
+
+#check everything is numeric
+all(apply(overallyr2counts_t, 2, is.numeric))
+
+#check variance across samples
+gene_only_vars <- apply(overallyr2counts_t[,1:20430], 2, function(x) var(x, na.rm=T))
+hist(gene_only_vars, breaks=1000, main="distribution of gene variance", xlim=c(0,20))
+
+metab_only_vars <- apply(overallyr2counts_t[,20431:20446], 2, function(x) var(x, na.rm=T))
+hist(metab_only_vars, main="distribution of metabolite variance", breaks=10)
+
+#check for outliers with WGCNA function:
+gsg <-goodSamplesGenes(overallyr2counts_t, verbose=3)
+gsg$allOK
+#looks good
+
+#impute NAs
+overallyr2counts_t_imputed <- impute::impute.knn(overallyr2counts_t)$data
+```
+
+Pick power for network correlations
+```{r, eval=FALSE}
+# Choose a set of soft-thresholding powers
+powers = c(1:20) #seq(from = 1, to = 40, by = 5)
+
+allowWGCNAThreads() 
+# Call the network topology analysis function
+sft = pickSoftThreshold(
+  overallyr2counts_t,   # <= Input data
+  powerVector = powers,
+  verbose = 5,
+  networkType = "unsigned",
+  corFnc="bicor")
+
+saveRDS(sft, file=paste0(dir2, "output/picksoftthres_year2subset_overall_gene-metabolite.RDS"))
+```
+
+Plot power threshold graphs
+```{r}
+par(mfrow = c(1,2)); cex1 = 0.9
+
+png(paste0(dir2, "figures/overall_yr2_network_gene-metabolite_softthresholdpower_R2.png"), width=6, height=4, units="in", res=300)
+  plot(sft$fitIndices[, 1],
+       -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
+       xlab = "Soft Threshold (power)",
+       ylab = "Scale Free Topology Model Fit, signed R^2",
+       main = paste("Scale independence")
+  )
+  text(sft$fitIndices[, 1],
+       -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
+       labels = powers, cex = cex1, col = "red"
+  )
+  abline(h = 0.85, col = "red")
+dev.off()
+
+
+png(paste0(dir2, "figures/overall_yr2_network_gene-metabolite_softthresholdpower_connectivity.png"), width=6, height=4, units="in", res=300)
+  plot(sft$fitIndices[, 1],
+       sft$fitIndices[, 5],
+       xlab = "Soft Threshold (power)",
+       ylab = "Mean Connectivity",
+       type = "n",
+       main = paste("Mean connectivity")
+  )
+  text(sft$fitIndices[, 1],
+       sft$fitIndices[, 5],
+       labels = powers,
+       cex = cex1, col = "red")
+dev.off()
+
+
+picked_power_ovrl_2 <- 7
+
+```
+
+Construct yr2 overall network with WGCNA
+```{r, eval=F}
+
+overall_yr2_netwk <- blockwiseModules(overallyr2counts_t_imputed,                
+                          
+                          # == Adjacency Function ==
+                          power = picked_power_ovrl_2,       
+                          networkType = "unsigned",   #includes both positive and negative correlations
+                          corType = "bicor",  #more robust to outliers than pearson correlation
+                          nThreads = 38,
+
+                          # == Tree and Block Options ==
+                          randomSeed = 14850,
+                          deepSplit = 3, #value between 0 and 4, sensitivity to module splitting
+                          pamRespectsDendro = F,
+                          minModuleSize = 30,
+                          maxBlockSize = ncol(overallyr2counts_t_imputed), #allow for running in 1 block since we have enough computational power
+
+                          # == Module Adjustments ==
+                          reassignThreshold = 0.05,
+                          mergeCutHeight = 0.25,
+
+                          # == TOM == Archive the run results in TOM file (saves time)            
+                          saveTOMs = T,
+                          saveTOMFileBase = paste0("/workdir/ssv42/RNAseq_yr2/output/overall_year2_gene-metab_ntwk_pwr",picked_power_ovrl_2, "_"),
+
+                          # == Output Options
+                          numericLabels = T,
+                          verbose = 2)
+
+
+saveRDS(overall_yr2_netwk, file=paste0(dir2, "output/overall_year2_gene-metabolite_netwk.RDS"))
+```
+
+Look at the overall network modules
+```{r}
+overall_yr2_netwk <- readRDS(file=paste0(dir2, "output/overall_year2_gene-metabolite_netwk.RDS"))
+
+# Convert labels to colors for plotting
+mergedColors = labels2colors(overall_yr2_netwk$colors)
+
+blockselection <- 1 
+
+# Plot the dendrogram and the module colors underneath
+plotDendroAndColors(
+  overall_yr2_netwk$dendrograms[[blockselection]],
+  mergedColors[overall_yr2_netwk$blockGenes[[blockselection]]],
+  "Module colors",
+  dendroLabels = FALSE,
+  hang = 0.03,
+  addGuide = TRUE,
+  guideHang = 0.05 )
+
+ggsave(file=paste0(dir2, "figures/overall_yr2_gene-metabolite_network_dendrogram_block", blockselection, ".png"))
+
+
+overall_yr2_module_df <- data.frame(
+  gene_id = names(overall_yr2_netwk$colors),
+  colors = labels2colors(overall_yr2_netwk$colors)
+)
+
+#Get TOM
+load(paste0(overall_yr2_netwk$TOMFiles))
+overall_yr2_TOM <- as.matrix(TOM)
+
+
+#export gene overall_module_df
+write_delim(overall_yr2_module_df,
+            file = paste0(dir2, "output/overall_year2_gene-metabolite_network_gene_modules.txt"),
+            delim = "\t")
+```
+
+Test trait/module associations for overall network
+Correlate module eigengenes with phenotypes (centered and scaled)
+```{r}
+# Get Module Eigengenes per cluster
+MEs0 <- moduleEigengenes(overallyr2counts_t, mergedColors)$eigengenes
+
+# Reorder modules so similar modules are next to each other
+MEs0 <- orderMEs(MEs0);
+#colnames(MEs0) <- gsub("ME", "", colnames(MEs0))
+module_order = names(MEs0) %>% gsub("ME", "", .)
+
+# Read in phenotypes
+metadata_yr2_sv <- readRDS(file=paste0(dir2, "output/metadata_phenotypes_year2subset_wSVs.RDS"))
+#confirm sample order is the same: 
+all(metadata_yr2_sv$fullID == rownames(MEs0))
+#combine with module eigengenes 
+MEs0_wphenos <- cbind(MEs0,  
+    (metadata_yr2_sv %>% dplyr::select(Phytoene:Zeta.Carotene, Violaxanthin.peak.1:Lutein,
+                        total_carotenoids:dry_matter, i_o_diff_TC))  ) 
+
+# calculate correlations
+MEs0_wphenos_cormat <- cor(MEs0_wphenos, use="pairwise.complete.obs")
+MEs0_wphenos_cormat <- as.data.frame(MEs0_wphenos_cormat) 
+MEs0_wphenos_cormat$module <- rownames(MEs0_wphenos_cormat)
+MEs_wphenos_cormat <- MEs0_wphenos_cormat %>% pivot_longer(-module, names_to="phenotype") %>%
+  filter(!str_detect(phenotype, "ME")) %>% 
+  filter(str_detect(module, "ME")) %>%
+  mutate(module = gsub("ME","", module)) %>%
+  mutate(phenotype = factor(phenotype, levels=c("Phytoene", "Phytofluene", "Zeta.Carotene", "Beta.Carotene", "Lutein", 
+                                     "Violaxanthin.peak.1", "Violaxanthin.peak.2", "total_carotenoids",
+                                    "totalpre", "total_violaxanthin", "ratio_bc_v", "i_o_diff_TC", "dry_matter")) )
+
+
+ggplot(MEs_wphenos_cormat, aes(y=phenotype, x=module, fill=value)) +
+  geom_tile() +
+  theme_bw() +
+  scale_fill_gradient2(
+    low = "blue",
+    high = "red",
+    mid = "white") +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  labs(title = "Module-trait Relationships from Overall Network, year 2 subset", y = "Modules", fill="corr")
+
+ggsave(filename=paste0(dir2, "figures/overall_yr2_gene-metabolite_ntwk_module_trait_correlations.png"), height=6, width=18, units="in")
+
+```
+
+Merge module results with gene annotations to test how often carot/carb genes cluster together:
+```{r}
+#merge annotations with overall network module dataframe
+fullgene_annotations <- readRDS(file=paste0(dir2, "output/fullgene_annotations_wcarot-carb_class.RDS"))
+carot_traits <- readRDS(file=paste0(dir2, "data/carotenoid_trait_names.RDS"))
+carb_traits <- readRDS(file=paste0(dir2, "data/carbohydrate_trait_names.RDS"))
+
+
+overall_yr2_modules_annot <- overall_yr2_module_df %>% 
+  mutate(locusName = gsub(".v8.1", "", gene_id)) %>%
+  left_join(., fullgene_annotations) %>%
+  mutate(class = case_when(gene_id %in% carot_traits ~ "carot", gene_id %in% carb_traits ~ "carb", T ~ class)) %>%
+  mutate(gene_metabolite = ifelse(grepl("Manes", locusName), "gene", "metabolite"))
+
+#check how many genes in each class
+table(overall_yr2_modules_annot %>% filter(gene_metabolite == "gene") %>% dplyr::select(class))
+
+#check which modules carotenoid genes/metabolites are in
+table(overall_yr2_modules_annot %>% filter(class=="carot") %>% dplyr::select(colors) )
+```
+
+Select modules of interest from overall network and export for Cytoscape
+```{r}
+#check module sizes
+table(overall_yr2_module_df$colors)
+
+#identify modules most associated with the metabolite phenotypes
+top_associations <- MEs_wphenos_cormat %>% group_by(phenotype) %>%
+  slice_max(abs(value), n=1) 
+
+top_modules <- unique(top_associations$module)
+print(top_modules)
+
+overall_yr2_modules_of_interest <- top_modules #or select one #"turquoise"
+
+# Pull out list of genes in that module
+submod_overall_yr2 <- overall_yr2_module_df %>%
+  subset(colors %in% overall_yr2_modules_of_interest)
+
+row.names(overall_yr2_module_df) = overall_yr2_module_df$gene_id
+
+# Subset TOM matrix for modules of interest
+colnames(overall_yr2_TOM) <- overall_yr2_module_df$gene_id
+rownames(overall_yr2_TOM) <- overall_yr2_module_df$gene_id
+
+subset_overall_yr2_TOM <- overall_yr2_TOM[rownames(overall_yr2_TOM) %in% submod_overall_yr2$gene_id,
+                                colnames(overall_yr2_TOM) %in% submod_overall_yr2$gene_id]
+
+#decide on threshold for edge weights to include for cytoscape visualization
+hist(subset_overall_yr2_TOM[upper.tri(subset_overall_yr2_TOM)], breaks = 100, main = "TOM Edge Weights")
+
+# Compute the threshold at the 75th percentile
+edge_weights <- subset_overall_yr2_TOM[upper.tri(subset_overall_yr2_TOM)]
+threshold_75 <- quantile(edge_weights, 0.75)
+print(threshold_75)
+
+# check dimensions
+dim(subset_overall_yr2_TOM)
+format(object.size(subset_overall_yr2_TOM), units="GB")
+
+#export subset for Cytoscape
+Cyexport <- exportNetworkToCytoscape(subset_overall_yr2_TOM,
+                         edgeFile = paste0(dir2, "output/overall_yr2_gene-metabolite_ntwk_modulesofinterest_CytoscapeInput-edges.txt"),
+                         nodeFile = paste0(dir2, "output/overall_yr2_gene-metabolite_ntwk_modulesofinterest_CytoscapeInput-nodes.txt"),
+                         weighted = TRUE, threshold = threshold_75,
+                         nodeNames = (colnames(subset_overall_yr2_TOM) %>% gsub(".v8.1","",.)) ) #remove version tag from gene name
+
+#export gene annotations for Cytoscape
+subset_overallTOM_yr2_annot <- overall_yr2_modules_annot %>% 
+  filter(gene_id %in% unique(c(rownames(subset_overall_yr2_TOM), colnames(subset_overall_yr2_TOM)))) %>%
+  dplyr::select(gene_id, locusName, Description, colors, class, gene_metabolite) %>%
+  mutate(Description = gsub(",",";",Description)) #remove commas to not confuse cytoscape reading csv
+
+write.csv(subset_overallTOM_yr2_annot, file= paste0(dir2, "output/overall_yr2_gene-metabolite_ntwk_modulesofinterest_CytoscapeInput-nodes_annotations.csv"), row.names = F, quote=F)
+```
+
+Create subnetwork of only carotenoid and carbohydrate genes
+```{r}
+car_gene_subset_yr2 <- overall_yr2_modules_annot %>% filter(!is.na(class)) %>%
+  mutate(Description = gsub(",",";",Description))
+
+# Subset TOM matrix for genes of interest
+overall_yr2_TOM_car_genes <- overall_yr2_TOM[rownames(overall_yr2_TOM) %in% car_gene_subset_yr2$gene_id,
+                                colnames(overall_yr2_TOM) %in% car_gene_subset_yr2$gene_id]
+
+# Compute the threshold at the 75th percentile
+edge_weights <- overall_yr2_TOM_car_genes[upper.tri(overall_yr2_TOM_car_genes)]
+threshold_75 <- quantile(edge_weights, 0.75)
+print(threshold_75)
+
+#export subset for Cytoscape
+Cyexport <- exportNetworkToCytoscape(overall_yr2_TOM_car_genes,
+                         edgeFile = paste0(dir2, "output/overall_yr2_gene-metabolite_ntwk_cargenes_CytoscapeInput-edges.txt"),
+                         nodeFile = paste0(dir2, "output/overall_yr2_gene-metabolite_ntwk_cargenes_CytoscapeInput-nodes.txt"),
+                         weighted = TRUE, threshold = threshold_75,
+                         nodeNames = (colnames(overall_yr2_TOM_car_genes) %>% gsub(".v8.1","",.)) ) #remove version tag from gene name
+
+write.csv(car_gene_subset_yr2, file=paste0(dir2, "output/overall_yr2_gene-metabolite_ntwk_cargenes_CytoscapeInput_annotations.csv"))
+```
+
+Calculate correlation matrix separately on genes of interest subset to preserve sign/direction information
+```{r}
+overall_yr2_subset_bicor <- bicor(
+  overallyr2counts_t[,colnames(overallyr2counts_t) %in%  car_gene_subset_yr2$gene_id],
+  use="pairwise.complete.obs" ) %>% 
+  reshape2::melt() 
+
+colnames(overall_yr2_subset_bicor) <- c("sourceNode", "targetNode", "bicor")
+
+overall_yr2_subset_bicor_Cyto <- overall_yr2_subset_bicor %>%
+  mutate(across(sourceNode:targetNode, ~ gsub(".v8.1", "", .))) %>%
+  mutate(shared_name = paste0(sourceNode, " (interacts with) ", targetNode)) %>%
+  mutate(cor_direction = case_when(bicor > 0 ~ "+", bicor <= 0 ~ "-"))
+
+write.csv(overall_yr2_subset_bicor_Cyto, 
+          file=paste0(dir2, "output/overall_yr2_gene-metabolite_ntwk_cargenes_bicorrelations.csv"), 
+          row.names = F)
+```
+
+Identify hub genes:
+```{r}
+#double check gene order is the same
+all(colnames(overallyr2counts_t_imputed) == overall_yr2_module_df$gene_id)
+
+overall_yr2_tophubs <- chooseTopHubInEachModule(overallyr2counts_t_imputed, 
+                                         colorh=overall_yr2_module_df$colors,
+                                         power = picked_power_ovrl_2, type="unsigned")
+
+overall_yr2_tophubs_df <- data.frame("hub" = overall_yr2_tophubs)
+overall_yr2_tophubs_df$module <- rownames(overall_yr2_tophubs_df) 
+overall_yr2_tophubs_annot <- overall_yr2_tophubs_df %>% left_join(overall_yr2_modules_annot, by=c("hub" = "gene_id"))
+
+
+overall_yr2_hubs_topmodules <- overall_yr2_tophubs_annot %>% filter(module %in% overall_yr2_modules_of_interest)
+
+print(overall_yr2_hubs_topmodules)
+```
+
+Are carotenoid and carbohydrate genes more connected than would be expected by chance?
+```{r}
+#Subset for carotenoid/carbohydrate edges (excluding carot-carot and carb-carb edges)
+overall_yr2_TOM_car_melt <- reshape2::melt(overall_yr2_TOM_car_genes, varnames=c("node1", "node2"), value.name = "weight") %>%
+   #get only the first pairwise interaction by inex
+  filter(as.integer(factor(node1, levels = rownames(overall_yr2_TOM_car_genes))) <
+         as.integer(factor(node2, levels = colnames(overall_yr2_TOM_car_genes)))) %>% 
+  left_join(., car_gene_subset_yr2 %>% dplyr::select(gene_id, class, gene_metabolite), by=c("node1" = "gene_id")) %>%
+  left_join(., car_gene_subset_yr2 %>% dplyr::select(gene_id, class, gene_metabolite), by=c("node2" = "gene_id")) %>%
+  filter(gene_metabolite.x != "metabolite" & gene_metabolite.y != "metabolite" ) %>%
+  filter(class.x != class.y) 
+
+#How many edges:
+nrow(overall_yr2_TOM_car_melt)
+
+#How many carotenoid nodes:
+n_nodes <- nrow(car_gene_subset_yr2 %>% filter(class=="carot" & gene_metabolite=="gene"))
+n_nodes
+
+#Get list of carbohydrate genes
+carb_genes <- car_gene_subset_yr2 %>% filter(class=="carb" & gene_metabolite=="gene")
+
+#Sum the topological overlap weight (adjacency and connectivity) between the carotenoid and carbohydrate nodes
+observed_overall_yr2_TOsum <- sum(overall_yr2_TOM_car_melt$weight)
+```
+
+A better null distribution: random set of genes that share the same network properties as the carotenoid/carbohydrate gene set, but that are in different pathways.
+```{r}
+#Get list of carbohydrate genes
+carb_genes <- car_gene_subset_yr2 %>% filter(class=="carb" & gene_metabolite=="gene")
+carot_genes <- car_gene_subset_yr2 %>% filter(class=="carot" & gene_metabolite=="gene")
+
+# Get total connectivity for each gene
+gene_connectivity <- rowSums(overall_yr2_TOM)
+carot_gene_connectivity <- gene_connectivity[carot_genes$gene_id]
+which.max(carot_gene_connectivity) 
+mean(carot_gene_connectivity)
+
+carb_gene_connectivity <- gene_connectivity[carb_genes$gene_id]
+which.max(carb_gene_connectivity)
+mean(carb_gene_connectivity)
+
+#Plot distribution of gene connectivities
+connectivity_df <- data.frame(
+  connectivity = c(gene_connectivity, carot_gene_connectivity, carb_gene_connectivity),
+  group = as.factor(c(rep("Overall", length(gene_connectivity)),
+            rep("Carotenoids", length(carot_gene_connectivity)),
+            rep("Carbohydrates", length(carb_gene_connectivity)))))
+
+ggplot(connectivity_df, aes(x = connectivity, fill = group)) +
+  geom_density(alpha = 0.4) +
+  scale_fill_manual(values = c("Overall" = "gray70", "Carotenoids" = "red", "Carbohydrates" = "blue")) +
+  scale_color_manual(values = c("Overall" = "gray40", "Carotenoids" = "darkred", "Carbohydrates" = "darkblue")) +
+  theme_minimal() + 
+  labs(title = "Distribution of gene connectivity values k (year 2 subset)",
+       x = "Overall gene connectivity", y = "Proportion of genes", fill = "Gene class")
+
+ggsave(file= paste0(dir2, "figures/connectivity_distributions_k_year2subset_overall.png"))
+
+
+# Create bins of genes by connectivity
+gene_bins <- cut(gene_connectivity, breaks = quantile(gene_connectivity, probs = seq(0, 1, 0.1)), include.lowest = TRUE)
+names(gene_bins) <- names(gene_connectivity) 
+levels(gene_bins)
+
+carot_bins <- gene_bins[carot_genes$gene_id]
+carb_bins <- gene_bins[carb_genes$gene_id]
+
+```
+Run permutations in parallel
+```{r, eval=F} 
+#Run node permutation test
+
+#Set up parallelism:
+library(furrr); library(future)
+library(purrr)
+options(future.globals.maxSize = 10 * 1024^3)  # 10 GB
+plan(multisession, workers=30)
+file.create("progress_log.txt")
+
+nsim <- 10000
+nbatches <- 30
+batch_size <- round(nsim/nbatches)
+batch_indices <- 1:nbatches
+
+overall_random_gene_results_yr2 <- future_map(batch_indices, function(batch) {
+  
+  sum_batch <- numeric(batch_size)
+  mean_batch <- numeric(batch_size)
+  
+  for (i in 1:batch_size) {
+    random_kmatched_genes <- map2(carot_bins, names(carot_bins), ~ {
+      bin_x_genes <- names(gene_bins)[gene_bins == .x]
+      sample(setdiff(bin_x_genes, c(carot_genes$gene_id, carb_genes$gene_id)), 1)
+    }) %>% unlist()
+    
+    random_genes_carb_TOM_yr2 <- overall_yr2_TOM[
+      rownames(overall_yr2_TOM) %in% random_kmatched_genes,
+      colnames(overall_yr2_TOM) %in% carb_genes$gene_id
+    ]
+    
+    sum_batch[i] <- sum(random_genes_carb_TOM_yr2)
+    mean_batch[i] <- mean(random_genes_carb_TOM_yr2)
+    
+    # --- Add progress printing inside the batch ---
+    if (i %% 50 == 0 || i == batch_size) {  # every 50 simulations, or at the end
+      cat(paste0(Sys.time(), " - Batch ", batch, 
+                 ": Completed ", i, " of ", batch_size, " simulations\n"), 
+          file = "progress_log.txt", 
+          append = TRUE)
+    }
+  }
+  list(sum = sum_batch, mean = mean_batch)
+}, .options = furrr_options(seed = TRUE))
+
+
+# Combine and save results
+sum_4_overall_yr2 <- unlist(map(overall_random_gene_results_yr2, "sum"))
+mean_4_overall_yr2 <- unlist(map(overall_random_gene_results_yr2, "mean"))
+
+saveRDS(sum_4_overall_yr2, file=paste0(dir2, "output/overall_yr2subset_ntwk_node_permutation_TOMsum_store_4_overall_batched.RDS"))
+saveRDS(mean_4_overall_yr2, file=paste0(dir2, "output/overall_yr2subset_ntwk_node_permutation_TOMmean_store_4_overall_batched.RDS"))
+```
+```{r}
+sum_4_overall_yr2 <- readRDS(file=paste0(dir2, "output/overall_yr2subset_ntwk_node_permutation_TOMsum_store_4_overall_batched.RDS"))
+mean_4_overall_yr2 <- readRDS(file=paste0(dir2, "output/overall_yr2subset_ntwk_node_permutation_TOMmean_store_4_overall_batched.RDS"))
+
+
+#Observed value:
+carot_carb_TOM <- overall_yr2_TOM[rownames(overall_yr2_TOM) %in% carot_genes$gene_id,
+                                colnames(overall_yr2_TOM) %in% carb_genes$gene_id]
+obs_carot_carb_sum <- sum(carot_carb_TOM)
+obs_carot_carb_mean <- mean(carot_carb_TOM)
+
+
+#View results:
+png(filename=paste0(dir2, "figures/overall_yr2_TOM_sumTOM_k-matched-random_with-carbohydrate-genes.png"), width=6, height=4, units="in", res=300)
+hist(sum_4_overall_yr2, main="total TOM for random k-matched genes \nwith carbohydrate genes, year 2 subset", 
+     xlab="sum(TOM)", breaks=60)
+abline( v = obs_carot_carb_sum, col="red", lty=2)
+dev.off()
+
+png(filename=paste0(dir2, "figures/overall_yr2_TOM_meanTOM_k-matched-random_with-carbohydrate-genes.png"), width=6, height=4, units="in", res=300)
+hist(mean_4_overall_yr2, main="mean TOM for random k-matched genes \nwith carbohydrate genes, year 2 subset", 
+     xlab="mean(TOM)", breaks=50)
+abline( v = obs_carot_carb_mean, col="red", lty=2)
+dev.off()
+
+
+#Calculate p-value:
+sum(sum_4_overall_yr2 > obs_carot_carb_sum)/length(sum_4_overall_yr2)
+
+```
+
+
+
+
+
+
+
+
+# Next analysis step recommendations from Elise:
+
+*Mantel test for correlation between genetic and non-genetic TOMs*
+
+Kohonen package
+
+string database of interactions with transcriptomic data in Cytoscape
+
+Scatterplot of gene significance (GS) vs module membership (MM)
+
+Pathway enrichment of trait-related modules:
+enricher package
+enrichplot
+ontologyIndex 
+
+
+
