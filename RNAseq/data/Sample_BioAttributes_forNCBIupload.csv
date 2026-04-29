@@ -1,0 +1,381 @@
+﻿Sample_Name,Sample_Title,Isolate,Organism,Cultivar,Development_stage,Collection_date,Geographic_location,Tissue
+TCDM1_A04_1_2_o,A04_1_2_o,2_o,Manihot esculenta,HIL16A004,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A04_1_1_o,A04_1_1_o,1_o,Manihot esculenta,HIL16A004,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A04_1_3_i,A04_1_3_i,3_i,Manihot esculenta,HIL16A004,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A04_1_3_o,A04_1_3_o,3_o,Manihot esculenta,HIL16A004,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A27_1_2_i,A27_1_2_i,2_i,Manihot esculenta,HIL16A027,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C17_1_2_o,C17_1_2_o,2_o,Manihot esculenta,HIL16C017,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C17_1_2_i,C17_1_2_i,2_i,Manihot esculenta,HIL16C017,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X1_54_2_o,X1_54_2_o,2_o,Manihot esculenta,ITH21F001P054,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X9_27_1_i,X9_27_1_i,1_i,Manihot esculenta,ITH21F009P027,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X9_27_2_i,X9_27_2_i,2_i,Manihot esculenta,ITH21F009P027,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X9_27_3_o,X9_27_3_o,3_o,Manihot esculenta,ITH21F009P027,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X11_57_2_o,X11_57_2_o,2_o,Manihot esculenta,ITH21F011P057,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X11_57_3_o,X11_57_3_o,3_o,Manihot esculenta,ITH21F011P057,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X9_27_2_o,X9_27_2_o,2_o,Manihot esculenta,ITH21F009P027,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X11_57_1_o,X11_57_1_o,1_o,Manihot esculenta,ITH21F011P057,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A27_1_1_i,A27_1_1_i,1_i,Manihot esculenta,HIL16A027,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X1_54_2_i,X1_54_2_i,2_i,Manihot esculenta,ITH21F001P054,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X11_57_2_i,X11_57_2_i,2_i,Manihot esculenta,ITH21F011P057,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X9_27_3_i,X9_27_3_i,3_i,Manihot esculenta,ITH21F009P027,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C17_1_3_i,C17_1_3_i,3_i,Manihot esculenta,HIL16C017,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X11_57_3_i,X11_57_3_i,3_i,Manihot esculenta,ITH21F011P057,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X9_27_1_o,X9_27_1_o,1_o,Manihot esculenta,ITH21F009P027,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A04_1_2_o_2,A04_1_2_o,2_o,Manihot esculenta,HIL16A004,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X4_67_2_o,X4_67_2_o,2_o,Manihot esculenta,ITH21F004P067,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C64_1_2_o,C64_1_2_o,2_o,Manihot esculenta,HIL16C064,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A04_1_1_i,A04_1_1_i,1_i,Manihot esculenta,HIL16A004,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X4_67_3_i,X4_67_3_i,3_i,Manihot esculenta,ITH21F004P067,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A04_1_2_i,A04_1_2_i,2_i,Manihot esculenta,HIL16A004,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C17_1_1_i,C17_1_1_i,1_i,Manihot esculenta,HIL16C017,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X4_67_2_i,X4_67_2_i,2_i,Manihot esculenta,ITH21F004P067,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X4_67_1_i,X4_67_1_i,1_i,Manihot esculenta,ITH21F004P067,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C64_1_2_i,C64_1_2_i,2_i,Manihot esculenta,HIL16C064,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C64_1_1_o,C64_1_1_o,1_o,Manihot esculenta,HIL16C064,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X5_31_3_i,X5_31_3_i,3_i,Manihot esculenta,ITH21F005P031,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X4_67_3_o,X4_67_3_o,3_o,Manihot esculenta,ITH21F004P067,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X5_31_2_i,X5_31_2_i,2_i,Manihot esculenta,ITH21F005P031,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C17_1_1_o,C17_1_1_o,1_o,Manihot esculenta,HIL16C017,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A20_1_1_o,A20_1_1_o,1_o,Manihot esculenta,HIL16A020,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C17_1_3_o,C17_1_3_o,3_o,Manihot esculenta,HIL16C017,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A20_1_1_i,A20_1_1_i,1_i,Manihot esculenta,HIL16A020,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_1_2_o,A20_1_2_o,2_o,Manihot esculenta,HIL16A020,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X5_31_1_o,X5_31_1_o,1_o,Manihot esculenta,ITH21F005P031,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X4_67_1_o,X4_67_1_o,1_o,Manihot esculenta,ITH21F004P067,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A27_1_2_o,A27_1_2_o,2_o,Manihot esculenta,HIL16A027,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X5_31_3_o,X5_31_3_o,3_o,Manihot esculenta,ITH21F005P031,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X5_31_2_o,X5_31_2_o,2_o,Manihot esculenta,ITH21F005P031,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C64_1_3_i,C64_1_3_i,3_i,Manihot esculenta,HIL16C064,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_1_2_i,A20_1_2_i,2_i,Manihot esculenta,HIL16A020,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_1_3_i,A20_1_3_i,3_i,Manihot esculenta,HIL16A020,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_1_3_o,A20_1_3_o,3_o,Manihot esculenta,HIL16A020,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A27_1_3_o,A27_1_3_o,3_o,Manihot esculenta,HIL16A027,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A27_1_1_o,A27_1_1_o,1_o,Manihot esculenta,HIL16A027,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X5_31_1_i,X5_31_1_i,1_i,Manihot esculenta,ITH21F005P031,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X11_57_1_i,X11_57_1_i,1_i,Manihot esculenta,ITH21F011P057,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X2_45_2_i,X2_45_2_i,2_i,Manihot esculenta,ITH21F002P045,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X2_45_2_o,X2_45_2_o,2_o,Manihot esculenta,ITH21F002P045,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X2_45_1_i,X2_45_1_i,1_i,Manihot esculenta,ITH21F002P045,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X2_45_3_o,X2_45_3_o,3_o,Manihot esculenta,ITH21F002P045,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X2_45_3_i,X2_45_3_i,3_i,Manihot esculenta,ITH21F002P045,5 MAP,5/24/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X2_45_1_o,X2_45_1_o,1_o,Manihot esculenta,ITH21F002P045,5 MAP,5/24/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X11_68_1_o,X11_68_1_o,1_o,Manihot esculenta,ITH21F011P068,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X11_68_1_i,X11_68_1_i,1_i,Manihot esculenta,ITH21F011P068,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X11_68_3_i,X11_68_3_i,3_i,Manihot esculenta,ITH21F011P068,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X11_68_3_o,X11_68_3_o,3_o,Manihot esculenta,ITH21F011P068,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X11_68_2_o,X11_68_2_o,2_o,Manihot esculenta,ITH21F011P068,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A20_2_3_o,A20_2_3_o,3_o,Manihot esculenta,HIL16A020,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A03_2_1_o,A03_2_1_o,1_o,Manihot esculenta,HIL16A003,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C17_2_3_o,C17_2_3_o,3_o,Manihot esculenta,HIL16C017,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A03_2_1_i,A03_2_1_i,1_i,Manihot esculenta,HIL16A003,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C14_2_1_i,C14_2_1_i,1_i,Manihot esculenta,HIL16C014,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_2_2_i,A20_2_2_i,2_i,Manihot esculenta,HIL16A020,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_2_1_o,A20_2_1_o,1_o,Manihot esculenta,HIL16A020,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C14_2_2_o,C14_2_2_o,2_o,Manihot esculenta,HIL16C014,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A04_2_3_o,A04_2_3_o,3_o,Manihot esculenta,HIL16A004,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A04_2_1_o,A04_2_1_o,1_o,Manihot esculenta,HIL16A004,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A04_2_1_i,A04_2_1_i,1_i,Manihot esculenta,HIL16A004,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A04_2_3_i,A04_2_3_i,3_i,Manihot esculenta,HIL16A004,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_2_1_i,A20_2_1_i,1_i,Manihot esculenta,HIL16A020,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A04_2_2_o,A04_2_2_o,2_o,Manihot esculenta,HIL16A004,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_A04_2_2_i,A04_2_2_i,2_i,Manihot esculenta,HIL16A004,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_2_2_o,A20_2_2_o,2_o,Manihot esculenta,HIL16A020,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C17_2_1_i,C17_2_1_i,1_i,Manihot esculenta,HIL16C017,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A03_2_3_i,A03_2_3_i,3_i,Manihot esculenta,HIL16A003,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C14_2_3_i,C14_2_3_i,3_i,Manihot esculenta,HIL16C014,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C14_2_1_i_2,C14_2_1_i,1_i,Manihot esculenta,HIL16C014,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A20_2_3_o_2,A20_2_3_o,3_o,Manihot esculenta,HIL16A020,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C14_2_2_i,C14_2_2_i,2_i,Manihot esculenta,HIL16C014,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_C14_2_3_o,C14_2_3_o,3_o,Manihot esculenta,HIL16C014,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C17_2_2_i,C17_2_2_i,2_i,Manihot esculenta,HIL16C017,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A03_2_3_o,A03_2_3_o,3_o,Manihot esculenta,HIL16A003,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C17_2_3_i,C17_2_3_i,3_i,Manihot esculenta,HIL16C017,5 MAP,5/25/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_A03_2_2_o,A03_2_2_o,2_o,Manihot esculenta,HIL16A003,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_C17_2_2_o,C17_2_2_o,2_o,Manihot esculenta,HIL16C017,5 MAP,5/25/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM1_X8_41.5_3_i,X8_41.5_3_i,3_i,Manihot esculenta,ITH21F008P041.5,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM1_X8_41.5_3_o,X8_41.5_3_o,3_o,Manihot esculenta,ITH21F008P041.5,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X4_46_1_o,X4_46_1_o,1_o,Manihot esculenta,ITH21F004P046,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X8_41.5_2_i,X8_41.5_2_i,2_i,Manihot esculenta,ITH21F008P041.5,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X8_41.5_2_o,X8_41.5_2_o,2_o,Manihot esculenta,ITH21F008P041.5,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X4_46_3_o,X4_46_3_o,3_o,Manihot esculenta,ITH21F004P046,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X4_46_1_i,X4_46_1_i,1_i,Manihot esculenta,ITH21F004P046,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C14_3_2_o,C14_3_2_o,2_o,Manihot esculenta,HIL16C014,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A03_3_1_o,A03_3_1_o,1_o,Manihot esculenta,HIL16A003,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A03_3_3_o,A03_3_3_o,3_o,Manihot esculenta,HIL16A003,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X4_32_2_i,X4_32_2_i,2_i,Manihot esculenta,ITH21F004P032,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C14_3_2_i,C14_3_2_i,2_i,Manihot esculenta,HIL16C014,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X4_32_3_i,X4_32_3_i,3_i,Manihot esculenta,ITH21F004P032,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X4_32_3_o,X4_32_3_o,3_o,Manihot esculenta,ITH21F004P032,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A04_3_2_o,A04_3_2_o,2_o,Manihot esculenta,HIL16A004,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X4_32_1_i,X4_32_1_i,1_i,Manihot esculenta,ITH21F004P032,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_A04_3_2_i,A04_3_2_i,2_i,Manihot esculenta,HIL16A004,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_A04_3_1_o,A04_3_1_o,1_o,Manihot esculenta,HIL16A004,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_C14_3_3_o,C14_3_3_o,3_o,Manihot esculenta,HIL16C014,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_C14_3_1_i,C14_3_1_i,1_i,Manihot esculenta,HIL16C014,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_A04_3_3_o,A04_3_3_o,3_o,Manihot esculenta,HIL16A004,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A27_3_3_i,A27_3_3_i,3_i,Manihot esculenta,HIL16A027,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C14_3_3_i,C14_3_3_i,3_i,Manihot esculenta,HIL16C014,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_A03_3_1_i,A03_3_1_i,1_i,Manihot esculenta,HIL16A003,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_A03_3_3_i,A03_3_3_i,3_i,Manihot esculenta,HIL16A003,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X4_32_1_o,X4_32_1_o,1_o,Manihot esculenta,ITH21F004P032,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A04_3_3_i,A04_3_3_i,3_i,Manihot esculenta,HIL16A004,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X4_32_2_o,X4_32_2_o,2_o,Manihot esculenta,ITH21F004P032,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A27_3_1_o,A27_3_1_o,1_o,Manihot esculenta,HIL16A027,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A27_3_3_o,A27_3_3_o,3_o,Manihot esculenta,HIL16A027,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A27_3_2_o,A27_3_2_o,2_o,Manihot esculenta,HIL16A027,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X5_66_3_o,X5_66_3_o,3_o,Manihot esculenta,ITH21F005P066,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_C17_3_1_i,C17_3_1_i,1_i,Manihot esculenta,HIL16C017,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C17_3_1_o,C17_3_1_o,1_o,Manihot esculenta,HIL16C017,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_C17_3_2_i,C17_3_2_i,2_i,Manihot esculenta,HIL16C017,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C17_3_2_o,C17_3_2_o,2_o,Manihot esculenta,HIL16C017,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X5_66_2_i,X5_66_2_i,2_i,Manihot esculenta,ITH21F005P066,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X5_66_1_i,X5_66_1_i,1_i,Manihot esculenta,ITH21F005P066,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C17_3_3_o,C17_3_3_o,3_o,Manihot esculenta,HIL16C017,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A03_3_2_o,A03_3_2_o,2_o,Manihot esculenta,HIL16A003,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X5_66_3_i,X5_66_3_i,3_i,Manihot esculenta,ITH21F005P066,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X5_66_1_o,X5_66_1_o,1_o,Manihot esculenta,ITH21F005P066,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X5_66_2_o,X5_66_2_o,2_o,Manihot esculenta,ITH21F005P066,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A27_3_2_i,A27_3_2_i,2_i,Manihot esculenta,HIL16A027,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C64_3_1_o,C64_3_1_o,1_o,Manihot esculenta,HIL16C064,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X9_35_2_i,X9_35_2_i,2_i,Manihot esculenta,ITH21F009P035,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C64_3_1_i,C64_3_1_i,1_i,Manihot esculenta,HIL16C064,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C14_3_1_o,C14_3_1_o,1_o,Manihot esculenta,HIL16C014,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X9_35_2_o,X9_35_2_o,2_o,Manihot esculenta,ITH21F009P035,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_C64_3_2_o,C64_3_2_o,2_o,Manihot esculenta,HIL16C064,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X9_35_1_i,X9_35_1_i,1_i,Manihot esculenta,ITH21F009P035,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C64_3_3_i,C64_3_3_i,3_i,Manihot esculenta,HIL16C064,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C17_3_3_i,C17_3_3_i,3_i,Manihot esculenta,HIL16C017,5 MAP,5/26/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X9_35_1_o,X9_35_1_o,1_o,Manihot esculenta,ITH21F009P035,5 MAP,5/26/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X2_24_3_i,X2_24_3_i,3_i,Manihot esculenta,ITH21F002P024,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X2_24_2_o,X2_24_2_o,2_o,Manihot esculenta,ITH21F002P024,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X2_24_1_o,X2_24_1_o,1_o,Manihot esculenta,ITH21F002P024,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X10_39_2_i,X10_39_2_i,2_i,Manihot esculenta,ITH21F010P039,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X2_24_3_o,X2_24_3_o,3_o,Manihot esculenta,ITH21F002P024,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X2_24_2_i,X2_24_2_i,2_i,Manihot esculenta,ITH21F002P024,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X10_39_3_o,X10_39_3_o,3_o,Manihot esculenta,ITH21F010P039,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X10_39_2_o,X10_39_2_o,2_o,Manihot esculenta,ITH21F010P039,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X2_24_1_i,X2_24_1_i,1_i,Manihot esculenta,ITH21F002P024,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X10_39_3_i,X10_39_3_i,3_i,Manihot esculenta,ITH21F010P039,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X5_36_3_i,X5_36_3_i,3_i,Manihot esculenta,ITH21F005P036,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C64_4_2_i,C64_4_2_i,2_i,Manihot esculenta,HIL16C064,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C64_4_3_i,C64_4_3_i,3_i,Manihot esculenta,HIL16C064,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X5_36_2_i,X5_36_2_i,2_i,Manihot esculenta,ITH21F005P036,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C64_4_1_i,C64_4_1_i,1_i,Manihot esculenta,HIL16C064,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C14_4_3_o,C14_4_3_o,3_o,Manihot esculenta,HIL16C014,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_C64_4_2_o,C64_4_2_o,2_o,Manihot esculenta,HIL16C064,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_C64_4_1_o,C64_4_1_o,1_o,Manihot esculenta,HIL16C064,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X5_36_1_i,X5_36_1_i,1_i,Manihot esculenta,ITH21F005P036,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X5_36_2_o,X5_36_2_o,2_o,Manihot esculenta,ITH21F005P036,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A03_4_2_i,A03_4_2_i,2_i,Manihot esculenta,HIL16A003,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_A03_4_3_o,A03_4_3_o,3_o,Manihot esculenta,HIL16A003,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A27_4_1_i,A27_4_1_i,1_i,Manihot esculenta,HIL16A027,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_A27_4_1_o,A27_4_1_o,1_o,Manihot esculenta,HIL16A027,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A27_4_2_o,A27_4_2_o,2_o,Manihot esculenta,HIL16A027,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X4_24_1_o,X4_24_1_o,1_o,Manihot esculenta,ITH21F004P042,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A27_4_2_i,A27_4_2_i,2_i,Manihot esculenta,HIL16A027,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_A27_4_3_i,A27_4_3_i,3_i,Manihot esculenta,HIL16A027,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X4_24_2_o,X4_24_2_o,2_o,Manihot esculenta,ITH21F004P042,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X4_24_1_i,X4_24_1_i,1_i,Manihot esculenta,ITH21F004P042,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X5_36_3_o,X5_36_3_o,3_o,Manihot esculenta,ITH21F005P036,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X4_24_2_i,X4_24_2_i,2_i,Manihot esculenta,ITH21F004P042,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X4_24_3_o,X4_24_3_o,3_o,Manihot esculenta,ITH21F004P042,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_A03_4_1_i,A03_4_1_i,1_i,Manihot esculenta,HIL16A003,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X8_37_2_i,X8_37_2_i,2_i,Manihot esculenta,ITH21F008P037,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X4_24_3_i,X4_24_3_i,3_i,Manihot esculenta,ITH21F004P042,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X8_37_3_o,X8_37_3_o,3_o,Manihot esculenta,ITH21F008P037,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X8_37_2_o,X8_37_2_o,2_o,Manihot esculenta,ITH21F008P037,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X8_37_1_o,X8_37_1_o,1_o,Manihot esculenta,ITH21F008P037,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM2_X8_37_3_i,X8_37_3_i,3_i,Manihot esculenta,ITH21F008P037,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C14_4_1_i,C14_4_1_i,1_i,Manihot esculenta,HIL16C014,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_X8_37_1_i,X8_37_1_i,1_i,Manihot esculenta,ITH21F008P037,5 MAP,5/27/22,"Ithaca, NY, USA",Storage root inner layer
+TCDM2_C14_4_1_o,C14_4_1_o,1_o,Manihot esculenta,HIL16C014,5 MAP,5/27/22,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_109_X11_68_rt2_i,109_X11_68_rt2_i,2_i,Manihot esculenta,ITH21F011P068,5 MAP,5/29/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_109_X11_68_rt3_i,109_X11_68_rt3_i,3_i,Manihot esculenta,ITH21F011P068,5 MAP,5/29/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_320_X2_24_rt1_i,320_X2_24_rt1_i,1_i,Manihot esculenta,ITH21F002P024,5 MAP,5/30/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_320_X2_24_rt2_i,320_X2_24_rt2_i,2_i,Manihot esculenta,ITH21F002P024,5 MAP,5/30/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_320_X2_24_rt3_o,320_X2_24_rt3_o,3_o,Manihot esculenta,ITH21F002P024,5 MAP,5/30/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_417_X1_54_rt1_i,417_X1_54_rt1_i,1_i,Manihot esculenta,ITH21F001P054,5 MAP,5/30/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_417_X1_54_rt3_i,417_X1_54_rt3_i,3_i,Manihot esculenta,ITH21F001P054,5 MAP,5/30/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_101_X2_24_rt3_o,101_X2_24_rt3_o,3_o,Manihot esculenta,ITH21F002P024,6 MAP,6/20/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_113_C17_rt2_o,113_C17_rt2_o,2_o,Manihot esculenta,HIL16C017,6 MAP,6/20/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_313_X1_54_rt1_i,313_X1_54_rt1_i,1_i,Manihot esculenta,ITH21F001P054,6 MAP,6/21/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_313_X1_54_rt2_i,313_X1_54_rt2_i,2_i,Manihot esculenta,ITH21F001P054,6 MAP,6/21/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_313_X1_54_rt3_o,313_X1_54_rt3_o,3_o,Manihot esculenta,ITH21F001P054,6 MAP,6/21/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_412_X11_68_rt1_o,412_X11_68_rt1_o,1_o,Manihot esculenta,ITH21F011P068,6 MAP,6/21/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_412_X11_68_rt2_o,412_X11_68_rt2_o,2_o,Manihot esculenta,ITH21F011P068,6 MAP,6/21/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_412_X11_68_rt3_i,412_X11_68_rt3_i,3_i,Manihot esculenta,ITH21F011P068,6 MAP,6/21/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_412_X11_68_rt3_o,412_X11_68_rt3_o,3_o,Manihot esculenta,ITH21F011P068,6 MAP,6/21/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_115_X1_54_rt1_i,115_X1_54_rt1_i,1_i,Manihot esculenta,ITH21F001P054,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_115_X1_54_rt1_o,115_X1_54_rt1_o,1_o,Manihot esculenta,ITH21F001P054,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_115_X1_54_rt2_i,115_X1_54_rt2_i,2_i,Manihot esculenta,ITH21F001P054,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_115_X1_54_rt2_o,115_X1_54_rt2_o,2_o,Manihot esculenta,ITH21F001P054,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_115_X1_54_rt3_i,115_X1_54_rt3_i,3_i,Manihot esculenta,ITH21F001P054,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_219_X2_24_rt1_i,219_X2_24_rt1_i,1_i,Manihot esculenta,ITH21F002P024,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_219_X2_24_rt3_i,219_X2_24_rt3_i,3_i,Manihot esculenta,ITH21F002P024,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_303_X11_68_rt1_i,303_X11_68_rt1_i,1_i,Manihot esculenta,ITH21F011P068,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_303_X11_68_rt2_i,303_X11_68_rt2_i,2_i,Manihot esculenta,ITH21F011P068,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_411_C17_rt1_o,411_C17_rt1_o,1_o,Manihot esculenta,HIL16C017,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_411_C17_rt2_i,411_C17_rt2_i,2_i,Manihot esculenta,HIL16C017,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_302_C17_rt1_i,302_C17_rt1_i,1_i,Manihot esculenta,HIL16C017,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_418_X5_36_rt2_i,418_X5_36_rt2_i,2_i,Manihot esculenta,ITH21F005P036,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_412_X11_68_rt1_i,412_X11_68_rt1_i,1_i,Manihot esculenta,ITH21F011P068,6 MAP,6/21/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_219_X2_24_rt2_i,219_X2_24_rt2_i,2_i,Manihot esculenta,ITH21F002P024,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_113_C17_rt2_i,113_C17_rt2_i,2_i,Manihot esculenta,HIL16C017,6 MAP,6/20/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_206_C17_rt1_i,206_C17_rt1_i,1_i,Manihot esculenta,HIL16C017,5 MAP,5/29/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_113_C17_rt1_i,113_C17_rt1_i,1_i,Manihot esculenta,HIL16C017,6 MAP,6/20/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_219_X2_24_rt2_o,219_X2_24_rt2_o,2_o,Manihot esculenta,ITH21F002P024,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_417_X1_54_rt1_o,417_X1_54_rt1_o,1_o,Manihot esculenta,ITH21F001P054,5 MAP,5/30/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_206_C17_rt2_i,206_C17_rt2_i,2_i,Manihot esculenta,HIL16C017,5 MAP,5/29/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_313_X1_54_rt1_o,313_X1_54_rt1_o,1_o,Manihot esculenta,ITH21F001P054,6 MAP,6/21/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_109_X11_68_rt1_o,109_X11_68_rt1_o,1_o,Manihot esculenta,ITH21F011P068,5 MAP,5/29/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_206_C17_rt3_o,206_C17_rt3_o,3_o,Manihot esculenta,HIL16C017,5 MAP,5/29/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_313_X1_54_rt2_o,313_X1_54_rt2_o,2_o,Manihot esculenta,ITH21F001P054,6 MAP,6/21/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_113_C17_rt1_o,113_C17_rt1_o,1_o,Manihot esculenta,HIL16C017,6 MAP,6/20/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_320_X2_24_rt1_o,320_X2_24_rt1_o,1_o,Manihot esculenta,ITH21F002P024,5 MAP,5/30/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_109_X11_68_rt2_o,109_X11_68_rt2_o,2_o,Manihot esculenta,ITH21F011P068,5 MAP,5/29/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_219_X2_24_rt3_o,219_X2_24_rt3_o,3_o,Manihot esculenta,ITH21F002P024,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_411_C17_rt3_o,411_C17_rt3_o,3_o,Manihot esculenta,HIL16C017,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_109_X11_68_rt1_i,109_X11_68_rt1_i,1_i,Manihot esculenta,ITH21F011P068,5 MAP,5/29/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_304_X5_31_rt2_i,304_X5_31_rt2_i,2_i,Manihot esculenta,ITH21F005P031,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_219_X2_24_rt1_o,219_X2_24_rt1_o,1_o,Manihot esculenta,ITH21F002P024,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_109_X11_68_rt3_o,109_X11_68_rt3_o,3_o,Manihot esculenta,ITH21F011P068,5 MAP,5/29/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_303_X11_68_rt3_o,303_X11_68_rt3_o,3_o,Manihot esculenta,ITH21F011P068,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_417_X1_54_rt3_o,417_X1_54_rt3_o,3_o,Manihot esculenta,ITH21F001P054,5 MAP,5/30/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_101_X2_24_rt1_o,101_X2_24_rt1_o,1_o,Manihot esculenta,ITH21F002P024,6 MAP,6/20/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_113_C17_rt3_o,113_C17_rt3_o,3_o,Manihot esculenta,HIL16C017,6 MAP,6/20/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_403_A20_rt1_i,403_A20_rt1_i,1_i,Manihot esculenta,HIL16A020,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_113_C17_rt3_i,113_C17_rt3_i,3_i,Manihot esculenta,HIL16C017,6 MAP,6/20/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_206_C17_rt3_i,206_C17_rt3_i,3_i,Manihot esculenta,HIL16C017,5 MAP,5/29/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_206_C17_rt2_o,206_C17_rt2_o,2_o,Manihot esculenta,HIL16C017,5 MAP,5/29/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_105_X5_66_rt1_i,105_X5_66_rt1_i,1_i,Manihot esculenta,ITH21F005P066,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_105_X5_66_rt1_o,105_X5_66_rt1_o,1_o,Manihot esculenta,ITH21F005P066,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_105_X5_66_rt2_i,105_X5_66_rt2_i,2_i,Manihot esculenta,ITH21F005P066,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_105_X5_66_rt3_i,105_X5_66_rt3_i,3_i,Manihot esculenta,ITH21F005P066,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_105_X5_66_rt3_o,105_X5_66_rt3_o,3_o,Manihot esculenta,ITH21F005P066,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_106_X4_46_rt2_i,106_X4_46_rt2_i,2_i,Manihot esculenta,ITH21F004P046,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_106_X4_46_rt3_i,106_X4_46_rt3_i,3_i,Manihot esculenta,ITH21F004P046,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_106_X4_46_rt3_o,106_X4_46_rt3_o,3_o,Manihot esculenta,ITH21F004P046,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_107_X4_32_rt2_i,107_X4_32_rt2_i,2_i,Manihot esculenta,ITH21F004P032,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_107_X4_32_rt3_i,107_X4_32_rt3_i,3_i,Manihot esculenta,ITH21F004P032,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_112_X4_67_rt1_i,112_X4_67_rt1_i,1_i,Manihot esculenta,ITH21F004P067,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_112_X4_67_rt2_i,112_X4_67_rt2_i,2_i,Manihot esculenta,ITH21F004P067,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_112_X4_67_rt3_i,112_X4_67_rt3_i,3_i,Manihot esculenta,ITH21F004P067,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_112_X4_67_rt3_o,112_X4_67_rt3_o,3_o,Manihot esculenta,ITH21F004P067,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_118_C14_rt2_i,118_C14_rt2_i,2_i,Manihot esculenta,HIL16C014,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_118_C14_rt3_i,118_C14_rt3_i,3_i,Manihot esculenta,HIL16C014,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_118_C14_rt3_o,118_C14_rt3_o,3_o,Manihot esculenta,HIL16C014,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_205_X1_54_rt1_i,205_X1_54_rt1_i,1_i,Manihot esculenta,ITH21F001P054,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_205_X1_54_rt1_o,205_X1_54_rt1_o,1_o,Manihot esculenta,ITH21F001P054,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_205_X1_54_rt2_o,205_X1_54_rt2_o,2_o,Manihot esculenta,ITH21F001P054,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_205_X1_54_rt3_o,205_X1_54_rt3_o,3_o,Manihot esculenta,ITH21F001P054,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_207_A04_rt2_i,207_A04_rt2_i,2_i,Manihot esculenta,HIL16A004,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_207_A04_rt3_i,207_A04_rt3_i,3_i,Manihot esculenta,HIL16A004,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_210_X11_68_rt2_i,210_X11_68_rt2_i,2_i,Manihot esculenta,ITH21F011P068,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_210_X11_68_rt2_o,210_X11_68_rt2_o,2_o,Manihot esculenta,ITH21F011P068,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_210_X11_68_rt3_i,210_X11_68_rt3_i,3_i,Manihot esculenta,ITH21F011P068,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_210_X11_68_rt3_o,210_X11_68_rt3_o,3_o,Manihot esculenta,ITH21F011P068,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_218_X8_41.5_rt1_i,218_X8_41.5_rt1_i,1_i,Manihot esculenta,ITH21F008P042,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_218_X8_41.5_rt2_i,218_X8_41.5_rt2_i,2_i,Manihot esculenta,ITH21F008P042,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_218_X8_41.5_rt3_o,218_X8_41.5_rt3_o,3_o,Manihot esculenta,ITH21F008P042,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_220_X10_39_rt1_i,220_X10_39_rt1_i,1_i,Manihot esculenta,ITH21F010P039,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_220_X10_39_rt2_i,220_X10_39_rt2_i,2_i,Manihot esculenta,ITH21F010P039,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_302_C17_rt1_o,302_C17_rt1_o,1_o,Manihot esculenta,HIL16C017,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_302_C17_rt2_i,302_C17_rt2_i,2_i,Manihot esculenta,HIL16C017,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_302_C17_rt2_o,302_C17_rt2_o,2_o,Manihot esculenta,HIL16C017,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM3_302_C17_rt3_i,302_C17_rt3_i,3_i,Manihot esculenta,HIL16C017,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM3_304_X5_31_rt1_i,304_X5_31_rt1_i,1_i,Manihot esculenta,ITH21F005P031,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_304_X5_31_rt1_i,304_X5_31_rt1_o,1_o,Manihot esculenta,ITH21F005P031,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_304_X5_31_rt1_o,304_X5_31_rt3_o,3_o,Manihot esculenta,ITH21F005P031,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_304_X5_31_rt3_o,307_A03_rt2_i,2_i,Manihot esculenta,HIL16A003,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_307_A03_rt2_i,307_A03_rt3_i,3_i,Manihot esculenta,HIL16A003,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_307_A03_rt3_i,317_X4_42_rt1_i,1_i,Manihot esculenta,ITH21F004P042,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_317_X4_42_rt1_i,317_X4_42_rt3_o,3_o,Manihot esculenta,ITH21F004P042,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_317_X4_42_rt3_o,319_X8_37_rt1_i,1_i,Manihot esculenta,ITH21F008P037,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_319_X8_37_rt1_i,319_X8_37_rt1_o,1_o,Manihot esculenta,ITH21F008P037,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_319_X8_37_rt1_o,319_X8_37_rt2_i,2_i,Manihot esculenta,ITH21F008P037,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_319_X8_37_rt2_i,319_X8_37_rt2_o,2_o,Manihot esculenta,ITH21F008P037,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_319_X8_37_rt2_o,319_X8_37_rt3_o,3_o,Manihot esculenta,ITH21F008P037,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_319_X8_37_rt3_o,402_X11_57_rt2_i,2_i,Manihot esculenta,ITH21F011P057,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_402_X11_57_rt2_i,403_A20_rt2_i,2_i,Manihot esculenta,HIL16A020,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_403_A20_rt2_i,407_X2_24_rt1_i,1_i,Manihot esculenta,ITH21F002P024,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_407_X2_24_rt1_i,407_X2_24_rt2_i,2_i,Manihot esculenta,ITH21F002P024,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_407_X2_24_rt2_i,407_X2_24_rt2_o,2_o,Manihot esculenta,ITH21F002P024,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_407_X2_24_rt2_o,407_X2_24_rt3_o,3_o,Manihot esculenta,ITH21F002P024,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_407_X2_24_rt3_o,409_X2_45_rt1_i,1_i,Manihot esculenta,ITH21F002P045,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_409_X2_45_rt1_i,409_X2_45_rt2_i,2_i,Manihot esculenta,ITH21F002P045,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_409_X2_45_rt2_i,409_X2_45_rt3_i,3_i,Manihot esculenta,ITH21F002P045,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_409_X2_45_rt3_i,409_X2_45_rt3_o,3_o,Manihot esculenta,ITH21F002P045,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_409_X2_45_rt3_o,418_X5_36_rt3_i,3_i,Manihot esculenta,ITH21F005P036,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_418_X5_36_rt3_i,418_X5_36_rt3_o,3_o,Manihot esculenta,ITH21F005P036,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_418_X5_36_rt3_o,402_X11_57_rt3_i,3_i,Manihot esculenta,ITH21F011P057,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_402_X11_57_rt3_i,317_X4_42_rt1_o,1_o,Manihot esculenta,ITH21F004P042,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_317_X4_42_rt1_o,319_X8_37_rt3_i,3_i,Manihot esculenta,ITH21F008P037,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_319_X8_37_rt3_i,106_X4_46_rt1_o,1_o,Manihot esculenta,ITH21F004P046,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_106_X4_46_rt1_o,220_X10_39_rt3_i,3_i,Manihot esculenta,ITH21F010P039,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_220_X10_39_rt3_i,307_A03_rt1_o,1_o,Manihot esculenta,HIL16A003,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_307_A03_rt1_o,112_X4_67_rt2_o,2_o,Manihot esculenta,ITH21F004P067,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_112_X4_67_rt2_o,304_X5_31_rt2_o,2_o,Manihot esculenta,ITH21F005P031,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_304_X5_31_rt2_o,317_X4_42_rt2_o,2_o,Manihot esculenta,ITH21F004P042,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_317_X4_42_rt2_o,220_X10_39_rt1_o,1_o,Manihot esculenta,ITH21F010P039,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_220_X10_39_rt1_o,418_X5_36_rt1_i,1_i,Manihot esculenta,ITH21F005P036,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_418_X5_36_rt1_i,118_C14_rt1_i,1_i,Manihot esculenta,HIL16C014,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_118_C14_rt1_i,207_A04_rt3_o,3_o,Manihot esculenta,HIL16A004,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_207_A04_rt3_o,107_X4_32_rt1_i,1_i,Manihot esculenta,ITH21F004P032,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_107_X4_32_rt1_i,107_X4_32_rt1_o,1_o,Manihot esculenta,ITH21F004P032,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_107_X4_32_rt1_o,105_X5_66_rt2_o,2_o,Manihot esculenta,ITH21F005P066,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_105_X5_66_rt2_o,118_C14_rt1_o,1_o,Manihot esculenta,HIL16C014,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_118_C14_rt1_o,407_X2_24_rt1_o,1_o,Manihot esculenta,ITH21F002P024,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_407_X2_24_rt1_o,207_A04_rt2_o,2_o,Manihot esculenta,HIL16A004,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_207_A04_rt2_o,409_X2_45_rt1_o,1_o,Manihot esculenta,ITH21F002P045,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_409_X2_45_rt1_o,403_A20_rt3_i,3_i,Manihot esculenta,HIL16A020,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_403_A20_rt3_i,218_X8_41.5_rt1_o,1_o,Manihot esculenta,ITH21F008P042,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_218_X8_41.5_rt1_o,207_A04_rt1_o,1_o,Manihot esculenta,HIL16A004,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_207_A04_rt1_o,112_X4_67_rt1_o,1_o,Manihot esculenta,ITH21F004P067,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_112_X4_67_rt1_o,402_X11_57_rt1_i,1_i,Manihot esculenta,ITH21F011P057,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_402_X11_57_rt1_i,418_X5_36_rt1_o,1_o,Manihot esculenta,ITH21F005P036,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_418_X5_36_rt1_o,403_A20_rt3_o,3_o,Manihot esculenta,HIL16A020,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_403_A20_rt3_o,307_A03_rt2_o,2_o,Manihot esculenta,HIL16A003,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_307_A03_rt2_o,220_X10_39_rt3_o,3_o,Manihot esculenta,ITH21F010P039,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_220_X10_39_rt3_o,402_X11_57_rt1_o,1_o,Manihot esculenta,ITH21F011P057,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_402_X11_57_rt1_o,107_X4_32_rt3_o,3_o,Manihot esculenta,ITH21F004P032,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_107_X4_32_rt3_o,418_X5_36_rt2_o,2_o,Manihot esculenta,ITH21F005P036,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_418_X5_36_rt2_o,118_C14_rt2_o,2_o,Manihot esculenta,HIL16C014,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_118_C14_rt2_o,218_X8_41.5_rt3_i,3_i,Manihot esculenta,ITH21F008P042,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_218_X8_41.5_rt3_i,220_X10_39_rt2_o,2_o,Manihot esculenta,ITH21F010P039,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_220_X10_39_rt2_o,218_X8_41.5_rt2_o,2_o,Manihot esculenta,ITH21F008P042,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_218_X8_41.5_rt2_o,106_X4_46_rt2_o,2_o,Manihot esculenta,ITH21F004P046,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_106_X4_46_rt2_o,402_X11_57_rt2_o,2_o,Manihot esculenta,ITH21F011P057,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_402_X11_57_rt2_o,303_X11_68_rt2_o,2_o,Manihot esculenta,ITH21F011P068,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_303_X11_68_rt2_o,205_X1_54_rt3_i,3_i,Manihot esculenta,ITH21F001P054,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_205_X1_54_rt3_i,304_X5_31_rt3_i,3_i,Manihot esculenta,ITH21F005P031,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_304_X5_31_rt3_i,313_X1_54_rt3_i,3_i,Manihot esculenta,ITH21F001P054,6 MAP,6/21/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_313_X1_54_rt3_i,205_X1_54_rt2_i,2_i,Manihot esculenta,ITH21F001P054,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_205_X1_54_rt2_i,115_X1_54_rt3_o,3_o,Manihot esculenta,ITH21F001P054,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_115_X1_54_rt3_o,417_X1_54_rt2_o,2_o,Manihot esculenta,ITH21F001P054,5 MAP,5/30/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_417_X1_54_rt2_o,411_C17_rt3_i,3_i,Manihot esculenta,HIL16C017,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_411_C17_rt3_i,412_X11_68_rt2_i,2_i,Manihot esculenta,ITH21F011P068,6 MAP,6/21/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_BLANK,210_X11_68_rt1_i,1_i,Manihot esculenta,ITH21F011P068,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_210_X11_68_rt1_i,101_X2_24_rt3_i,3_i,Manihot esculenta,ITH21F002P024,6 MAP,6/20/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_101_X2_24_rt3_i,207_A04_rt1_i,1_i,Manihot esculenta,HIL16A004,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_207_A04_rt1_i,210_X11_68_rt1_o,1_o,Manihot esculenta,ITH21F011P068,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_210_X11_68_rt1_o,307_A03_rt1_i,1_i,Manihot esculenta,HIL16A003,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_307_A03_rt1_i,411_C17_rt2_o,2_o,Manihot esculenta,HIL16C017,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_411_C17_rt2_o,402_X11_57_rt3_o,3_o,Manihot esculenta,ITH21F011P057,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_402_X11_57_rt3_o,417_X1_54_rt2_i,2_i,Manihot esculenta,ITH21F001P054,5 MAP,5/30/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_417_X1_54_rt2_i,411_C17_rt1_i,1_i,Manihot esculenta,HIL16C017,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_411_C17_rt1_i,303_X11_68_rt3_i,3_i,Manihot esculenta,ITH21F011P068,7 MAP,7/6/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_303_X11_68_rt3_i,101_X2_24_rt2_i,2_i,Manihot esculenta,ITH21F002P024,6 MAP,6/20/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_101_X2_24_rt2_i,101_X2_24_rt2_o,2_o,Manihot esculenta,ITH21F002P024,6 MAP,6/20/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_101_X2_24_rt2_o,303_X11_68_rt1_o,1_o,Manihot esculenta,ITH21F011P068,7 MAP,7/6/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_303_X11_68_rt1_o,106_X4_46_rt1_i,1_i,Manihot esculenta,ITH21F004P046,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_106_X4_46_rt1_i,320_X2_24_rt3_i,3_i,Manihot esculenta,ITH21F002P024,5 MAP,5/30/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_320_X2_24_rt3_i,320_X2_24_rt2_o,2_o,Manihot esculenta,ITH21F002P024,5 MAP,5/30/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_320_X2_24_rt2_o,206_C17_rt1_o,1_o,Manihot esculenta,HIL16C017,5 MAP,5/29/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_206_C17_rt1_o,403_A20_rt2_o,2_o,Manihot esculenta,HIL16A020,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_403_A20_rt2_o,307_A03_rt3_o,3_o,Manihot esculenta,HIL16A003,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_307_A03_rt3_o,101_X2_24_rt1_i,1_i,Manihot esculenta,ITH21F002P024,6 MAP,6/20/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_101_X2_24_rt1_i,302_C17_rt3_o,3_o,Manihot esculenta,HIL16C017,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_302_C17_rt3_o,403_A20_rt1_o,1_o,Manihot esculenta,HIL16A020,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_403_A20_rt1_o,409_X2_45_rt2_o,2_o,Manihot esculenta,ITH21F002P045,8 MAP,7/28/23,"Ithaca, NY, USA", Storage root outer layer
+TCDM4_409_X2_45_rt2_o,407_X2_24_rt3_i,3_i,Manihot esculenta,ITH21F002P024,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
+TCDM4_407_X2_24_rt3_i,317_X4_42_rt2_i,2_i,Manihot esculenta,ITH21F004P042,8 MAP,7/28/23,"Ithaca, NY, USA",Storage root inner layer
