@@ -1,0 +1,1510 @@
+gene_id,locusName,Description,colors,class,gene_metabolite
+Manes.01G000155.v8.1,Manes.01G000155,(1 of 18) PTHR31989:SF21 - NAC TRANSCRIPTION FACTOR-LIKE 9,yellow,NA,gene
+Manes.01G000279.v8.1,Manes.01G000279,,yellow,NA,gene
+Manes.01G001800.v8.1,Manes.01G001800,(1 of 1) 2.4.1.149 - N-acetyllactosaminide beta-1;3-N-acetylglucosaminyltransferase / Poly-N-acetyllactosamine extension enzyme,red,NA,gene
+Manes.01G002300.v8.1,Manes.01G002300,,yellow,NA,gene
+Manes.01G004860.v8.1,Manes.01G004860,(1 of 2) K19307 - 25S rRNA (uracil2634-N3)-methyltransferase [EC:2.1.1.313] (BMT5),magenta,NA,gene
+Manes.01G006975.v8.1,Manes.01G006975,,magenta,NA,gene
+Manes.01G008250.v8.1,Manes.01G008250,(1 of 7) PTHR13068:SF18 - EMB|CAB62602.1,magenta,NA,gene
+Manes.01G009700.v8.1,Manes.01G009700,(1 of 1) PTHR21228//PTHR21228:SF20 - FAST LEU-RICH DOMAIN-CONTAINING // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.01G013300.v8.1,Manes.01G013300,(1 of 1) 1.1.1.300//1.1.1.330 - NADP-retinol dehydrogenase / Retinol dehydrogenase (NADP(+)) // Very-long-chain 3-oxoacyl-CoA reductase / Very-long-chain beta-ketoacyl-CoA reductase,yellow,NA,gene
+Manes.01G012400.v8.1,Manes.01G012400,,yellow,NA,gene
+Manes.01G011300.v8.1,Manes.01G011300,(1 of 1) PTHR10759//PTHR10759:SF6 - 60S RIBOSOMAL PROTEIN L34 // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.01G015400.v8.1,Manes.01G015400,(1 of 1) 2.4.1.227 - Undecaprenyldiphospho-muramoylpentapeptide beta-N- acetylglucosaminyltransferase / Undecaprenyl-PP-MurNAc-pentapeptide-UDPGlcNAc GlcNAc transferase,magenta,NA,gene
+Manes.01G016300.v8.1,Manes.01G016300,(1 of 3) K01866 - tyrosyl-tRNA synthetase (YARS; tyrS),red,NA,gene
+Manes.01G018600.v8.1,Manes.01G018600,(1 of 4) 1.1.1.54//1.3.1.102//1.3.1.74 - Allyl-alcohol dehydrogenase // 2-alkenal reductase (NADP(+)) / NADPH-dependent alkenal/one oxidoreductase // 2-alkenal reductase (NAD(P)(+)) / NADPH:2-alkenal alpha;beta-hydrogenase,yellow,NA,gene
+Manes.01G020300.v8.1,Manes.01G020300,,magenta,NA,gene
+Manes.01G021200.v8.1,Manes.01G021200,(1 of 1) K13111 - WD40 repeat-containing protein SMU1 (SMU1),red,NA,gene
+Manes.01G022400.v8.1,Manes.01G022400,,yellow,NA,gene
+Manes.01G025500.v8.1,Manes.01G025500,(1 of 2) PTHR31964//PTHR31964:SF39 - FAMILY NOT NAMED // ADENINE NUCLEOTIDE ALPHA HYDROLASES-LIKE PROTEIN,yellow,NA,gene
+Manes.01G026000.v8.1,Manes.01G026000,(1 of 26) PF03110 - SBP domain (SBP),red,NA,gene
+Manes.01G031600.v8.1,Manes.01G031600,(1 of 2) PTHR31221:SF22 - WRKY TRANSCRIPTION FACTOR 3-RELATED,yellow,NA,gene
+Manes.01G034200.v8.1,Manes.01G034200,(1 of 2) PTHR14304//PTHR14304:SF11 - P30 DBC PROTEIN // PROTEIN LST-3; ISOFORM A,red,NA,gene
+Manes.01G034800.v8.1,Manes.01G034800,(1 of 2) PTHR10641//PTHR10641:SF512 - MYB-LIKE DNA-BINDING PROTEIN MYB // MYB-DOMAIN TRANSCRIPTION FACTOR LOF1-RELATED,yellow,NA,gene
+Manes.01G039500.v8.1,Manes.01G039500,(1 of 2) PTHR14221//PTHR14221:SF1 - WD REPEAT DOMAIN 44 // TRANSDUCIN/WD40 DOMAIN-CONTAINING PROTEIN,red,NA,gene
+Manes.01G037600.v8.1,Manes.01G037600,(1 of 2) K18466 - vacuolar protein sorting-associated protein 26 (VPS26),red,NA,gene
+Manes.01G038000.v8.1,Manes.01G038000,(1 of 3) PTHR23074//PTHR23074:SF20 - AAA ATPASE // GH08677P,yellow,NA,gene
+Manes.01G041400.v8.1,Manes.01G041400,(1 of 5) PF05030 - SSXT protein (N-terminal region) (SSXT),magenta,NA,gene
+Manes.01G043300.v8.1,Manes.01G043300,(1 of 67) PF03168 - Late embryogenesis abundant protein (LEA_2),yellow,NA,gene
+Manes.01G043900.v8.1,Manes.01G043900,(1 of 4) K03626 - nascent polypeptide-associated complex subunit alpha (EGD2; NACA),red,NA,gene
+Manes.01G044200.v8.1,Manes.01G044200,,yellow,NA,gene
+Manes.01G044400.v8.1,Manes.01G044400,(1 of 1) PTHR22814:SF51 - HEAVY METAL TRANSPORT/DETOXIFICATION DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.01G051530.v8.1,Manes.01G051530,(1 of 67) PF03168 - Late embryogenesis abundant protein (LEA_2),yellow,NA,gene
+Manes.01G049700.v8.1,Manes.01G049700,(1 of 2) PTHR11566//PTHR11566:SF58 - DYNAMIN // DYNAMIN-RELATED PROTEIN 1A,red,NA,gene
+Manes.01G052500.v8.1,Manes.01G052500,(1 of 2) PTHR10857//PTHR10857:SF54 - COPINE // DCD (DEVELOPMENT AND CELL DEATH) DOMAIN PROTEIN,yellow,NA,gene
+Manes.01G052600.v8.1,Manes.01G052600,(1 of 2) PTHR22765:SF50 - RING-H2 ZINC FINGER PROTEIN RHA4A,red,NA,gene
+Manes.01G060400.v8.1,Manes.01G060400,(1 of 6) K12897 - transformer-2 protein (TRA2),red,NA,gene
+Manes.01G062700.v8.1,Manes.01G062700,(1 of 3) 3.6.3.4//3.6.3.54 - Cu(2+)-exporting ATPase // Cu(+) exporting ATPase,magenta,NA,gene
+Manes.01G063000.v8.1,Manes.01G063000,(1 of 1) K11883 - RNA-binding protein NOB1 (NOB1),magenta,NA,gene
+Manes.01G066000.v8.1,Manes.01G066000,(1 of 2) PTHR31764:SF0 - PROTEIN HAPLESS 2,magenta,NA,gene
+Manes.01G072100.v8.1,Manes.01G072100,(1 of 2) K14423 - 4;4-dimethyl-9beta;19-cyclopropylsterol-4alpha-methyl oxidase (SMO1),yellow,NA,gene
+Manes.01G076800.v8.1,Manes.01G076800,(1 of 19) PF14144 - Seed dormancy control (DOG1),magenta,NA,gene
+Manes.01G076900.v8.1,Manes.01G076900,(1 of 2) 2.3.1.180 - Beta-ketoacyl-[acyl-carrier-protein] synthase III / KASIII,magenta,NA,gene
+Manes.01G080400.v8.1,Manes.01G080400,,yellow,NA,gene
+Manes.01G081800.v8.1,Manes.01G081800,(1 of 8) PF08458 - Plant pleckstrin homology-like region (PH_2),yellow,NA,gene
+Manes.01G082400.v8.1,Manes.01G082400,(1 of 1) K08740 - DNA mismatch repair protein MSH4 (MSH4),yellow,NA,gene
+Manes.01G083900.v8.1,Manes.01G083900,(1 of 1) PTHR24078//PTHR24078:SF280 - DNAJ HOMOLOG SUBFAMILY C MEMBER // MYB TRANSCRIPTION FACTOR,yellow,NA,gene
+Manes.01G087050.v8.1,Manes.01G087050,(1 of 1) PTHR15680:SF10 - 50S RIBOSOMAL PROTEIN L19-1; CHLOROPLASTIC-RELATED,red,NA,gene
+Manes.01G087400.v8.1,Manes.01G087400,(1 of 2) PTHR23291:SF34 - BAX INHIBITOR 1,yellow,NA,gene
+Manes.01G087700.v8.1,Manes.01G087700,(1 of 4) PTHR22884:SF370 - HISTONE-LYSINE N-METHYLTRANSFERASE; H3 LYSINE-9 SPECIFIC SUVH5-RELATED,magenta,NA,gene
+Manes.01G088500.v8.1,Manes.01G088500,(1 of 2) PTHR14154//PTHR14154:SF14 - UPF0041 BRAIN PROTEIN 44-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.01G089000.v8.1,Manes.01G089000,(1 of 1) 3.5.3.26 - (S)-ureidoglycine aminohydrolase,magenta,NA,gene
+Manes.01G093400.v8.1,Manes.01G093400,(1 of 2) K01739 - cystathionine gamma-synthase (metB),red,NA,gene
+Manes.01G094800.v8.1,Manes.01G094800,(1 of 31) PF07714//PF11721 - Protein tyrosine kinase (Pkinase_Tyr) // Di-glucose binding within endoplasmic reticulum (Malectin),yellow,NA,gene
+Manes.01G095500.v8.1,Manes.01G095500,(1 of 1) 2.7.7.48//3.4.21.98//3.6.1.15//3.6.4.13 - RNA-directed RNA polymerase / RNA nucleotidyltransferase (RNA-directed) // Hepacivirin / Hepatitis C virus NS3 serine proteinase // Nucleoside-triphosphate phosphatase / Nucleoside-triphosphatase // RNA helicase,yellow,NA,gene
+Manes.01G101300.v8.1,Manes.01G101300,(1 of 3) PTHR33971:SF1 - GENOMIC DNA; CHROMOSOME 3; P1 CLONE:MRI12,red,NA,gene
+Manes.01G102000.v8.1,Manes.01G102000,,red,NA,gene
+Manes.01G102400.v8.1,Manes.01G102400,(1 of 31) PF07714//PF11721 - Protein tyrosine kinase (Pkinase_Tyr) // Di-glucose binding within endoplasmic reticulum (Malectin),magenta,NA,gene
+Manes.01G103600.v8.1,Manes.01G103600,(1 of 2) PF14817 - HAUS augmin-like complex subunit 5 (HAUS5),magenta,NA,gene
+Manes.01G106000.v8.1,Manes.01G106000,(1 of 1) K16750 - biogenesis of lysosome-related organelles complex 1 subunit 2 (BLOC1S2),red,NA,gene
+Manes.01G108500.v8.1,Manes.01G108500,(1 of 2) PTHR31169:SF1 - ZINC-FINGER DOMAIN OF MONOAMINE-OXIDASE A REPRESSOR R1 PROTEIN,magenta,NA,gene
+Manes.01G110900.v8.1,Manes.01G110900,(1 of 3) PF13398 - Peptidase M50B-like (Peptidase_M50B),yellow,NA,gene
+Manes.01G111200.v8.1,Manes.01G111200,(1 of 1) PTHR21726//PTHR21726:SF35 - PHOSPHATIDYLINOSITOL N-ACETYLGLUCOSAMINYLTRANSFERASE SUBUNIT P  DOWN SYNDROME CRITICAL REGION PROTEIN 5 -RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.01G118300.v8.1,Manes.01G118300,(1 of 1) K10838 - xeroderma pigmentosum group C-complementing protein (XPC),red,NA,gene
+Manes.01G118800.v8.1,Manes.01G118800,(1 of 2) PTHR11711//PTHR11711:SF152 - ADP RIBOSYLATION FACTOR-RELATED // ADP-RIBOSYLATION FACTOR-LIKE A1A,yellow,NA,gene
+Manes.01G119001.v8.1,Manes.01G119001,,magenta,NA,gene
+Manes.01G120100.v8.1,Manes.01G120100,(1 of 1) PTHR28620:SF1 - PROTEIN F25B4.8; ISOFORM A,red,NA,gene
+Manes.01G122000.v8.1,Manes.01G122000,(1 of 1) K06874 - zinc finger protein (K06874),yellow,NA,gene
+Manes.01G122200.v8.1,Manes.01G122200,(1 of 5) 4.1.1.15 - Glutamate decarboxylase / L-glutamate 1-carboxy-lyase,yellow,NA,gene
+Manes.01G122300.v8.1,Manes.01G122300,(1 of 2) 4.4.1.8 - Cystathionine beta-lyase / Cystine lyase,yellow,NA,gene
+Manes.01G122400.v8.1,Manes.01G122400,(1 of 5) 4.1.1.15 - Glutamate decarboxylase / L-glutamate 1-carboxy-lyase,red,NA,gene
+Manes.01G124801.v8.1,Manes.01G124801,(1 of 2) PTHR10887//PTHR10887:SF358 - DNA2/NAM7 HELICASE FAMILY // P-LOOP CONTAINING NUCLEOSIDE TRIPHOSPHATE HYDROLASES SUPERFAMILY PROTEIN,yellow,NA,gene
+Manes.01G124900.v8.1,Manes.01G124900,(1 of 2) PTHR10887//PTHR10887:SF358 - DNA2/NAM7 HELICASE FAMILY // P-LOOP CONTAINING NUCLEOSIDE TRIPHOSPHATE HYDROLASES SUPERFAMILY PROTEIN,yellow,NA,gene
+Manes.01G125100.v8.1,Manes.01G125100,,red,NA,gene
+Manes.01G128100.v8.1,Manes.01G128100,(1 of 2) K06942 - uncharacterized protein (K06942),yellow,NA,gene
+Manes.01G129100.v8.1,Manes.01G129100,(1 of 1) K02433 - aspartyl-tRNA(Asn)/glutamyl-tRNA(Gln) amidotransferase subunit A (gatA; QRSL1),magenta,NA,gene
+Manes.01G133200.v8.1,Manes.01G133200,(1 of 1) K02116 - ATP synthase protein I (atpI),magenta,NA,gene
+Manes.01G136850.v8.1,Manes.01G136850,(1 of 3) 2.7.7.3 - Pantetheine-phosphate adenylyltransferase / PPAT,yellow,NA,gene
+Manes.01G137500.v8.1,Manes.01G137500,(1 of 3) PTHR10286//PTHR10286:SF13 - INORGANIC PYROPHOSPHATASE // INORGANIC PYROPHOSPHATASE-LIKE PROTEIN,yellow,NA,gene
+Manes.01G140600.v8.1,Manes.01G140600,(1 of 1) 2.8.4.3 - tRNA-2-methylthio-N(6)-dimethylallyladenosine synthase / tRNA-i6A37 methylthiotransferase,yellow,NA,gene
+Manes.01G142800.v8.1,Manes.01G142800,(1 of 2) PTHR22884//PTHR22884:SF339 - SET DOMAIN PROTEINS // PHD FINGER; SWIB/MDM2 AND GYF DOMAIN-CONTAINING PROTEIN,red,NA,gene
+Manes.01G146000.v8.1,Manes.01G146000,(1 of 1) K10772 - AP endonuclease 2 (APEX2),red,NA,gene
+Manes.01G148200.v8.1,Manes.01G148200,(1 of 2) K02150 - V-type H+-transporting ATPase subunit E (ATPeV1E; ATP6E),red,NA,gene
+Manes.01G149000.v8.1,Manes.01G149000,(1 of 6) PTHR22835//PTHR22835:SF184 - ZINC FINGER FYVE DOMAIN CONTAINING PROTEIN // GDSL ESTERASE/LIPASE EXL1-RELATED,yellow,NA,gene
+Manes.01G150600.v8.1,Manes.01G150600,(1 of 1) PF13441 - YMGG-like Gly-zipper (Gly-zipper_YMGG),yellow,NA,gene
+Manes.01G152400.v8.1,Manes.01G152400,(1 of 4) PTHR11102//PTHR11102:SF101 - SEL-1-LIKE PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.01G155200.v8.1,Manes.01G155200,(1 of 3) K12898 - heterogeneous nuclear ribonucleoprotein F/H (HNRNPF_H),yellow,NA,gene
+Manes.01G160400.v8.1,Manes.01G160400,(1 of 2) PTHR13544:SF0 - SELENOPROTEIN T,magenta,NA,gene
+Manes.01G163500.v8.1,Manes.01G163500,,magenta,NA,gene
+Manes.01G164100.v8.1,Manes.01G164100,(1 of 1) PTHR10746:SF10 - 50S RIBOSOMAL PROTEIN L4; CHLOROPLASTIC,magenta,NA,gene
+Manes.01G164200.v8.1,Manes.01G164200,(1 of 2) 4.1.99.17 - Phosphomethylpyrimidine synthase,yellow,NA,gene
+Manes.01G165700.v8.1,Manes.01G165700,(1 of 1) PTHR11902//PTHR11902:SF13 - ENOLASE // CYTOSOLIC ENOLASE 3,red,carb,gene
+Manes.01G168000.v8.1,Manes.01G168000,(1 of 12) K06269 - serine/threonine-protein phosphatase PP1 catalytic subunit (PPP1C),red,NA,gene
+Manes.01G169400.v8.1,Manes.01G169400,(1 of 2) K03122 - transcription initiation factor TFIIA large subunit (TFIIA1; GTF2A1; TOA1),red,NA,gene
+Manes.01G173000.v8.1,Manes.01G173000,(1 of 3) PTHR12553//PTHR12553:SF47 - RIBONUCLEASE Z // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.01G173632.v8.1,Manes.01G173632,(1 of 1) PTHR12396:SF11 - METHYL-CPG-BINDING DOMAIN-CONTAINING PROTEIN 5-RELATED,red,NA,gene
+Manes.01G174700.v8.1,Manes.01G174700,(1 of 3) K02727 - 20S proteasome subunit alpha 7 (PSMA3),yellow,NA,gene
+Manes.01G182300.v8.1,Manes.01G182300,(1 of 1) PTHR10366//PTHR10366:SF384//PTHR15020//PTHR15020:SF11 - NAD DEPENDENT EPIMERASE/DEHYDRATASE // NAD(P)-BINDING ROSSMANN-FOLD SUPERFAMILY PROTEIN // FLAVIN REDUCTASE-RELATED // UPF0659 PROTEIN YMR090W,red,NA,gene
+Manes.01G189800.v8.1,Manes.01G189800,(1 of 3) 3.2.1.1//3.2.1.141 - Alpha-amylase / Glycogenase // 4-alpha-D-((1->4)-alpha-D-glucano)trehalose trehalohydrolase / Maltooligosyl trehalose trehalohydrolase,yellow,NA,gene
+Manes.01G192200.v8.1,Manes.01G192200,(1 of 2) PTHR24078:SF317 - DNAJ HEAT SHOCK PROTEIN-RELATED,red,NA,gene
+Manes.01G192600.v8.1,Manes.01G192600,(1 of 1) PTHR16263//PTHR16263:SF4 - FAMILY NOT NAMED // TETRATRICOPEPTIDE REPEAT PROTEIN 38,red,NA,gene
+Manes.01G193700.v8.1,Manes.01G193700,(1 of 2) PTHR11668//PTHR11668:SF257 - SERINE/THREONINE PROTEIN PHOSPHATASE // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.01G196200.v8.1,Manes.01G196200,(1 of 1) PTHR11014//PTHR11014:SF85 - PEPTIDASE M20 FAMILY MEMBER // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.01G205200.v8.1,Manes.01G205200,(1 of 1) K08851 - TP53 regulating kinase and related kinases [EC:2.7.11.1] (TP53RK; PRPK; BUD32),red,NA,gene
+Manes.01G206300.v8.1,Manes.01G206300,,yellow,NA,gene
+Manes.01G206800.v8.1,Manes.01G206800,(1 of 2) KOG2812 - Uncharacterized conserved protein,magenta,NA,gene
+Manes.01G207600.v8.1,Manes.01G207600,(1 of 4) K14319 - Ran GTPase-activating protein 1 (RANGAP1),magenta,NA,gene
+Manes.01G208900.v8.1,Manes.01G208900,(1 of 2) K11087 - small nuclear ribonucleoprotein D1 (SNRPD1; SMD1),red,NA,gene
+Manes.01G209500.v8.1,Manes.01G209500,,yellow,NA,gene
+Manes.01G213400.v8.1,Manes.01G213400,(1 of 2) 1.1.1.268 - 2-(R)-hydroxypropyl-CoM dehydrogenase / 2-(2-(R)-hydroxypropylthio)ethanesulfonate dehydrogenase,magenta,NA,gene
+Manes.01G214000.v8.1,Manes.01G214000,(1 of 5) PTHR10110:SF117 - SODIUM/HYDROGEN EXCHANGER 1-RELATED,yellow,NA,gene
+Manes.01G216600.v8.1,Manes.01G216600,(1 of 3) 1.5.1.5//3.5.4.9 - Methylenetetrahydrofolate dehydrogenase (NADP(+)) // Methenyltetrahydrofolate cyclohydrolase,magenta,NA,gene
+Manes.01G217201.v8.1,Manes.01G217201,(1 of 1) PTHR10903//PTHR10903:SF39 - GTPASE; IMAP FAMILY MEMBER-RELATED // TRANSLOCASE OF CHLOROPLAST 159; CHLOROPLASTIC,red,NA,gene
+Manes.01G218300.v8.1,Manes.01G218300,(1 of 4) K12890 - splicing factor; arginine/serine-rich 1/9 (SFRS1_9),red,NA,gene
+Manes.01G218500.v8.1,Manes.01G218500,(1 of 1) PTHR18934//PTHR18934:SF129 - ATP-DEPENDENT RNA HELICASE // ZINC FINGER CCCH DOMAIN-CONTAINING PROTEIN 31,yellow,NA,gene
+Manes.01G218550.v8.1,Manes.01G218550,,red,NA,gene
+Manes.01G220000.v8.1,Manes.01G220000,(1 of 3) K10798 - poly (PARP),yellow,NA,gene
+Manes.01G220100.v8.1,Manes.01G220100,(1 of 2) PTHR10459//PTHR10459:SF59 - DNA LIGASE // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.01G224100.v8.1,Manes.01G224100,,yellow,NA,gene
+Manes.01G226500.v8.1,Manes.01G226500,(1 of 2) PTHR23241//PTHR23241:SF55 - LATE EMBRYOGENESIS ABUNDANT  PLANTS  LEA-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.01G226600.v8.1,Manes.01G226600,(1 of 1) PTHR13561//PTHR13561:SF5 - DNA REPLICATION REGULATOR DPB11-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.01G234500.v8.1,Manes.01G234500,(1 of 8) PTHR24221//PTHR24221:SF205 - FAMILY NOT NAMED // ABC TRANSPORTER B FAMILY MEMBER 11-RELATED,magenta,NA,gene
+Manes.01G234700.v8.1,Manes.01G234700,(1 of 2) PTHR11780//PTHR11780:SF8 - NADH-UBIQUINONE OXIDOREDUCTASE FLAVOPROTEIN 1  NDUFV1 // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.01G238151.v8.1,Manes.01G238151,,yellow,NA,gene
+Manes.01G238251.v8.1,Manes.01G238251,(1 of 6) PTHR31989//PTHR31989:SF5 - FAMILY NOT NAMED // F11O4.3-RELATED,yellow,NA,gene
+Manes.01G238300.v8.1,Manes.01G238300,(1 of 18) PTHR31989:SF21 - NAC TRANSCRIPTION FACTOR-LIKE 9,yellow,NA,gene
+Manes.01G238400.v8.1,Manes.01G238400,(1 of 18) PTHR31989:SF21 - NAC TRANSCRIPTION FACTOR-LIKE 9,yellow,NA,gene
+Manes.01G239000.v8.1,Manes.01G239000,(1 of 2) K12133 - MYB-related transcription factor LHY (LHY),red,NA,gene
+Manes.01G242400.v8.1,Manes.01G242400,(1 of 3) PTHR24298//PTHR24298:SF46 - FAMILY NOT NAMED // CYTOCHROME P450 78A6-RELATED,red,NA,gene
+Manes.01G243100.v8.1,Manes.01G243100,(1 of 2) PTHR24093:SF289 - CALCIUM-TRANSPORTING ATPASE 1; ENDOPLASMIC RETICULUM-TYPE-RELATED,red,NA,gene
+Manes.01G244000.v8.1,Manes.01G244000,(1 of 45) PF02701 - Dof domain; zinc finger (zf-Dof),yellow,NA,gene
+Manes.01G246000.v8.1,Manes.01G246000,(1 of 9) K04506 - E3 ubiquitin-protein ligase SIAH1 (SIAH1),red,NA,gene
+Manes.01G248000.v8.1,Manes.01G248000,(1 of 2) PTHR32285:SF9 - PROTEIN TRICHOME BIREFRINGENCE-LIKE 25-RELATED,magenta,NA,gene
+Manes.01G248300.v8.1,Manes.01G248300,(1 of 4) PTHR33978:SF2 - EXPRESSED PROTEIN,red,NA,gene
+Manes.01G250800.v8.1,Manes.01G250800,(1 of 1) PTHR33322:SF4 - BAG FAMILY MOLECULAR CHAPERONE REGULATOR 6,yellow,NA,gene
+Manes.01G253600.v8.1,Manes.01G253600,(1 of 2) PTHR31509:SF3 - BYPASS1-RELATED PROTEIN-RELATED,yellow,NA,gene
+Manes.01G254300.v8.1,Manes.01G254300,(1 of 2) PTHR11972//PTHR11972:SF41 - NADPH OXIDASE // FERRIC REDUCTION OXIDASE 2-RELATED,red,NA,gene
+Manes.01G256200.v8.1,Manes.01G256200,(1 of 4) PTHR27003//PTHR27003:SF52 - FAMILY NOT NAMED // U-BOX DOMAIN-CONTAINING PROTEIN 33,yellow,NA,gene
+Manes.01G258500.v8.1,Manes.01G258500,,red,NA,gene
+Manes.01G260600.v8.1,Manes.01G260600,(1 of 2) PTHR11564:SF15 - CELL DIVISION PROTEIN FTSY HOMOLOG; CHLOROPLASTIC,magenta,NA,gene
+Manes.01G263100.v8.1,Manes.01G263100,(1 of 1) K12161 - ubiquitin related modifier 1 (URM1),red,NA,gene
+Manes.01G265800.v8.1,Manes.01G265800,(1 of 2) K02732 - 20S proteasome subunit beta 6 (PSMB1),red,NA,gene
+Manes.01G265900.v8.1,Manes.01G265900,(1 of 1) K10885 - ATP-dependent DNA helicase 2 subunit 2 (XRCC5; KU80; G22P2),yellow,NA,gene
+Manes.01G266200.v8.1,Manes.01G266200,(1 of 6) 1.1.1.348 - Vestitone reductase,magenta,NA,gene
+Manes.01G268401.v8.1,Manes.01G268401,,magenta,NA,gene
+Manes.01G274900.v8.1,Manes.01G274900,(1 of 5) K15404 - aldehyde decarbonylase (K15404; CER1),red,NA,gene
+Manes.02G001000.v8.1,Manes.02G001000,(1 of 2) K13679 - granule-bound starch synthase [EC:2.4.1.242] Glc a1-4 Glc (WAXY),red,carb,gene
+Manes.02G001600.v8.1,Manes.02G001600,(1 of 2) PTHR31989:SF39 - NAC DOMAIN-CONTAINING PROTEIN 12,red,NA,gene
+Manes.02G007900.v8.1,Manes.02G007900,(1 of 1) PTHR10168:SF61 - F1N19.7,yellow,NA,gene
+Manes.02G009900.v8.1,Manes.02G009900,,yellow,NA,gene
+Manes.02G013100.v8.1,Manes.02G013100,(1 of 14) K06689 - ubiquitin-conjugating enzyme E2 D/E (UBE2D_E; UBC4; UBC5),red,NA,gene
+Manes.02G014200.v8.1,Manes.02G014200,(1 of 1) PTHR31071//PTHR31071:SF9 - FAMILY NOT NAMED // INTRACELLULAR PROTEIN TRANSPORT PROTEIN USO1-LIKE PROTEIN,yellow,NA,gene
+Manes.02G014900.v8.1,Manes.02G014900,(1 of 1) PTHR31827//PTHR31827:SF14 - FAMILY NOT NAMED // F22C12.10,red,NA,gene
+Manes.02G016500.v8.1,Manes.02G016500,(1 of 1) PTHR11668:SF280 - SERINE/THREONINE-PROTEIN PHOSPHATASE PP1 ISOZYME 7,red,NA,gene
+Manes.02G018000.v8.1,Manes.02G018000,(1 of 2) PTHR24055//PTHR24055:SF224 - MITOGEN-ACTIVATED PROTEIN KINASE // MITOGEN-ACTIVATED PROTEIN KINASE 5,magenta,NA,gene
+Manes.02G019350.v8.1,Manes.02G019350,(1 of 2) PTHR11514//PTHR11514:SF37 - MYC // TRANSCRIPTION FACTOR EGL1-RELATED,magenta,NA,gene
+Manes.02G028000.v8.1,Manes.02G028000,(1 of 3) K15277 - solute carrier family 35 (adenosine 3'-phospho 5'-phosphosulfate transporter); member B3 (SLC35B3; PAPST2),yellow,NA,gene
+Manes.02G030300.v8.1,Manes.02G030300,(1 of 1) KOG2427 - Uncharacterized conserved protein,red,NA,gene
+Manes.02G032500.v8.1,Manes.02G032500,(1 of 2) PTHR31096:SF6 - ACR7-RELATED,red,NA,gene
+Manes.02G032685.v8.1,Manes.02G032685,,yellow,NA,gene
+Manes.02G033500.v8.1,Manes.02G033500,(1 of 3) PTHR33593:SF2 - F5O11.5,yellow,NA,gene
+Manes.02G034600.v8.1,Manes.02G034600,,yellow,NA,gene
+Manes.02G034700.v8.1,Manes.02G034700,(1 of 2) PTHR31080:SF2 - F23N19.14-RELATED,yellow,NA,gene
+Manes.02G034900.v8.1,Manes.02G034900,(1 of 4) PTHR31080:SF8 - F23N19.12,yellow,NA,gene
+Manes.02G044200.v8.1,Manes.02G044200,(1 of 2) PTHR23291:SF34 - BAX INHIBITOR 1,yellow,NA,gene
+Manes.02G045900.v8.1,Manes.02G045900,(1 of 5) K02915 - large subunit ribosomal protein L34e (RP-L34e; RPL34),red,NA,gene
+Manes.02G046500.v8.1,Manes.02G046500,(1 of 1) K06675 - structural maintenance of chromosome 4 (SMC4),red,NA,gene
+Manes.02G047100.v8.1,Manes.02G047100,(1 of 2) PTHR10759//PTHR10759:SF8 - 60S RIBOSOMAL PROTEIN L34 // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.02G052600.v8.1,Manes.02G052600,(1 of 9) 2.4.1.1 - Glycogen phosphorylase / Polyphosphorylase,magenta,carb,gene
+Manes.02G056200.v8.1,Manes.02G056200,(1 of 1) PTHR12210//PTHR12210:SF58 - NUCLEAR LIM INTERACTOR-INTERACTING FACTOR-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G057100.v8.1,Manes.02G057100,,red,NA,gene
+Manes.02G058400.v8.1,Manes.02G058400,(1 of 4) PTHR13593//PTHR13593:SF46 - UNCHARACTERIZED // F21F23.12 PROTEIN,yellow,NA,gene
+Manes.02G064600.v8.1,Manes.02G064600,(1 of 1) PTHR31050//PTHR31050:SF0 - FAMILY NOT NAMED // T25B24.5 PROTEIN,yellow,NA,gene
+Manes.02G064700.v8.1,Manes.02G064700,,red,NA,gene
+Manes.02G069700.v8.1,Manes.02G069700,(1 of 2) PTHR17224:SF3 - CHLOROPLASTIC GROUP IIB INTRON SPLICING FACILITATOR CRS2-A; CHLOROPLASTIC-RELATED,yellow,NA,gene
+Manes.02G070300.v8.1,Manes.02G070300,(1 of 2) PTHR12277:SF83 - ALPHA/BETA-HYDROLASES SUPERFAMILY PROTEIN,magenta,NA,gene
+Manes.02G070700.v8.1,Manes.02G070700,(1 of 2) 3.5.1.94 - Gamma-glutamyl-gamma-aminobutyrate hydrolase / Gamma-glutamyl-GABA hydrolase,yellow,NA,gene
+Manes.02G071350.v8.1,Manes.02G071350,(1 of 2) PTHR32059//PTHR32059:SF0 - FAMILY NOT NAMED // LISH DOMAIN AND HEAT REPEAT-CONTAINING PROTEIN KIAA1468,red,NA,gene
+Manes.02G074800.v8.1,Manes.02G074800,(1 of 3) 3.4.21.108 - HtrA2 peptidase / Serine proteinase OMI,magenta,NA,gene
+Manes.02G077000.v8.1,Manes.02G077000,(1 of 2) PTHR21493:SF112 - ALPHA/BETA-HYDROLASES SUPERFAMILY PROTEIN,red,NA,gene
+Manes.02G077600.v8.1,Manes.02G077600,(1 of 24) PF00069//PF08263 - Protein kinase domain (Pkinase) // Leucine rich repeat N-terminal domain (LRRNT_2),yellow,NA,gene
+Manes.02G077700.v8.1,Manes.02G077700,(1 of 2) PTHR32080//PTHR32080:SF5 - FAMILY NOT NAMED // CYSTEINE-RICH REPEAT SECRETORY PROTEIN 60,yellow,NA,gene
+Manes.02G079800.v8.1,Manes.02G079800,,magenta,NA,gene
+Manes.02G080000.v8.1,Manes.02G080000,(1 of 1) K12850 - pre-mRNA-splicing factor 38B (PRPF38B),red,NA,gene
+Manes.02G080600.v8.1,Manes.02G080600,(1 of 3) K00963 - UTP--glucose-1-phosphate uridylyltransferase (UGP2; galU; galF),magenta,carb,gene
+Manes.02G081700.v8.1,Manes.02G081700,(1 of 3) K02291 - phytoene synthase (crtB),magenta,carot,gene
+Manes.02G082700.v8.1,Manes.02G082700,(1 of 4) 2.3.1.135 - Phosphatidylcholine--retinol O-acyltransferase / Retinyl ester synthase,yellow,NA,gene
+Manes.02G084200.v8.1,Manes.02G084200,(1 of 2) PTHR18937//PTHR18937:SF242 - STRUCTURAL MAINTENANCE OF CHROMOSOMES SMC FAMILY MEMBER // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.02G088600.v8.1,Manes.02G088600,(1 of 2) KOG0716 - Molecular chaperone (DnaJ superfamily),red,NA,gene
+Manes.02G094000.v8.1,Manes.02G094000,(1 of 3) K01247 - DNA-3-methyladenine glycosylase II (alkA),magenta,NA,gene
+Manes.02G094600.v8.1,Manes.02G094600,(1 of 1) PTHR10668:SF83 - PYRIDINE NUCLEOTIDE-DISULFIDE OXIDOREDUCTASE DOMAIN-CONTAINING PROTEIN 2,magenta,NA,gene
+Manes.02G095000.v8.1,Manes.02G095000,(1 of 2) PTHR22849:SF40 - U-BOX DOMAIN-CONTAINING PROTEIN 5,magenta,NA,gene
+Manes.02G096100.v8.1,Manes.02G096100,,magenta,NA,gene
+Manes.02G098700.v8.1,Manes.02G098700,(1 of 1) PTHR10992//PTHR10992:SF804 - ALPHA/BETA HYDROLASE FOLD-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.02G099400.v8.1,Manes.02G099400,(1 of 2) K07943 - ADP-ribosylation factor-like protein 2 (ARL2),magenta,NA,gene
+Manes.02G099800.v8.1,Manes.02G099800,(1 of 62) PF00892 - EamA-like transporter family (EamA),magenta,NA,gene
+Manes.02G101700.v8.1,Manes.02G101700,(1 of 2) PTHR11010//PTHR11010:SF42 - PROTEASE S28 PRO-X CARBOXYPEPTIDASE-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G102600.v8.1,Manes.02G102600,(1 of 1) 2.5.1.78 - 6;7-dimethyl-8-ribityllumazine synthase / Lumazine synthase,red,NA,gene
+Manes.02G108700.v8.1,Manes.02G108700,(1 of 10) KOG1724 - SCF ubiquitin ligase; Skp1 component,red,NA,gene
+Manes.02G108800.v8.1,Manes.02G108800,,magenta,NA,gene
+Manes.02G111300.v8.1,Manes.02G111300,(1 of 2) PTHR11106//PTHR11106:SF58 - GANGLIOSIDE INDUCED DIFFERENTIATION ASSOCIATED PROTEIN 2-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.02G113600.v8.1,Manes.02G113600,(1 of 2) PTHR13683//PTHR13683:SF227 - ASPARTYL PROTEASES // ASPARTYL PROTEASE FAMILY PROTEIN,yellow,NA,gene
+Manes.02G113900.v8.1,Manes.02G113900,(1 of 1) PTHR32002//PTHR32002:SF13 - FAMILY NOT NAMED // PROTEIN RKD5,yellow,NA,gene
+Manes.02G117704.v8.1,Manes.02G117704,,yellow,NA,gene
+Manes.02G118300.v8.1,Manes.02G118300,(1 of 3) PTHR19139//PTHR19139:SF30 - AQUAPORIN TRANSPORTER // AQUAPORIN TIP3-1-RELATED,yellow,NA,gene
+Manes.02G119300.v8.1,Manes.02G119300,(1 of 3) PTHR11071//PTHR11071:SF291 - PEPTIDYL-PROLYL CIS-TRANS ISOMERASE // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G119500.v8.1,Manes.02G119500,(1 of 2) PTHR12356//PTHR12356:SF18 - NUCLEAR MOVEMENT PROTEIN NUDC // NUDC DOMAIN-CONTAINING PROTEIN 2,magenta,NA,gene
+Manes.02G123000.v8.1,Manes.02G123000,(1 of 2) K04802 - proliferating cell nuclear antigen (PCNA),red,NA,gene
+Manes.02G130900.v8.1,Manes.02G130900,(1 of 4) PTHR31636//PTHR31636:SF46 - FAMILY NOT NAMED // SCARECROW-LIKE PROTEIN 11-RELATED,yellow,NA,gene
+Manes.02G131700.v8.1,Manes.02G131700,(1 of 2) PTHR22936:SF25 - PROTEIN RHOMBOID-LIKE 1,yellow,NA,gene
+Manes.02G134700.v8.1,Manes.02G134700,(1 of 1) PTHR11413//PTHR11413:SF50 - CYSTATIN FAMILY MEMBER // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.02G136000.v8.1,Manes.02G136000,(1 of 4) PF16711 - Actin-binding domain of plant-specific actin-binding protein (SCAB-ABD),yellow,NA,gene
+Manes.02G140201.v8.1,Manes.02G140201,(1 of 2) PTHR24193//PTHR24193:SF83 - ANKYRIN REPEAT PROTEIN // ANKYRIN REPEAT-CONTAINING PROTEIN,red,NA,gene
+Manes.02G141200.v8.1,Manes.02G141200,(1 of 44) PF03140 - Plant protein of unknown function (DUF247),magenta,NA,gene
+Manes.02G150500.v8.1,Manes.02G150500,(1 of 4) K02991 - small subunit ribosomal protein S6e (RP-S6e; RPS6),red,NA,gene
+Manes.02G151900.v8.1,Manes.02G151900,(1 of 4) PTHR18860:SF12 - 14-3-3-LIKE PROTEIN GF14 IOTA,yellow,NA,gene
+Manes.02G153200.v8.1,Manes.02G153200,(1 of 2) PTHR12537//PTHR12537:SF64 - RNA BINDING PROTEIN PUMILIO-RELATED // PUMILIO HOMOLOG 11-RELATED,yellow,NA,gene
+Manes.02G154600.v8.1,Manes.02G154600,(1 of 2) PTHR22847//PTHR22847:SF453 - WD40 REPEAT PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.02G154900.v8.1,Manes.02G154900,(1 of 2) K01834 - 2;3-bisphosphoglycerate-dependent phosphoglycerate mutase (PGAM; gpmA),yellow,carb,gene
+Manes.02G157200.v8.1,Manes.02G157200,,yellow,NA,gene
+Manes.02G159000.v8.1,Manes.02G159000,(1 of 9) PF07800 - Protein of unknown function (DUF1644) (DUF1644),red,NA,gene
+Manes.02G160700.v8.1,Manes.02G160700,(1 of 3) 1.14.11.23//1.14.11.9 - Flavonol synthase / FLS // Flavanone 3-dioxygenase / Naringenin;2-oxoglutarate:oxygen oxidoreductase (3-hydroxylating),magenta,NA,gene
+Manes.02G164300.v8.1,Manes.02G164300,(1 of 1) PF14542 - GCN5-related N-acetyl-transferase (Acetyltransf_CG),yellow,NA,gene
+Manes.02G166900.v8.1,Manes.02G166900,(1 of 1) PTHR12383//PTHR12383:SF24 - PROTEASE FAMILY S26 MITOCHONDRIAL INNER MEMBRANE PROTEASE-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.02G173500.v8.1,Manes.02G173500,(1 of 3) PTHR24361//PTHR24361:SF310 - MITOGEN-ACTIVATED KINASE KINASE KINASE // MITOGEN-ACTIVATED PROTEIN KINASE KINASE KINASE 3,yellow,NA,gene
+Manes.02G177900.v8.1,Manes.02G177900,(1 of 2) K01590 - histidine decarboxylase (hdc; HDC),yellow,NA,gene
+Manes.02G179400.v8.1,Manes.02G179400,(1 of 2) PTHR16517//PTHR16517:SF31 - TUBBY-RELATED // TUBBY-LIKE F-BOX PROTEIN 1-RELATED,yellow,NA,gene
+Manes.02G181900.v8.1,Manes.02G181900,(1 of 2) K10807 - ribonucleoside-diphosphate reductase subunit M1 (RRM1),yellow,NA,gene
+Manes.02G182900.v8.1,Manes.02G182900,,magenta,NA,gene
+Manes.02G186400.v8.1,Manes.02G186400,(1 of 4) 1.14.13.169 - Transferred entry: 1.14.18.5,red,NA,gene
+Manes.02G187500.v8.1,Manes.02G187500,(1 of 2) PTHR27001//PTHR27001:SF151 - FAMILY NOT NAMED // SOMATIC EMBRYOGENESIS RECEPTOR KINASE 2,magenta,NA,gene
+Manes.02G187600.v8.1,Manes.02G187600,(1 of 2) PTHR12161//PTHR12161:SF21 - UNCHARACTERIZED DUF292 // REGULATOR OF VPS4 ACTIVITY IN THE MVB PATHWAY PROTEIN,yellow,NA,gene
+Manes.02G190200.v8.1,Manes.02G190200,(1 of 12) PF11961 - Domain of unknown function (DUF3475) (DUF3475),red,NA,gene
+Manes.02G191500.v8.1,Manes.02G191500,(1 of 1) PTHR13068:SF26 - MITOCHONDRIAL TRANSCRIPTION TERMINATION FACTOR FAMILY PROTEIN,magenta,NA,gene
+Manes.02G191700.v8.1,Manes.02G191700,(1 of 14) K06689 - ubiquitin-conjugating enzyme E2 D/E (UBE2D_E; UBC4; UBC5),yellow,NA,gene
+Manes.02G191800.v8.1,Manes.02G191800,(1 of 1) PTHR15606//PTHR15606:SF3 - DNAJ HOMOLOG SUBFAMILY C MEMBER 8/LIPOPOLYSACCHARIDE SPECIFIC RESPONSE-7-RELATED // GPALPP MOTIFS-CONTAINING PROTEIN 1,red,NA,gene
+Manes.02G191950.v8.1,Manes.02G191950,(1 of 14) PF14111 - Domain of unknown function (DUF4283) (DUF4283),magenta,NA,gene
+Manes.02G198800.v8.1,Manes.02G198800,(1 of 1) K12858 - ATP-dependent RNA helicase DDX23/PRP28 (DDX23; PRP28),red,NA,gene
+Manes.02G199700.v8.1,Manes.02G199700,(1 of 1) PTHR10996:SF108 - D-ISOMER SPECIFIC 2-HYDROXYACID DEHYDROGENASE-LIKE PROTEIN,yellow,NA,gene
+Manes.02G200000.v8.1,Manes.02G200000,(1 of 4) 2.7.4.14 - UMP/CMP kinase / Uridine monophosphate-cytidine monophosphate phosphotransferase,yellow,NA,gene
+Manes.02G202800.v8.1,Manes.02G202800,(1 of 1) PTHR23344:SF28 - GLYCEROPHOSPHODIESTER PHOSPHODIESTERASE 1,yellow,NA,gene
+Manes.02G202900.v8.1,Manes.02G202900,(1 of 8) 1.6.5.9 - NADH:ubiquinone reductase (non-electrogenic) / Ubiquinone reductase,yellow,NA,gene
+Manes.02G203150.v8.1,Manes.02G203150,(1 of 3) PTHR10887//PTHR10887:SF372 - DNA2/NAM7 HELICASE FAMILY // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G204100.v8.1,Manes.02G204100,(1 of 5) K15272 - solute carrier family 35 (UDP-sugar transporter); member A1/2/3 (SLC35A1_2_3),magenta,NA,gene
+Manes.02G202000.v8.1,Manes.02G202000,(1 of 1) KOG0472//KOG0617//KOG4658 - Leucine-rich repeat protein // Ras suppressor protein (contains leucine-rich repeats) // Apoptotic ATPase,magenta,NA,gene
+Manes.02G201800.v8.1,Manes.02G201800,,red,NA,gene
+Manes.02G221151.v8.1,Manes.02G221151,(1 of 70) PTHR23155//PTHR23155:SF554 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G221201.v8.1,Manes.02G221201,(1 of 70) PTHR23155//PTHR23155:SF554 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G210080.v8.1,Manes.02G210080,(1 of 1) K01522 - bis(5'-adenosyl)-triphosphatase (FHIT),red,NA,gene
+Manes.02G208600.v8.1,Manes.02G208600,(1 of 1) PTHR31476//PTHR31476:SF2 - FAMILY NOT NAMED // UBIQUITIN CARBOXYL-TERMINAL HYDROLASE FAMILY PROTEIN,red,NA,gene
+Manes.02G219100.v8.1,Manes.02G219100,(1 of 1) K10744 - ribonuclease H2 subunit B (RNASEH2B),red,NA,gene
+Manes.02G219500.v8.1,Manes.02G219500,(1 of 2) K10583 - ubiquitin-conjugating enzyme E2 S (UBE2S; E2EPF),red,NA,gene
+Manes.02G219700.v8.1,Manes.02G219700,(1 of 1) PTHR22891//PTHR22891:SF34 - EUKARYOTIC TRANSLATION INITIATION FACTOR 2C // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.02G220660.v8.1,Manes.02G220660,(1 of 20) PF01637 - Archaeal ATPase (Arch_ATPase),magenta,NA,gene
+Manes.02G215400.v8.1,Manes.02G215400,(1 of 70) PTHR23155//PTHR23155:SF554 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G215000.v8.1,Manes.02G215000,(1 of 20) PF01637 - Archaeal ATPase (Arch_ATPase),magenta,NA,gene
+Manes.02G215120.v8.1,Manes.02G215120,(1 of 70) PTHR23155//PTHR23155:SF554 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G215430.v8.1,Manes.02G215430,(1 of 70) PTHR23155//PTHR23155:SF554 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.02G215420.v8.1,Manes.02G215420,(1 of 20) PF01637 - Archaeal ATPase (Arch_ATPase),magenta,NA,gene
+Manes.02G221700.v8.1,Manes.02G221700,(1 of 1) PTHR11142:SF10 - TRNA PSEUDOURIDINE SYNTHASE,magenta,NA,gene
+Manes.02G222800.v8.1,Manes.02G222800,,magenta,NA,gene
+Manes.02G223300.v8.1,Manes.02G223300,(1 of 1) PTHR27001//PTHR27001:SF190 - FAMILY NOT NAMED // PROTEIN KINASE DOMAIN-CONTAINING PROTEIN,red,NA,gene
+Manes.02G222200.v8.1,Manes.02G222200,(1 of 1) K14321 - nucleoporin-like protein 2 (NUPL2; CG1),magenta,NA,gene
+Manes.03G001100.v8.1,Manes.03G001100,(1 of 1) K02738 - 20S proteasome subunit beta 1 (PSMB6),red,NA,gene
+Manes.03G006700.v8.1,Manes.03G006700,(1 of 1) K18328 - lariat debranching enzyme [EC:3.1.-.-] (DBR1),red,NA,gene
+Manes.03G006900.v8.1,Manes.03G006900,(1 of 1) PTHR11566//PTHR11566:SF84 - DYNAMIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.03G011300.v8.1,Manes.03G011300,,red,NA,gene
+Manes.03G017200.v8.1,Manes.03G017200,(1 of 1) PF02230//PF12695 - Phospholipase/Carboxylesterase (Abhydrolase_2) // Alpha/beta hydrolase family (Abhydrolase_5),red,NA,gene
+Manes.03G021100.v8.1,Manes.03G021100,(1 of 32) PF00083 - Sugar (and other) transporter (Sugar_tr),yellow,NA,gene
+Manes.03G022200.v8.1,Manes.03G022200,(1 of 2) PTHR34282//PTHR34282:SF2 - FAMILY NOT NAMED // GENOMIC DNA; CHROMOSOME 3; P1 CLONE:MSD24,yellow,NA,gene
+Manes.03G028000.v8.1,Manes.03G028000,(1 of 2) 6.1.1.19 - Arginine--tRNA ligase / Arginyl-tRNA synthetase,red,NA,gene
+Manes.03G028200.v8.1,Manes.03G028200,(1 of 2) PTHR32227//PTHR32227:SF88 - FAMILY NOT NAMED // GLUCAN ENDO-1;3-BETA-GLUCOSIDASE 12-RELATED,red,NA,gene
+Manes.03G029850.v8.1,Manes.03G029850,(1 of 2) K12194 - charged multivesicular body protein 4 (CHMP4; SNF7; VPS32),yellow,NA,gene
+Manes.03G030300.v8.1,Manes.03G030300,(1 of 3) K02910 - large subunit ribosomal protein L31e (RP-L31e; RPL31),red,NA,gene
+Manes.03G033000.v8.1,Manes.03G033000,(1 of 1) K01513 - ectonucleotide pyrophosphatase/phosphodiesterase family member 1/3 (ENPP1_3),red,NA,gene
+Manes.03G034300.v8.1,Manes.03G034300,(1 of 8) PF05553//PF14364 - Cotton fibre expressed protein (DUF761) // Domain of unknown function (DUF4408) (DUF4408),red,NA,gene
+Manes.03G037500.v8.1,Manes.03G037500,(1 of 4) PTHR13140:SF390 - MYOSIN-11-RELATED,red,NA,gene
+Manes.03G038100.v8.1,Manes.03G038100,(1 of 4) K12191 - charged multivesicular body protein 2A (CHMP2A),yellow,NA,gene
+Manes.03G039100.v8.1,Manes.03G039100,(1 of 2) PTHR24282//PTHR24282:SF29 - CYTOCHROME P450 FAMILY MEMBER // CYTOCHROME P450 72C1,magenta,NA,gene
+Manes.03G042400.v8.1,Manes.03G042400,(1 of 82) PF12708 - Pectate lyase superfamily protein (Pectate_lyase_3),red,NA,gene
+Manes.03G045200.v8.1,Manes.03G045200,(1 of 5) K11975 - E3 ubiquitin-protein ligase RNF144 [EC:6.3.2.19] (RNF144),yellow,NA,gene
+Manes.03G045900.v8.1,Manes.03G045900,(1 of 1) PTHR12276:SF7 - CLATHRIN INTERACTOR EPSIN 1,red,NA,gene
+Manes.03G046000.v8.1,Manes.03G046000,(1 of 2) K18740 - exonuclease 3'-5' domain-containing protein 1 (EXD1; EGL),red,NA,gene
+Manes.03G055400.v8.1,Manes.03G055400,(1 of 2) PTHR32133//PTHR32133:SF124 - FAMILY NOT NAMED // F-BOX ONLY PROTEIN 13,red,NA,gene
+Manes.03G055800.v8.1,Manes.03G055800,(1 of 2) PTHR31561:SF2 - 3-KETOACYL-COA SYNTHASE 10,red,NA,gene
+Manes.03G058600.v8.1,Manes.03G058600,(1 of 3) K14801 - pre-rRNA-processing protein TSR4 (TSR4),magenta,NA,gene
+Manes.03G074800.v8.1,Manes.03G074800,(1 of 5) 3.6.3.54 - Cu(+) exporting ATPase,yellow,NA,gene
+Manes.03G074300.v8.1,Manes.03G074300,(1 of 1) 2.7.7.15 - Choline-phosphate cytidylyltransferase / Phosphorylcholine transferase,red,NA,gene
+Manes.03G082162.v8.1,Manes.03G082162,(1 of 16) K01537 - Ca2+-transporting ATPase (E3.6.3.8),yellow,NA,gene
+Manes.03G095600.v8.1,Manes.03G095600,(1 of 1) PTHR16196//PTHR16196:SF0 - CELL CYCLE CONTROL PROTEIN CWF25 // PRE-MRNA-SPLICING FACTOR CWC25 HOMOLOG,red,NA,gene
+Manes.03G086600.v8.1,Manes.03G086600,(1 of 1569) 2.7.11.1 - Non-specific serine/threonine protein kinase / Threonine-specific protein kinase,yellow,NA,gene
+Manes.03G086900.v8.1,Manes.03G086900,(1 of 2) PTHR12537:SF13 - SUPPRESSOR PROTEIN MPT5,red,NA,gene
+Manes.03G090364.v8.1,Manes.03G090364,(1 of 2) K14315 - nucleoporin NDC1 (NDC1; TMEM48),yellow,NA,gene
+Manes.03G084000.v8.1,Manes.03G084000,(1 of 3) 1.14.13.173//1.3.3.9 - 11-oxo-beta-amyrin 30-oxidase / CYP72A154 // Secologanin synthase,yellow,NA,gene
+Manes.03G078500.v8.1,Manes.03G078500,(1 of 1) PTHR33405//PTHR33405:SF6 - FAMILY NOT NAMED // PROTEIN FLX-LIKE 1,yellow,NA,gene
+Manes.03G079200.v8.1,Manes.03G079200,(1 of 1) PTHR23272//PTHR23272:SF13 - BED FINGER-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.03G092500.v8.1,Manes.03G092500,(1 of 1) PTHR32285:SF58 - PROTEIN TRICHOME BIREFRINGENCE-LIKE 41,yellow,NA,gene
+Manes.03G099000.v8.1,Manes.03G099000,(1 of 1) K10884 - ATP-dependent DNA helicase 2 subunit 1 (XRCC6; KU70; G22P1),yellow,NA,gene
+Manes.03G100100.v8.1,Manes.03G100100,(1 of 4) K10956 - protein transport protein SEC61 subunit alpha (SEC61A),yellow,NA,gene
+Manes.03G100900.v8.1,Manes.03G100900,(1 of 3) K03627 - putative transcription factor (MBF1),red,NA,gene
+Manes.03G102000.v8.1,Manes.03G102000,(1 of 1) K03846 - alpha-1;2-mannosyltransferase (ALG9),yellow,NA,gene
+Manes.03G104300.v8.1,Manes.03G104300,(1 of 4) KOG3214 - Uncharacterized Zn ribbon-containing protein,yellow,NA,gene
+Manes.03G104800.v8.1,Manes.03G104800,(1 of 1) K18416 - 3'-5' exoribonuclease 1 [EC:3.1.-.-] (THEX1; ERI1),yellow,NA,gene
+Manes.03G109800.v8.1,Manes.03G109800,(1 of 4) PTHR22847//PTHR22847:SF422 - WD40 REPEAT PROTEIN // PROTEIN SUPPRESSOR OF PHYA-105 1,red,NA,gene
+Manes.03G111200.v8.1,Manes.03G111200,(1 of 1) PTHR11926//PTHR11926:SF366 - GLUCOSYL/GLUCURONOSYL TRANSFERASES // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.03G112900.v8.1,Manes.03G112900,(1 of 49) PF00560//PF13855 - Leucine Rich Repeat (LRR_1) // Leucine rich repeat (LRR_8),red,NA,gene
+Manes.03G115100.v8.1,Manes.03G115100,(1 of 1) PTHR20854//PTHR20854:SF32 - INOSITOL MONOPHOSPHATASE // PAP-SPECIFIC PHOSPHATASE HAL2-LIKE,yellow,NA,gene
+Manes.03G115300.v8.1,Manes.03G115300,(1 of 49) PF00407 - Pathogenesis-related protein Bet v I family (Bet_v_1),yellow,NA,gene
+Manes.03G116400.v8.1,Manes.03G116400,(1 of 1) PTHR33098//PTHR33098:SF11 - FAMILY NOT NAMED // COTTON FIBER EXPRESSED PROTEIN 1-LIKE PROTEIN,yellow,NA,gene
+Manes.03G123618.v8.1,Manes.03G123618,(1 of 5) K03113 - translation initiation factor 1 (EIF1; SUI1),red,NA,gene
+Manes.03G127300.v8.1,Manes.03G127300,(1 of 1) PF14780 - Domain of unknown function (DUF4477) (DUF4477),magenta,NA,gene
+Manes.03G124100.v8.1,Manes.03G124100,(1 of 70) PTHR23155//PTHR23155:SF554 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.03G128400.v8.1,Manes.03G128400,(1 of 5) PF13401 - AAA domain (AAA_22),magenta,NA,gene
+Manes.03G129300.v8.1,Manes.03G129300,(1 of 270) PF13639 - Ring finger domain (zf-RING_2),magenta,NA,gene
+Manes.03G131800.v8.1,Manes.03G131800,(1 of 82) 5.2.1.8 - Peptidylprolyl isomerase / Rotamase,red,NA,gene
+Manes.03G136400.v8.1,Manes.03G136400,(1 of 2) PTHR19321//PTHR19321:SF11 - PROTEIN REGULATOR OF CYTOKINESIS 1 PRC1-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.03G137901.v8.1,Manes.03G137901,(1 of 5) PTHR24009//PTHR24009:SF4 - FAMILY NOT NAMED // ZINC FINGER CCCH DOMAIN-CONTAINING PROTEIN 18,red,NA,gene
+Manes.03G138500.v8.1,Manes.03G138500,(1 of 1) PTHR11662:SF153 - GLYCEROL-3-PHOSPHATE TRANSPORTER 5-RELATED,red,NA,gene
+Manes.03G138600.v8.1,Manes.03G138600,(1 of 47) 3.6.3.44 - Xenobiotic-transporting ATPase / Steroid-transporting ATPase,yellow,NA,gene
+Manes.03G149000.v8.1,Manes.03G149000,,magenta,NA,gene
+Manes.03G149700.v8.1,Manes.03G149700,(1 of 1) K06126 - ubiquinone biosynthesis monooxygenase Coq6 (COQ6),red,NA,gene
+Manes.03G150000.v8.1,Manes.03G150000,(1 of 5) K00660 - chalcone synthase (CHS),magenta,NA,gene
+Manes.03G150800.v8.1,Manes.03G150800,(1 of 44) PF03140 - Plant protein of unknown function (DUF247),yellow,NA,gene
+Manes.03G158300.v8.1,Manes.03G158300,(1 of 4) PTHR31734:SF6 - AUXIN-RESPONSIVE PROTEIN IAA10-RELATED,yellow,NA,gene
+Manes.03G160600.v8.1,Manes.03G160600,(1 of 11) K14411 - RNA-binding protein Musashi (MSI),red,NA,gene
+Manes.03G162600.v8.1,Manes.03G162600,(1 of 2) PTHR10666:SF124 - GH17761P,yellow,NA,gene
+Manes.03G163701.v8.1,Manes.03G163701,(1 of 3) PTHR24188:SF44 - E3 UBIQUITIN-PROTEIN LIGASE XBAT35-RELATED,red,NA,gene
+Manes.03G164100.v8.1,Manes.03G164100,(1 of 5) K00025 - malate dehydrogenase (MDH1),red,carb,gene
+Manes.03G168000.v8.1,Manes.03G168000,(1 of 1) PTHR23308:SF34 - F16B3.3 PROTEIN,red,NA,gene
+Manes.03G168200.v8.1,Manes.03G168200,(1 of 26) PF00917 - MATH domain (MATH),red,NA,gene
+Manes.03G168500.v8.1,Manes.03G168500,(1 of 1) 3.5.1.116 - Ureidoglycolate amidohydrolase / Ureidoglycolate hydrolase,magenta,NA,gene
+Manes.03G172000.v8.1,Manes.03G172000,(1 of 3) PF00122//PF00689//PF00690//PF12710 - E1-E2 ATPase (E1-E2_ATPase) // Cation transporting ATPase; C-terminus (Cation_ATPase_C) // Cation transporter/ATPase; N-terminus (Cation_ATPase_N) // haloacid dehalogenase-like hydrolase (HAD),yellow,NA,gene
+Manes.03G173400.v8.1,Manes.03G173400,(1 of 3) PTHR33109:SF4 - EPIDERMAL PATTERNING FACTOR-LIKE PROTEIN 5,yellow,NA,gene
+Manes.03G173700.v8.1,Manes.03G173700,(1 of 1) PTHR33428//PTHR33428:SF1 - FAMILY NOT NAMED // CHLOROPHYLLASE-2; CHLOROPLASTIC,yellow,NA,gene
+Manes.03G175300.v8.1,Manes.03G175300,(1 of 3) PTHR36366//PTHR36366:SF1 - FAMILY NOT NAMED // PROTEIN RDM1,magenta,NA,gene
+Manes.03G177300.v8.1,Manes.03G177300,,yellow,NA,gene
+Manes.03G178500.v8.1,Manes.03G178500,(1 of 3) PTHR31791:SF2 - FRIGIDA-LIKE PROTEIN 4A-RELATED,red,NA,gene
+Manes.03G178800.v8.1,Manes.03G178800,(1 of 1) 4.2.1.19 - Imidazoleglycerol-phosphate dehydratase,yellow,NA,gene
+Manes.03G184400.v8.1,Manes.03G184400,(1 of 81) KOG1603 - Copper chaperone,red,NA,gene
+Manes.03G186900.v8.1,Manes.03G186900,(1 of 599) PF13041 - PPR repeat family (PPR_2),red,NA,gene
+Manes.03G187400.v8.1,Manes.03G187400,(1 of 2) K02936//K08272 - large subunit ribosomal protein L7Ae (RP-L7Ae; RPL7A) // calcium binding protein 39 (CAB39; MO25),magenta,NA,gene
+Manes.03G189100.v8.1,Manes.03G189100,(1 of 1) PTHR12304//PTHR12304:SF22//PTHR12304:SF6 - INOSINE-URIDINE PREFERRING NUCLEOSIDE HYDROLASE // SUBFAMILY NOT NAMED // INOSINE-URIDINE PREFERRING NUCLEOSIDE HYDROLASE FAMILY PROTEIN,magenta,NA,gene
+Manes.03G192300.v8.1,Manes.03G192300,(1 of 2) KOG2562 - Protein phosphatase 2 regulatory subunit,red,NA,gene
+Manes.03G194800.v8.1,Manes.03G194800,(1 of 5) PTHR33136:SF5 - PROTEIN RALF-LIKE 1-RELATED,yellow,NA,gene
+Manes.03G196900.v8.1,Manes.03G196900,(1 of 1) PTHR19923//PTHR19923:SF0 - WD40 REPEAT PROTEINPRL1/PRL2-RELATED // PLEIOTROPIC REGULATOR 1,red,NA,gene
+Manes.03G199300.v8.1,Manes.03G199300,(1 of 47) K09286 - EREBP-like factor (EREBP),yellow,NA,gene
+Manes.03G200800.v8.1,Manes.03G200800,(1 of 2) PTHR31875:SF6 - PROTEIN DEHYDRATION-INDUCED 19 HOMOLOG 4-RELATED,red,NA,gene
+Manes.03G202700.v8.1,Manes.03G202700,(1 of 2) PTHR13491:SF0 - ZINC FINGER CCHC DOMAIN-CONTAINING PROTEIN 10,red,NA,gene
+Manes.03G206400.v8.1,Manes.03G206400,(1 of 2) PTHR31221//PTHR31221:SF13 - FAMILY NOT NAMED // WRKY TRANSCRIPTION FACTOR 48-RELATED,yellow,NA,gene
+Manes.03G207600.v8.1,Manes.03G207600,(1 of 5) PF13668 - Ferritin-like domain (Ferritin_2),yellow,NA,gene
+Manes.03G212950.v8.1,Manes.03G212950,,magenta,NA,gene
+Manes.04G002200.v8.1,Manes.04G002200,(1 of 1) PTHR11759//PTHR11759:SF12 - 40S RIBOSOMAL PROTEIN S14/30S RIBOSOMAL PROTEIN S11 // 40S RIBOSOMAL PROTEIN S14-1-RELATED,red,NA,gene
+Manes.04G006900.v8.1,Manes.04G006900,(1 of 12) PF12899 - Alkaline and neutral invertase (Glyco_hydro_100),red,NA,gene
+Manes.04G007400.v8.1,Manes.04G007400,(1 of 4) 3.2.2.22 - rRNA N-glycosylase / rRNA N-glycosidase,magenta,NA,gene
+Manes.04G009000.v8.1,Manes.04G009000,(1 of 1) PTHR23084//PTHR23084:SF155 - PHOSPHATIDYLINOSITOL-4-PHOSPHATE 5-KINASE RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.04G009900.v8.1,Manes.04G009900,(1 of 41) PF03479 - Domain of unknown function (DUF296) (DUF296),magenta,NA,gene
+Manes.04G011400.v8.1,Manes.04G011400,(1 of 2) PTHR22891:SF40 - PROTEIN ARGONAUTE 5,yellow,NA,gene
+Manes.04G012300.v8.1,Manes.04G012300,(1 of 2) K02219 - cyclin-dependent kinase regulatory subunit CKS1 (CKS1),red,NA,gene
+Manes.04G013400.v8.1,Manes.04G013400,(1 of 7) PF06136 - Domain of unknown function (DUF966) (DUF966),yellow,NA,gene
+Manes.04G014101.v8.1,Manes.04G014101,(1 of 2) K12193 - charged multivesicular body protein 3 (VPS24; CHMP3),red,NA,gene
+Manes.04G015800.v8.1,Manes.04G015800,(1 of 5) K13525 - transitional endoplasmic reticulum ATPase (VCP; CDC48),red,NA,gene
+Manes.04G017700.v8.1,Manes.04G017700,,magenta,NA,gene
+Manes.04G021900.v8.1,Manes.04G021900,(1 of 1) 2.1.1.35 - tRNA (uracil(54)-C(5))-methyltransferase / tRNA:m(5)U(54)-methyltransferase,red,NA,gene
+Manes.04G022000.v8.1,Manes.04G022000,(1 of 41) PF01344 - Kelch motif (Kelch_1),red,NA,gene
+Manes.04G024500.v8.1,Manes.04G024500,(1 of 1) K03142 - transcription initiation factor TFIIH subunit 2 (TFIIH2; GTF2H2; SSL1),yellow,NA,gene
+Manes.04G025200.v8.1,Manes.04G025200,(1 of 1) PF01485//PF13456 - IBR domain; a half RING-finger domain (IBR) // Reverse transcriptase-like (RVT_3),yellow,NA,gene
+Manes.04G033100.v8.1,Manes.04G033100,(1 of 1) PTHR10174:SF100 - SEC14 CYTOSOLIC FACTOR FAMILY PROTEIN / PHOSPHOGLYCERIDE TRANSFER FAMILY PROTEIN,red,NA,gene
+Manes.04G033900.v8.1,Manes.04G033900,(1 of 45) PF02701 - Dof domain; zinc finger (zf-Dof),yellow,NA,gene
+Manes.04G034100.v8.1,Manes.04G034100,(1 of 8) PF05056 - Protein of unknown function (DUF674) (DUF674),yellow,NA,gene
+Manes.04G036800.v8.1,Manes.04G036800,(1 of 3) K03104 - signal recognition particle subunit SRP14 (SRP14),magenta,NA,gene
+Manes.04G038000.v8.1,Manes.04G038000,(1 of 3) K03016 - DNA-directed RNA polymerases I; II; and III subunit RPABC3 (RPB8; POLR2H),magenta,NA,gene
+Manes.04G047500.v8.1,Manes.04G047500,(1 of 3) K04123 - ent-kaurenoic acid hydroxylase (KAO),magenta,NA,gene
+Manes.04G038800.v8.1,Manes.04G038800,(1 of 11) PTHR13068//PTHR13068:SF31 - CGI-12 PROTEIN-RELATED // F19K23.4 PROTEIN-RELATED,magenta,NA,gene
+Manes.04G039900.v8.1,Manes.04G039900,(1 of 13) PTHR23155//PTHR23155:SF513 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.04G044700.v8.1,Manes.04G044700,(1 of 13) PTHR23155//PTHR23155:SF513 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.04G043500.v8.1,Manes.04G043500,(1 of 2) 2.6.99.4 - Transferred entry: 2.3.1.234,magenta,NA,gene
+Manes.04G042909.v8.1,Manes.04G042909,,yellow,NA,gene
+Manes.04G048700.v8.1,Manes.04G048700,(1 of 1) PTHR23139//PTHR23139:SF62 - RNA-BINDING PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.04G048900.v8.1,Manes.04G048900,(1 of 4) KOG1743 - Ferric reductase-like proteins,red,NA,gene
+Manes.04G050100.v8.1,Manes.04G050100,(1 of 3) K12471 - epsin (EPN),red,NA,gene
+Manes.04G050400.v8.1,Manes.04G050400,(1 of 1) PTHR23077:SF54 - CELL DIVISION CONTROL PROTEIN 48 HOMOLOG B,red,NA,gene
+Manes.04G050600.v8.1,Manes.04G050600,(1 of 207) PF01535//PF13041 - PPR repeat (PPR) // PPR repeat family (PPR_2),yellow,NA,gene
+Manes.04G054500.v8.1,Manes.04G054500,(1 of 2) PTHR16223:SF10 - TRANSCRIPTION FACTOR BHLH128-RELATED,red,NA,gene
+Manes.04G054200.v8.1,Manes.04G054200,(1 of 1) PTHR10869:SF42 - PROLYL-4 HYDROXYLASE,magenta,NA,gene
+Manes.04G058800.v8.1,Manes.04G058800,(1 of 1) K00999 - CDP-diacylglycerol--inositol 3-phosphatidyltransferase (CDIPT),red,NA,gene
+Manes.04G056600.v8.1,Manes.04G056600,(1 of 2) PTHR24411//PTHR24411:SF35 - FAMILY NOT NAMED // BTB/POZ AND MATH DOMAIN-CONTAINING PROTEIN 1-RELATED,red,NA,gene
+Manes.04G040700.v8.1,Manes.04G040700,(1 of 3) 2.1.1.14 - 5-methyltetrahydropteroyltriglutamate--homocysteine S-methyltransferase / Tetrahydropteroylglutamate-homocysteine transmethylase,yellow,NA,gene
+Manes.04G054800.v8.1,Manes.04G054800,(1 of 1) K16573 - gamma-tubulin complex component 6 (TUBGCP6; GCP6),magenta,NA,gene
+Manes.04G058600.v8.1,Manes.04G058600,(1 of 1) K09658 - dolichyl-phosphate mannosyltransferase polypeptide 2; regulatory subunit (DPM2),magenta,NA,gene
+Manes.04G058300.v8.1,Manes.04G058300,(1 of 1) PTHR22952//PTHR22952:SF175 - CAMP-RESPONSE ELEMENT BINDING PROTEIN-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.04G059400.v8.1,Manes.04G059400,(1 of 2) 3.6.4.9 - Chaperonin ATPase / Chaperonin,magenta,NA,gene
+Manes.04G059650.v8.1,Manes.04G059650,(1 of 1) K17500 - integrin-linked kinase-associated serine/threonine phosphatase 2C [EC:3.1.3.16] (ILKAP),red,NA,gene
+Manes.04G063300.v8.1,Manes.04G063300,(1 of 7) K02935 - large subunit ribosomal protein L7/L12 (RP-L7; MRPL12; rplL),magenta,NA,gene
+Manes.04G063962.v8.1,Manes.04G063962,(1 of 2) PTHR23002//PTHR23002:SF69 - ZINC FINGER CCHC DOMAIN CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.04G066500.v8.1,Manes.04G066500,(1 of 3) K01872 - alanyl-tRNA synthetase (AARS; alaS),red,NA,gene
+Manes.04G068400.v8.1,Manes.04G068400,(1 of 57) PF02298 - Plastocyanin-like domain (Cu_bind_like),yellow,NA,gene
+Manes.04G068900.v8.1,Manes.04G068900,(1 of 2) PTHR33101:SF6 - ROP GUANINE NUCLEOTIDE EXCHANGE FACTOR 1,red,NA,gene
+Manes.04G071600.v8.1,Manes.04G071600,(1 of 1) K13091 - RNA-binding protein 39 (RBM39; RNPC2),red,NA,gene
+Manes.04G076160.v8.1,Manes.04G076160,(1 of 1) PF00179//PF05773 - Ubiquitin-conjugating enzyme (UQ_con) // RWD domain (RWD),red,NA,gene
+Manes.04G074700.v8.1,Manes.04G074700,(1 of 4) PF06911 - Senescence-associated protein (Senescence),yellow,NA,gene
+Manes.04G072700.v8.1,Manes.04G072700,(1 of 1) PTHR31048//PTHR31048:SF40 - FAMILY NOT NAMED // PATHOGENESIS-RELATED THAUMATIN-LIKE PROTEIN,yellow,NA,gene
+Manes.04G078866.v8.1,Manes.04G078866,(1 of 18) PTHR31989//PTHR31989:SF21 - FAMILY NOT NAMED // NAC TRANSCRIPTION FACTOR-LIKE 9,yellow,NA,gene
+Manes.04G087200.v8.1,Manes.04G087200,(1 of 1) PF01041 - DegT/DnrJ/EryC1/StrS aminotransferase family (DegT_DnrJ_EryC1),magenta,NA,gene
+Manes.04G091600.v8.1,Manes.04G091600,,red,NA,gene
+Manes.04G093600.v8.1,Manes.04G093600,(1 of 2) PTHR13052//PTHR13052:SF2 - NFRKB-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.04G094400.v8.1,Manes.04G094400,(1 of 2) PF00098//PF06839 - Zinc knuckle (zf-CCHC) // GRF zinc finger (zf-GRF),yellow,NA,gene
+Manes.04G096600.v8.1,Manes.04G096600,(1 of 3) PTHR31062//PTHR31062:SF15 - FAMILY NOT NAMED // XYLOGLUCAN ENDOTRANSGLUCOSYLASE/HYDROLASE PROTEIN 4-RELATED,magenta,NA,gene
+Manes.04G097500.v8.1,Manes.04G097500,(1 of 5) K11975 - E3 ubiquitin-protein ligase RNF144 [EC:6.3.2.19] (RNF144),yellow,NA,gene
+Manes.04G097700.v8.1,Manes.04G097700,(1 of 7) PTHR11685//PTHR11685:SF149 - RBR FAMILY  RING FINGER AND IBR DOMAIN-CONTAINING // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.04G106200.v8.1,Manes.04G106200,(1 of 2) 5.4.99.39//5.4.99.41 - Beta-amyrin synthase / 2;3-oxidosqualene beta-amyrin cyclase // Lupeol synthase,red,NA,gene
+Manes.04G111000.v8.1,Manes.04G111000,(1 of 3) PTHR10666//PTHR10666:SF150 - UBIQUITIN // POLYUBIQUITIN 3,yellow,NA,gene
+Manes.04G113300.v8.1,Manes.04G113300,(1 of 2) PTHR27002:SF31 - G-TYPE LECTIN S-RECEPTOR-LIKE SERINE/THREONINE-PROTEIN KINASE SD2-5,yellow,NA,gene
+Manes.04G114400.v8.1,Manes.04G114400,(1 of 21) PF01477 - PLAT/LH2 domain (PLAT),yellow,NA,gene
+Manes.04G115000.v8.1,Manes.04G115000,(1 of 3) PF04134 - Protein of unknown function; DUF393 (DUF393),red,NA,gene
+Manes.04G115200.v8.1,Manes.04G115200,(1 of 207) PF01535//PF13041 - PPR repeat (PPR) // PPR repeat family (PPR_2),yellow,NA,gene
+Manes.04G118500.v8.1,Manes.04G118500,(1 of 3) K13137 - serine-threonine kinase receptor-associated protein (STRAP; UNRIP),magenta,NA,gene
+Manes.04G122700.v8.1,Manes.04G122700,(1 of 3) K17302 - coatomer; subunit beta' (COPB2; SEC27),yellow,NA,gene
+Manes.04G124200.v8.1,Manes.04G124200,(1 of 4) PF02798//PF14497 - Glutathione S-transferase; N-terminal domain (GST_N) // Glutathione S-transferase; C-terminal domain (GST_C_3),yellow,NA,gene
+Manes.04G124300.v8.1,Manes.04G124300,(1 of 14) PTHR11260//PTHR11260:SF317 - GLUTATHIONE S-TRANSFERASE; GST; SUPERFAMILY; GST DOMAIN CONTAINING // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.04G124400.v8.1,Manes.04G124400,(1 of 3) PTHR12161//PTHR12161:SF14 - UNCHARACTERIZED DUF292 // REGULATOR OF VPS4,yellow,NA,gene
+Manes.04G125300.v8.1,Manes.04G125300,(1 of 10) PTHR27001//PTHR27001:SF89 - FAMILY NOT NAMED // PROLINE-RICH RECEPTOR-LIKE PROTEIN KINASE PERK1-RELATED,red,NA,gene
+Manes.04G125700.v8.1,Manes.04G125700,(1 of 10) PTHR27001//PTHR27001:SF89 - FAMILY NOT NAMED // PROLINE-RICH RECEPTOR-LIKE PROTEIN KINASE PERK1-RELATED,magenta,NA,gene
+Manes.04G126101.v8.1,Manes.04G126101,(1 of 10) PTHR27001//PTHR27001:SF89 - FAMILY NOT NAMED // PROLINE-RICH RECEPTOR-LIKE PROTEIN KINASE PERK1-RELATED,magenta,NA,gene
+Manes.04G126600.v8.1,Manes.04G126600,(1 of 10) PTHR27001//PTHR27001:SF89 - FAMILY NOT NAMED // PROLINE-RICH RECEPTOR-LIKE PROTEIN KINASE PERK1-RELATED,magenta,NA,gene
+Manes.04G127000.v8.1,Manes.04G127000,(1 of 1569) 2.7.11.1 - Non-specific serine/threonine protein kinase / Threonine-specific protein kinase,magenta,NA,gene
+Manes.04G127533.v8.1,Manes.04G127533,(1 of 20) PTHR27001//PTHR27001:SF27 - FAMILY NOT NAMED // PROLINE-RICH RECEPTOR-LIKE PROTEIN KINASE PERK15,yellow,NA,gene
+Manes.04G128900.v8.1,Manes.04G128900,(1 of 1) PTHR18929:SF59 - PROTEIN DISULFIDE ISOMERASE-LIKE 1-5-RELATED,magenta,NA,gene
+Manes.04G135800.v8.1,Manes.04G135800,(1 of 3) PTHR24012:SF455 - POLYADENYLATE-BINDING PROTEIN 7,yellow,NA,gene
+Manes.04G137200.v8.1,Manes.04G137200,(1 of 9) K07874 - Ras-related protein Rab-1A (RAB1A),magenta,NA,gene
+Manes.04G139000.v8.1,Manes.04G139000,,magenta,NA,gene
+Manes.04G139900.v8.1,Manes.04G139900,(1 of 67) PF03168 - Late embryogenesis abundant protein (LEA_2),magenta,NA,gene
+Manes.04G141400.v8.1,Manes.04G141400,(1 of 18) PF12023 - Domain of unknown function (DUF3511) (DUF3511),yellow,NA,gene
+Manes.04G141600.v8.1,Manes.04G141600,(1 of 2) 2.3.1.97 - Glycylpeptide N-tetradecanoyltransferase / Peptide N-tetradecanoyltransferase,yellow,NA,gene
+Manes.04G143000.v8.1,Manes.04G143000,(1 of 2) PTHR22870//PTHR22870:SF166 - REGULATOR OF CHROMOSOME CONDENSATION // PROTEIN RCC2,yellow,NA,gene
+Manes.04G143700.v8.1,Manes.04G143700,(1 of 2) PTHR21717:SF25 - MYB FAMILY TRANSCRIPTION FACTOR TRFL6-RELATED,red,NA,gene
+Manes.04G145200.v8.1,Manes.04G145200,(1 of 2) PTHR31636//PTHR31636:SF40 - FAMILY NOT NAMED // SCARECROW-LIKE PROTEIN 29,magenta,NA,gene
+Manes.04G148000.v8.1,Manes.04G148000,(1 of 4) K13201 - nucleolysin TIA-1/TIAR (TIA1; TIAL1),red,NA,gene
+Manes.04G149500.v8.1,Manes.04G149500,(1 of 2) PTHR11200//PTHR11200:SF122 - INOSITOL 5-PHOSPHATASE // PHOSPHOINOSITIDE PHOSPHATASE SAC3-RELATED,yellow,NA,gene
+Manes.04G150100.v8.1,Manes.04G150100,(1 of 2) PTHR31190:SF4 - ETHYLENE-RESPONSIVE TRANSCRIPTION FACTOR ERF071-RELATED,red,NA,gene
+Manes.04G154450.v8.1,Manes.04G154450,,magenta,NA,gene
+Manes.04G154500.v8.1,Manes.04G154500,(1 of 10) PF12776 - Myb/SANT-like DNA-binding domain (Myb_DNA-bind_3),yellow,NA,gene
+Manes.04G154600.v8.1,Manes.04G154600,(1 of 4) K12183 - ESCRT-I complex subunit TSG101 (TSG101; STP22; VPS23),yellow,NA,gene
+Manes.04G155400.v8.1,Manes.04G155400,(1 of 2) PTHR11413//PTHR11413:SF55 - CYSTATIN FAMILY MEMBER // CYSTEINE PROTEINASE INHIBITOR 6,yellow,NA,gene
+Manes.04G161200.v8.1,Manes.04G161200,(1 of 2) K15498 - serine/threonine-protein phosphatase 6 catalytic subunit [EC:3.1.3.16] (PPP6C),red,NA,gene
+Manes.04G161300.v8.1,Manes.04G161300,(1 of 2) K01354 - oligopeptidase B (ptrB),yellow,NA,gene
+Manes.04G161500.v8.1,Manes.04G161500,(1 of 6) PF03097 - BRO1-like domain (BRO1),red,NA,gene
+Manes.05G002300.v8.1,Manes.05G002300,(1 of 2) PTHR23241//PTHR23241:SF55 - LATE EMBRYOGENESIS ABUNDANT  PLANTS  LEA-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.05G003000.v8.1,Manes.05G003000,(1 of 1) PTHR37194:SF1 - T2E6.9,red,NA,gene
+Manes.05G004000.v8.1,Manes.05G004000,(1 of 2) PTHR22884//PTHR22884:SF237 - SET DOMAIN PROTEINS // HISTONE-LYSINE N-METHYLTRANSFERASE E(Z),yellow,NA,gene
+Manes.05G006900.v8.1,Manes.05G006900,(1 of 1) PTHR11071:SF247 - PEPTIDYL-PROLYL CIS-TRANS ISOMERASE D,yellow,NA,gene
+Manes.05G005364.v8.1,Manes.05G005364,(1 of 18) PTHR31989//PTHR31989:SF21 - FAMILY NOT NAMED // NAC TRANSCRIPTION FACTOR-LIKE 9,yellow,NA,gene
+Manes.05G005300.v8.1,Manes.05G005300,(1 of 18) PTHR31989:SF21 - NAC TRANSCRIPTION FACTOR-LIKE 9,yellow,NA,gene
+Manes.05G005340.v8.1,Manes.05G005340,(1 of 18) PTHR31989//PTHR31989:SF21 - FAMILY NOT NAMED // NAC TRANSCRIPTION FACTOR-LIKE 9,yellow,NA,gene
+Manes.05G017100.v8.1,Manes.05G017100,(1 of 2) PTHR31989:SF45 - NAC DOMAIN-CONTAINING PROTEIN 43-RELATED,yellow,NA,gene
+Manes.05G018300.v8.1,Manes.05G018300,(1 of 1) PTHR23177:SF24 - RHO GTPASE-ACTIVATING PROTEIN 3-RELATED,red,NA,gene
+Manes.05G020000.v8.1,Manes.05G020000,(1 of 2) PTHR10891//PTHR10891:SF624 - EF-HAND CALCIUM-BINDING DOMAIN CONTAINING PROTEIN // CALCIUM-BINDING PROTEIN KIC,yellow,NA,gene
+Manes.05G022900.v8.1,Manes.05G022900,(1 of 5) 2.3.1.20//2.3.1.75 - Diacylglycerol O-acyltransferase / Diglyceride acyltransferase // Long-chain-alcohol O-fatty-acyltransferase / Wax synthase,yellow,NA,gene
+Manes.05G030450.v8.1,Manes.05G030450,(1 of 6) PF10184 - Uncharacterized conserved protein (DUF2358) (DUF2358),magenta,NA,gene
+Manes.05G034000.v8.1,Manes.05G034000,(1 of 2) PTHR37695:SF1 - RECOMBINATION INITIATION DEFECTS 3-RELATED,red,NA,gene
+Manes.05G035200.v8.1,Manes.05G035200,(1 of 2) K01068 - acyl-coenzyme A thioesterase 1/2/4 (ACOT1_2_4),yellow,NA,gene
+Manes.05G036200.v8.1,Manes.05G036200,,red,NA,gene
+Manes.05G050800.v8.1,Manes.05G050800,(1 of 1) PTHR31251//PTHR31251:SF15 - FAMILY NOT NAMED // SQUAMOSA PROMOTER-BINDING-LIKE PROTEIN 3,red,NA,gene
+Manes.05G052200.v8.1,Manes.05G052200,(1 of 1) PTHR24078//PTHR24078:SF192 - DNAJ HOMOLOG SUBFAMILY C MEMBER // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.05G059000.v8.1,Manes.05G059000,(1 of 1) PTHR31376:SF2 - PURINE PERMEASE 11-RELATED,red,NA,gene
+Manes.05G060100.v8.1,Manes.05G060100,(1 of 1) K11271 - sister chromatid cohesion protein DCC1 (DSCC1; DCC1),magenta,NA,gene
+Manes.05G060800.v8.1,Manes.05G060800,(1 of 1) K09008 - NADH dehydrogenase [ubiquinone] 1 alpha subcomplex assembly factor 3 (NDUFAF3),red,NA,gene
+Manes.05G063000.v8.1,Manes.05G063000,(1 of 3) K16275 - E3 ubiquitin-protein ligase BAH [EC:6.3.2.19] (BAH; NLA),yellow,NA,gene
+Manes.05G063900.v8.1,Manes.05G063900,(1 of 2) PTHR10057//PTHR10057:SF0 - PERIPHERAL-TYPE BENZODIAZEPINE RECEPTOR // PROTEIN C41G7.9; ISOFORM B,magenta,NA,gene
+Manes.05G064500.v8.1,Manes.05G064500,,yellow,NA,gene
+Manes.05G064600.v8.1,Manes.05G064600,(1 of 4) PTHR22814:SF75 - HEAVY METAL TRANSPORT/DETOXIFICATION DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.05G066100.v8.1,Manes.05G066100,(1 of 1) K13339 - peroxin-6 (PEX6; PXAAA1),magenta,NA,gene
+Manes.05G068000.v8.1,Manes.05G068000,(1 of 21) PF07765 - KIP1-like protein (KIP1),magenta,NA,gene
+Manes.05G068201.v8.1,Manes.05G068201,,magenta,NA,gene
+Manes.05G073100.v8.1,Manes.05G073100,(1 of 2) K12621 - U6 snRNA-associated Sm-like protein LSm2 (LSM2),red,NA,gene
+Manes.05G076600.v8.1,Manes.05G076600,(1 of 4) K14319 - Ran GTPase-activating protein 1 (RANGAP1),red,NA,gene
+Manes.05G079200.v8.1,Manes.05G079200,(1 of 2) K02895 - large subunit ribosomal protein L24 (RP-L24; MRPL24; rplX),red,NA,gene
+Manes.05G080800.v8.1,Manes.05G080800,(1 of 4) K06890 - uncharacterized protein (K06890),yellow,NA,gene
+Manes.05G081400.v8.1,Manes.05G081400,(1 of 18) PF06200//PF09425 - tify domain (tify) // Divergent CCT motif (CCT_2),magenta,NA,gene
+Manes.05G087400.v8.1,Manes.05G087400,(1 of 2) PTHR12791//PTHR12791:SF34 - GOLGI SNARE BET1-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.05G088100.v8.1,Manes.05G088100,(1 of 4) PTHR13833//PTHR13833:SF46 - FAMILY NOT NAMED // NHL DOMAIN-CONTAINING PROTEIN,magenta,NA,gene
+Manes.05G088200.v8.1,Manes.05G088200,(1 of 4) PTHR13833//PTHR13833:SF46 - FAMILY NOT NAMED // NHL DOMAIN-CONTAINING PROTEIN,magenta,NA,gene
+Manes.05G092900.v8.1,Manes.05G092900,(1 of 10) PF00536 - SAM domain (Sterile alpha motif) (SAM_1),magenta,NA,gene
+Manes.05G095400.v8.1,Manes.05G095400,(1 of 2) PTHR37736:SF1 - GENOMIC DNA; CHROMOSOME 3; P1 CLONE:MSD24,red,NA,gene
+Manes.05G095900.v8.1,Manes.05G095900,(1 of 259) PF00076 - RNA recognition motif. (a.k.a. RRM; RBD; or RNP domain) (RRM_1),red,NA,gene
+Manes.05G096800.v8.1,Manes.05G096800,(1 of 1) PF07063 - Domain of unknown function (DUF1338) (DUF1338),magenta,NA,gene
+Manes.05G096900.v8.1,Manes.05G096900,(1 of 2) PTHR10264//PTHR10264:SF93 - BAND 7 PROTEIN-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.05G099700.v8.1,Manes.05G099700,(1 of 4) K02997 - small subunit ribosomal protein S9e (RP-S9e; RPS9),yellow,NA,gene
+Manes.05G101716.v8.1,Manes.05G101716,(1 of 3) PF01535//PF14432 - PPR repeat (PPR) // DYW family of nucleic acid deaminases (DYW_deaminase),red,NA,gene
+Manes.05G116100.v8.1,Manes.05G116100,(1 of 2) K11129 - H/ACA ribonucleoprotein complex subunit 2 (NHP2; NOLA2),red,NA,gene
+Manes.05G117800.v8.1,Manes.05G117800,(1 of 1) PTHR11071//PTHR11071:SF244 - PEPTIDYL-PROLYL CIS-TRANS ISOMERASE // CYCLOPHILIN-LIKE PEPTIDYL-PROLYL CIS-TRANS ISOMERASE FAMILY PROTEIN,red,NA,gene
+Manes.05G138400.v8.1,Manes.05G138400,(1 of 4) K03456 - serine/threonine-protein phosphatase 2A regulatory subunit A (PPP2R1),red,NA,gene
+Manes.05G140027.v8.1,Manes.05G140027,(1 of 1) PTHR22814//PTHR22814:SF72 - COPPER TRANSPORT PROTEIN ATOX1-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.05G145805.v8.1,Manes.05G145805,,red,NA,gene
+Manes.05G137300.v8.1,Manes.05G137300,,red,NA,gene
+Manes.05G136800.v8.1,Manes.05G136800,(1 of 3) K01866 - tyrosyl-tRNA synthetase (YARS; tyrS),yellow,NA,gene
+Manes.05G131300.v8.1,Manes.05G131300,(1 of 1) PTHR12919//PTHR12919:SF23 - 30S RIBOSOMAL PROTEIN S16 // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.05G114300.v8.1,Manes.05G114300,(1 of 1) PTHR10903:SF65 - AIG1 DOMAIN-CONTAINING PROTEIN-RELATED,yellow,NA,gene
+Manes.05G113300.v8.1,Manes.05G113300,(1 of 1) PTHR22884//PTHR22884:SF295 - SET DOMAIN PROTEINS // HISTONE-LYSINE N-METHYLTRANSFERASE SETD1A,yellow,NA,gene
+Manes.05G136400.v8.1,Manes.05G136400,(1 of 15) PF04759 - Protein of unknown function; DUF617 (DUF617),yellow,NA,gene
+Manes.05G128500.v8.1,Manes.05G128500,(1 of 4) PF12274 - Protein of unknown function (DUF3615) (DUF3615),magenta,NA,gene
+Manes.05G128647.v8.1,Manes.05G128647,(1 of 4) PF12274 - Protein of unknown function (DUF3615) (DUF3615),magenta,NA,gene
+Manes.05G128247.v8.1,Manes.05G128247,(1 of 4) PF12274 - Protein of unknown function (DUF3615) (DUF3615),magenta,NA,gene
+Manes.05G127900.v8.1,Manes.05G127900,(1 of 17) KOG0149 - Predicted RNA-binding protein SEB4 (RRM superfamily),yellow,NA,gene
+Manes.05G127600.v8.1,Manes.05G127600,(1 of 4) PTHR31500:SF0 - AT HOOK MOTIF DNA-BINDING FAMILY PROTEIN,red,NA,gene
+Manes.05G126200.v8.1,Manes.05G126200,(1 of 4) KOG0569 - Permease of the major facilitator superfamily,magenta,NA,gene
+Manes.05G133600.v8.1,Manes.05G133600,(1 of 3) K11088 - small nuclear ribonucleoprotein D3 (SNRPD3; SMD3),magenta,NA,gene
+Manes.05G140400.v8.1,Manes.05G140400,(1 of 4) PF00257 - Dehydrin (Dehydrin),yellow,NA,gene
+Manes.05G143000.v8.1,Manes.05G143000,(1 of 2) K18752 - transportin-1 (TNPO1),magenta,NA,gene
+Manes.05G143600.v8.1,Manes.05G143600,(1 of 1) PF13462 - Thioredoxin (Thioredoxin_4),magenta,NA,gene
+Manes.05G145200.v8.1,Manes.05G145200,(1 of 1) PTHR24221//PTHR24221:SF235 - FAMILY NOT NAMED // ABC TRANSPORTER B FAMILY MEMBER 13-RELATED,magenta,NA,gene
+Manes.05G149100.v8.1,Manes.05G149100,(1 of 3) K12619 - 5'-3' exoribonuclease 2 (XRN2; RAT1),red,NA,gene
+Manes.05G151700.v8.1,Manes.05G151700,(1 of 2) PTHR10742//PTHR10742:SF284 - AMINE OXIDASE // LYSINE-SPECIFIC HISTONE DEMETHYLASE 1A,red,NA,gene
+Manes.05G152600.v8.1,Manes.05G152600,(1 of 6) K09250 - cellular nucleic acid-binding protein (CNBP),red,NA,gene
+Manes.05G153800.v8.1,Manes.05G153800,(1 of 1) PF14595 - Thioredoxin (Thioredoxin_9),yellow,NA,gene
+Manes.05G154600.v8.1,Manes.05G154600,(1 of 1) PTHR24067:SF125 - UBIQUITIN-CONJUGATING ENZYME E2 18-RELATED,yellow,NA,gene
+Manes.05G157700.v8.1,Manes.05G157700,(1 of 4) PTHR10743//PTHR10743:SF2 - PROTEIN RER1 // PROTEIN RER1B-RELATED,red,NA,gene
+Manes.05G159500.v8.1,Manes.05G159500,,red,NA,gene
+Manes.05G160600.v8.1,Manes.05G160600,(1 of 3) PTHR32227:SF16 - GLUCAN ENDO-1;3-BETA-GLUCOSIDASE 7-RELATED,yellow,NA,gene
+Manes.05G163200.v8.1,Manes.05G163200,(1 of 152) PF02365 - No apical meristem (NAM) protein (NAM),yellow,NA,gene
+Manes.05G164701.v8.1,Manes.05G164701,,magenta,NA,gene
+Manes.05G180700.v8.1,Manes.05G180700,(1 of 2) PTHR31807//PTHR31807:SF8 - FAMILY NOT NAMED // QWRF MOTIF-CONTAINING PROTEIN 9,magenta,NA,gene
+Manes.05G181600.v8.1,Manes.05G181600,(1 of 3) PTHR24093:SF262 - CALCIUM-TRANSPORTING ATPASE 2; PLASMA MEMBRANE-TYPE-RELATED,red,NA,gene
+Manes.05G181900.v8.1,Manes.05G181900,(1 of 1) K10570 - DNA excision repair protein ERCC-8 (ERCC8; CKN1; CSA),magenta,NA,gene
+Manes.05G184700.v8.1,Manes.05G184700,(1 of 3) 2.6.1.42//2.6.1.88 - Branched-chain-amino-acid transaminase / Transaminase B // Methionine transaminase / Methionine-oxo-acid transaminase,magenta,NA,gene
+Manes.05G184800.v8.1,Manes.05G184800,(1 of 49) K09338 - homeobox-leucine zipper protein (HD-ZIP),yellow,NA,gene
+Manes.05G186400.v8.1,Manes.05G186400,(1 of 2) 2.7.1.17 - Xylulokinase / Xylulose kinase,red,NA,gene
+Manes.05G190500.v8.1,Manes.05G190500,(1 of 2) PTHR10288//PTHR10288:SF134 - KH DOMAIN CONTAINING RNA BINDING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.05G191200.v8.1,Manes.05G191200,(1 of 91) K14488 - SAUR family protein (SAUR),yellow,NA,gene
+Manes.05G191500.v8.1,Manes.05G191500,(1 of 5) K14293 - importin subunit beta-1 (KPNB1),red,NA,gene
+Manes.05G195080.v8.1,Manes.05G195080,(1 of 2) PTHR22595:SF42 - CHITINASE-LIKE PROTEIN 1,red,NA,gene
+Manes.05G200200.v8.1,Manes.05G200200,(1 of 3) PTHR11588:SF106 - TUBULIN BETA-6 CHAIN,red,NA,gene
+Manes.05G203200.v8.1,Manes.05G203200,(1 of 3) PTHR24012//PTHR24012:SF403 - FAMILY NOT NAMED // POLYADENYLATE-BINDING PROTEIN RBP47A,red,NA,gene
+Manes.06G002600.v8.1,Manes.06G002600,(1 of 1) PTHR10217//PTHR10217:SF514 - VOLTAGE AND LIGAND GATED POTASSIUM CHANNEL // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.06G005300.v8.1,Manes.06G005300,(1 of 5) PTHR10722 - 60S RIBOSOMAL PROTEIN L19,yellow,NA,gene
+Manes.06G008750.v8.1,Manes.06G008750,(1 of 3) 1.10.3.11 - Ubiquinol oxidase (non-electrogenic) / Ubiquinol oxidase,magenta,NA,gene
+Manes.06G011800.v8.1,Manes.06G011800,(1 of 35) PTHR27002//PTHR27002:SF84 - FAMILY NOT NAMED // ATP BINDING / PROTEIN KINASE-RELATED,magenta,NA,gene
+Manes.06G014800.v8.1,Manes.06G014800,(1 of 1) PTHR12321:SF60 - PHD FINGER PROTEIN ALFIN-LIKE 6-RELATED,red,NA,gene
+Manes.06G015450.v8.1,Manes.06G015450,,magenta,NA,gene
+Manes.06G017700.v8.1,Manes.06G017700,(1 of 16) K01537 - Ca2+-transporting ATPase (E3.6.3.8),yellow,NA,gene
+Manes.06G023400.v8.1,Manes.06G023400,(1 of 3) 4.1.1.39 - Ribulose-bisphosphate carboxylase / RuBP carboxylase,red,NA,gene
+Manes.06G024500.v8.1,Manes.06G024500,,magenta,NA,gene
+Manes.06G025800.v8.1,Manes.06G025800,(1 of 3) PTHR14155//PTHR14155:SF138 - RING FINGER DOMAIN-CONTAINING // GH10160P,red,NA,gene
+Manes.06G029400.v8.1,Manes.06G029400,(1 of 1) PTHR10906//PTHR10906:SF9 - SECY/SEC61-ALPHA FAMILY MEMBER // PREPROTEIN TRANSLOCASE SUBUNIT SCY1; CHLOROPLASTIC,magenta,NA,gene
+Manes.06G034500.v8.1,Manes.06G034500,(1 of 2) K13431 - signal recognition particle receptor subunit alpha (SRPR),red,NA,gene
+Manes.06G034100.v8.1,Manes.06G034100,(1 of 1) 3.4.11.1 - Leucyl aminopeptidase / Peptidase S,red,NA,gene
+Manes.06G039400.v8.1,Manes.06G039400,(1 of 2) K08516 - synaptobrevin homolog YKT6 (YKT6),red,NA,gene
+Manes.06G048400.v8.1,Manes.06G048400,(1 of 1) KOG1092 - Ypt/Rab-specific GTPase-activating protein GYP1,yellow,NA,gene
+Manes.06G055700.v8.1,Manes.06G055700,(1 of 2) PTHR24365//PTHR24365:SF274 - TOLL-LIKE RECEPTOR // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.06G062600.v8.1,Manes.06G062600,(1 of 2) K12200 - programmed cell death 6-interacting protein (PDCD6IP; ALIX; RIM20),yellow,NA,gene
+Manes.06G063700.v8.1,Manes.06G063700,(1 of 5) K16282 - E3 ubiquitin-protein ligase RHA2 [EC:6.3.2.19] (RHA2),yellow,NA,gene
+Manes.06G063900.v8.1,Manes.06G063900,,red,NA,gene
+Manes.06G068300.v8.1,Manes.06G068300,(1 of 2) PTHR31769:SF5 - EXPRESSED PROTEIN,red,NA,gene
+Manes.06G071400.v8.1,Manes.06G071400,(1 of 1) PTHR23030:SF18 - ENDOSOMAL TARGETING BRO1-LIKE DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.06G071500.v8.1,Manes.06G071500,(1 of 2) PTHR31003//PTHR31003:SF4 - MYB FAMILY TRANSCRIPTION FACTOR // GENOMIC DNA; CHROMOSOME 3; TAC CLONE:K13N2-RELATED,red,NA,gene
+Manes.06G073400.v8.1,Manes.06G073400,(1 of 2) PTHR10106:SF21 - TRANSMEMBRANE ASCORBATE FERRIREDUCTASE 2-RELATED,yellow,NA,gene
+Manes.06G076700.v8.1,Manes.06G076700,(1 of 2) 2.7.8.2 - Diacylglycerol cholinephosphotransferase / Phosphorylcholine--glyceride transferase,yellow,NA,gene
+Manes.06G078200.v8.1,Manes.06G078200,(1 of 1) PTHR35705:SF2 - WPP DOMAIN-INTERACTING TAIL-ANCHORED PROTEIN 2,red,NA,gene
+Manes.06G081300.v8.1,Manes.06G081300,(1 of 2) 3.4.19.5 - Beta-aspartyl-peptidase,red,NA,gene
+Manes.06G088600.v8.1,Manes.06G088600,(1 of 4) K03263 - translation initiation factor 5A (EIF5A),red,NA,gene
+Manes.06G098700.v8.1,Manes.06G098700,(1 of 2) PTHR31448//PTHR31448:SF9 - FAMILY NOT NAMED // F14D16.14,yellow,NA,gene
+Manes.06G100100.v8.1,Manes.06G100100,(1 of 5) 2.7.7.13 - Mannose-1-phosphate guanylyltransferase / GTP-mannose-1-phosphate guanylyltransferase,red,NA,gene
+Manes.06G106400.v8.1,Manes.06G106400,(1 of 3) PTHR10168:SF73 - GLUTAREDOXIN-C1,yellow,NA,gene
+Manes.06G110100.v8.1,Manes.06G110100,(1 of 2) K17987 - next to BRCA1 gene 1 protein (NBR1),yellow,NA,gene
+Manes.06G110900.v8.1,Manes.06G110900,(1 of 7) PF05605//PF14571 - Drought induced 19 protein (Di19); zinc-binding (zf-Di19) // Stress-induced protein Di19; C-terminal (Di19_C),yellow,NA,gene
+Manes.06G111150.v8.1,Manes.06G111150,(1 of 2) PTHR15680:SF9 - 39S RIBOSOMAL PROTEIN L19; MITOCHONDRIAL,magenta,NA,gene
+Manes.06G112000.v8.1,Manes.06G112000,(1 of 8) K11294 - nucleolin (NCL; NSR1),yellow,NA,gene
+Manes.06G115200.v8.1,Manes.06G115200,(1 of 2) K07739 - elongator complex protein 3 [EC:2.3.1.48] (ELP3; KAT9),red,NA,gene
+Manes.06G119600.v8.1,Manes.06G119600,(1 of 1) 2.7.7.73 - Sulfur carrier protein ThiS adenylyltransferase,red,NA,gene
+Manes.06G122800.v8.1,Manes.06G122800,(1 of 2) 5.4.3.8 - Glutamate-1-semialdehyde 2;1-aminomutase / Glutamate-1-semialdehyde aminotransferase,yellow,NA,gene
+Manes.06G125800.v8.1,Manes.06G125800,(1 of 2) PTHR11638:SF119 - CHAPERONE PROTEIN CLPC1; CHLOROPLASTIC,red,NA,gene
+Manes.06G130700.v8.1,Manes.06G130700,(1 of 9) K07874 - Ras-related protein Rab-1A (RAB1A),red,NA,gene
+Manes.06G135600.v8.1,Manes.06G135600,(1 of 2) PTHR11709//PTHR11709:SF123 - MULTI-COPPER OXIDASE // MONOCOPPER OXIDASE-LIKE PROTEIN SKS1-RELATED,red,NA,gene
+Manes.06G141900.v8.1,Manes.06G141900,(1 of 1) PTHR14237//PTHR14237:SF28 - MOLYBDOPTERIN COFACTOR SULFURASE  MOSC // CATALYTIC/ PYRIDOXAL PHOSPHATE BINDING PROTEIN,yellow,NA,gene
+Manes.06G142400.v8.1,Manes.06G142400,(1 of 1) 1.1.1.140 - Sorbitol-6-phosphate 2-dehydrogenase / Ketosephosphate reductase,red,NA,gene
+Manes.06G143500.v8.1,Manes.06G143500,(1 of 2) K12893 - splicing factor; arginine/serine-rich 4/5/6 (SFRS4_5_6),red,NA,gene
+Manes.06G145900.v8.1,Manes.06G145900,(1 of 2) K07952 - ADP-ribosylation factor related protein 1 (ARFRP1),red,NA,gene
+Manes.06G146300.v8.1,Manes.06G146300,(1 of 2) PTHR10281:SF45 - MEMBRANE STEROID-BINDING PROTEIN 1-RELATED,red,NA,gene
+Manes.06G147000.v8.1,Manes.06G147000,(1 of 1) KOG0978//KOG4593 - E3 ubiquitin ligase involved in syntaxin degradation // Mitotic checkpoint protein MAD1,red,NA,gene
+Manes.06G147100.v8.1,Manes.06G147100,(1 of 1) PTHR35764:SF1 - SHORTAGE IN CHIASMATA 1,magenta,NA,gene
+Manes.06G150200.v8.1,Manes.06G150200,(1 of 17) 1.1.1.330 - Very-long-chain 3-oxoacyl-CoA reductase / Very-long-chain beta-ketoacyl-CoA reductase,yellow,NA,gene
+Manes.06G150300.v8.1,Manes.06G150300,(1 of 1) PTHR24361//PTHR24361:SF253 - MITOGEN-ACTIVATED KINASE KINASE KINASE // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.06G158000.v8.1,Manes.06G158000,(1 of 2) PTHR23076//PTHR23076:SF40 - METALLOPROTEASE M41 FTSH // ATP-DEPENDENT ZINC METALLOPROTEASE FTSH 11; CHLOROPLASTIC/MITOCHONDRIAL,red,NA,gene
+Manes.06G159200.v8.1,Manes.06G159200,(1 of 1) PTHR28524//PTHR28524:SF3 - FAMILY NOT NAMED // UPF0369 PROTEIN C6ORF57,red,NA,gene
+Manes.06G163300.v8.1,Manes.06G163300,(1 of 3) K02981 - small subunit ribosomal protein S2e (RP-S2e; RPS2),red,NA,gene
+Manes.06G163400.v8.1,Manes.06G163400,(1 of 3) K02981 - small subunit ribosomal protein S2e (RP-S2e; RPS2),red,NA,gene
+Manes.06G168800.v8.1,Manes.06G168800,(1 of 2) PTHR33305:SF9 - ETHYLENE INSENSITIVE 3-LIKE 3 PROTEIN,magenta,NA,gene
+Manes.06G169800.v8.1,Manes.06G169800,,magenta,NA,gene
+Manes.06G171200.v8.1,Manes.06G171200,(1 of 6) PF14712 - Snapin/Pallidin (Snapin_Pallidin),magenta,NA,gene
+Manes.06G172700.v8.1,Manes.06G172700,(1 of 4) PTHR12357//PTHR12357:SF21 - YTH  YT521-B HOMOLOGY  DOMAIN-CONTAINING // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.06G174000.v8.1,Manes.06G174000,(1 of 2) PTHR10026//PTHR10026:SF75 - CYCLIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.06G174300.v8.1,Manes.06G174300,(1 of 2) 2.6.1.11 - Acetylornithine transaminase / Succinylornithine aminotransferase,magenta,NA,gene
+Manes.06G174600.v8.1,Manes.06G174600,(1 of 2) PTHR27006:SF44 - LEUCINE-RICH REPEAT TRANSMEMBRANE PROTEIN KINASE,magenta,NA,gene
+Manes.06G174700.v8.1,Manes.06G174700,(1 of 2) PTHR27006//PTHR27006:SF44 - FAMILY NOT NAMED // LEUCINE-RICH REPEAT TRANSMEMBRANE PROTEIN KINASE,magenta,NA,gene
+Manes.06G176400.v8.1,Manes.06G176400,(1 of 2) PTHR11406:SF8 - PHOSPHOGLYCERATE KINASE 1; CHLOROPLASTIC-RELATED,magenta,carb,gene
+Manes.06G178200.v8.1,Manes.06G178200,(1 of 1) PTHR27001//PTHR27001:SF233 - FAMILY NOT NAMED // PROTEIN STRUBBELIG-RECEPTOR FAMILY 5,magenta,NA,gene
+Manes.06G179601.v8.1,Manes.06G179601,(1 of 22) PF02453 - Reticulon (Reticulon),magenta,NA,gene
+Manes.07G007400.v8.1,Manes.07G007400,(1 of 166) PF00646 - F-box domain (F-box),magenta,NA,gene
+Manes.07G009201.v8.1,Manes.07G009201,(1 of 18) PTHR23155//PTHR23155:SF609 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G009937.v8.1,Manes.07G009937,(1 of 6) PTHR23155//PTHR23155:SF414 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G014200.v8.1,Manes.07G014200,(1 of 22) 3.6.3.6 - Proton-exporting ATPase / Proton-translocating P-type ATPase,magenta,NA,gene
+Manes.07G014300.v8.1,Manes.07G014300,(1 of 57) PF02298 - Plastocyanin-like domain (Cu_bind_like),magenta,NA,gene
+Manes.07G015100.v8.1,Manes.07G015100,(1 of 10) PF11891 - Domain of unknown function (DUF3411) (DUF3411),red,NA,gene
+Manes.07G019300.v8.1,Manes.07G019300,(1 of 1) PTHR10666//PTHR10666:SF155 - UBIQUITIN // POLYUBIQUITIN 4,yellow,NA,gene
+Manes.07G019500.v8.1,Manes.07G019500,(1 of 12) K14498 - serine/threonine-protein kinase SRK2 (SNRK2),magenta,NA,gene
+Manes.07G022251.v8.1,Manes.07G022251,,magenta,NA,gene
+Manes.07G023100.v8.1,Manes.07G023100,(1 of 2) PTHR22891//PTHR22891:SF4 - EUKARYOTIC TRANSLATION INITIATION FACTOR 2C // PROTEIN ARGONAUTE 2-RELATED,yellow,NA,gene
+Manes.07G023700.v8.1,Manes.07G023700,(1 of 1) PTHR31621:SF10 - F16B3.6 PROTEIN,red,NA,gene
+Manes.07G024400.v8.1,Manes.07G024400,(1 of 9) K02925 - large subunit ribosomal protein L3e (RP-L3e; RPL3),magenta,NA,gene
+Manes.07G025800.v8.1,Manes.07G025800,(1 of 2) PTHR11208//PTHR11208:SF48 - RNA-BINDING PROTEIN RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.07G027700.v8.1,Manes.07G027700,(1 of 61) PTHR10353 - GLYCOSYL HYDROLASE,magenta,NA,gene
+Manes.07G030900.v8.1,Manes.07G030900,(1 of 7) KOG4249 - Uncharacterized conserved protein,red,NA,gene
+Manes.07G038300.v8.1,Manes.07G038300,(1 of 12) 3.4.22.68 - Ulp1 peptidase / Ulp1 protease,magenta,NA,gene
+Manes.07G038200.v8.1,Manes.07G038200,(1 of 3) K17619 - magnesium-dependent phosphatase 1 [EC:3.1.3.48 3.1.3.-] (MDP1),magenta,NA,gene
+Manes.07G041900.v8.1,Manes.07G041900,(1 of 2) PF08507 - COPI associated protein (COPI_assoc),magenta,NA,gene
+Manes.07G041300.v8.1,Manes.07G041300,(1 of 2) PTHR10071//PTHR10071:SF186 - TRANSCRIPTION FACTOR GATA  GATA BINDING FACTOR // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.07G043800.v8.1,Manes.07G043800,(1 of 18) PTHR23155//PTHR23155:SF609 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G043891.v8.1,Manes.07G043891,(1 of 18) PTHR23155//PTHR23155:SF609 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G043983.v8.1,Manes.07G043983,(1 of 6) PTHR23155//PTHR23155:SF414 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G044166.v8.1,Manes.07G044166,(1 of 18) PTHR23155//PTHR23155:SF609 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G045501.v8.1,Manes.07G045501,(1 of 18) PTHR10366//PTHR10366:SF332 - NAD DEPENDENT EPIMERASE/DEHYDRATASE // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G046500.v8.1,Manes.07G046500,(1 of 3) PTHR22601:SF11 - OLIGOPEPTIDE TRANSPORTER 4,yellow,NA,gene
+Manes.07G048300.v8.1,Manes.07G048300,(1 of 1) PTHR10286:SF3 - INORGANIC PYROPHOSPHATASE,red,NA,gene
+Manes.07G048500.v8.1,Manes.07G048500,(1 of 1) K17744 - L-galactose dehydrogenase (GalDH),yellow,NA,gene
+Manes.07G049900.v8.1,Manes.07G049900,,red,NA,gene
+Manes.07G050600.v8.1,Manes.07G050600,(1 of 1) K02151 - V-type H+-transporting ATPase subunit F (ATPeV1F; ATP6S14),red,NA,gene
+Manes.07G051200.v8.1,Manes.07G051200,(1 of 27) 1.1.1.331 - Secoisolariciresinol dehydrogenase,magenta,NA,gene
+Manes.07G056100.v8.1,Manes.07G056100,(1 of 2) PTHR11817//PTHR11817:SF21 - PYRUVATE KINASE // SUBFAMILY NOT NAMED,yellow,carb,gene
+Manes.07G056700.v8.1,Manes.07G056700,(1 of 1) K10293 - F-box protein 7 (FBXO7),red,NA,gene
+Manes.07G059900.v8.1,Manes.07G059900,(1 of 2) PTHR32002:SF3 - PROTEIN NLP1-RELATED,yellow,NA,gene
+Manes.07G060700.v8.1,Manes.07G060700,(1 of 70) PTHR23155//PTHR23155:SF554 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G061500.v8.1,Manes.07G061500,(1 of 70) PTHR23155//PTHR23155:SF554 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.07G064100.v8.1,Manes.07G064100,(1 of 2) PTHR10869//PTHR10869:SF66 - PROLYL 4-HYDROXYLASE ALPHA SUBUNIT // OXIDOREDUCTASE; 2OG-FE(II) OXYGENASE FAMILY PROTEIN-RELATED,red,NA,gene
+Manes.07G068400.v8.1,Manes.07G068400,(1 of 1) 3.2.1.63 - 1;2-alpha-L-fucosidase / Almond emulsin fucosidase II,magenta,NA,gene
+Manes.07G071856.v8.1,Manes.07G071856,,magenta,NA,gene
+Manes.07G071116.v8.1,Manes.07G071116,(1 of 3) 2.7.1.100 - S-methyl-5-thioribose kinase / MTR kinase,magenta,NA,gene
+Manes.07G071000.v8.1,Manes.07G071000,(1 of 3) 2.7.1.100 - S-methyl-5-thioribose kinase / MTR kinase,yellow,NA,gene
+Manes.07G069764.v8.1,Manes.07G069764,(1 of 1) PTHR12841:SF6 - PROTEIN UNC-50 HOMOLOG,red,NA,gene
+Manes.07G069200.v8.1,Manes.07G069200,(1 of 1) K02864 - large subunit ribosomal protein L10 (RP-L10; MRPL10; rplJ),red,NA,gene
+Manes.07G067700.v8.1,Manes.07G067700,(1 of 599) PF13041 - PPR repeat family (PPR_2),magenta,NA,gene
+Manes.07G067738.v8.1,Manes.07G067738,(1 of 599) PF13041 - PPR repeat family (PPR_2),magenta,NA,gene
+Manes.07G067100.v8.1,Manes.07G067100,(1 of 599) PF13041 - PPR repeat family (PPR_2),red,NA,gene
+Manes.07G077122.v8.1,Manes.07G077122,,magenta,NA,gene
+Manes.07G073700.v8.1,Manes.07G073700,(1 of 15) KOG1987 - Speckle-type POZ protein SPOP and related proteins with TRAF; MATH and BTB/POZ domains,yellow,NA,gene
+Manes.07G076000.v8.1,Manes.07G076000,(1 of 1) PTHR36756//PTHR36756:SF1 - FAMILY NOT NAMED // GENOMIC DNA; CHROMOSOME 3; P1 CLONE: MEB5,yellow,NA,gene
+Manes.07G081200.v8.1,Manes.07G081200,(1 of 4) PTHR12357//PTHR12357:SF21 - YTH  YT521-B HOMOLOGY  DOMAIN-CONTAINING // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.07G082100.v8.1,Manes.07G082100,(1 of 101) PF02362 - B3 DNA binding domain (B3),red,NA,gene
+Manes.07G082184.v8.1,Manes.07G082184,(1 of 2) 1.3.1.81 - (+)-pulegone reductase,magenta,NA,gene
+Manes.07G082500.v8.1,Manes.07G082500,(1 of 3) PF01535//PF14432 - PPR repeat (PPR) // DYW family of nucleic acid deaminases (DYW_deaminase),red,NA,gene
+Manes.07G082700.v8.1,Manes.07G082700,(1 of 1) PTHR36035:SF1 - PROTEIN DISULFIDE-ISOMERASE SCO2,magenta,NA,gene
+Manes.07G088650.v8.1,Manes.07G088650,(1 of 6) PF12796//PF13962//PF14244 - Ankyrin repeats (3 copies) (Ank_2) // Domain of unknown function (PGG) // gag-polypeptide of LTR copia-type (UBN2_3),yellow,NA,gene
+Manes.07G088350.v8.1,Manes.07G088350,(1 of 6) PF12796//PF13962//PF14244 - Ankyrin repeats (3 copies) (Ank_2) // Domain of unknown function (PGG) // gag-polypeptide of LTR copia-type (UBN2_3),red,NA,gene
+Manes.07G088000.v8.1,Manes.07G088000,(1 of 2) K02149 - V-type H+-transporting ATPase subunit D (ATPeV1D; ATP6M),yellow,NA,gene
+Manes.07G089900.v8.1,Manes.07G089900,(1 of 1) PTHR24078//PTHR24078:SF208 - DNAJ HOMOLOG SUBFAMILY C MEMBER // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.07G090500.v8.1,Manes.07G090500,(1 of 3) K02727 - 20S proteasome subunit alpha 7 (PSMA3),yellow,NA,gene
+Manes.07G090800.v8.1,Manes.07G090800,(1 of 207) PF01535//PF13041 - PPR repeat (PPR) // PPR repeat family (PPR_2),magenta,NA,gene
+Manes.07G091300.v8.1,Manes.07G091300,(1 of 9) PF01439 - Metallothionein (Metallothio_2),yellow,NA,gene
+Manes.07G091450.v8.1,Manes.07G091450,,yellow,NA,gene
+Manes.07G093100.v8.1,Manes.07G093100,(1 of 1) 2.7.1.182 - Phytol kinase,magenta,NA,gene
+Manes.07G133124.v8.1,Manes.07G133124,(1 of 85) PF00560//PF08263//PF13855 - Leucine Rich Repeat (LRR_1) // Leucine rich repeat N-terminal domain (LRRNT_2) // Leucine rich repeat (LRR_8),magenta,NA,gene
+Manes.07G133144.v8.1,Manes.07G133144,(1 of 1) K13154 - U11/U12 small nuclear ribonucleoprotein 31 kDa protein (ZCRB1),magenta,NA,gene
+Manes.07G097600.v8.1,Manes.07G097600,(1 of 1) PTHR10694:SF45 - LYSINE-SPECIFIC DEMETHYLASE ELF6-RELATED,yellow,NA,gene
+Manes.07G098300.v8.1,Manes.07G098300,(1 of 7) PF10950 - Protein of unknown function (DUF2775) (DUF2775),yellow,NA,gene
+Manes.07G098400.v8.1,Manes.07G098400,(1 of 7) PF10950 - Protein of unknown function (DUF2775) (DUF2775),yellow,NA,gene
+Manes.07G101300.v8.1,Manes.07G101300,(1 of 1) 2.6.1.85 - Aminodeoxychorismate synthase / ADC synthase,magenta,NA,gene
+Manes.07G104000.v8.1,Manes.07G104000,(1 of 2) PTHR32191:SF1 - TETRASPANIN-5-RELATED,yellow,NA,gene
+Manes.07G104100.v8.1,Manes.07G104100,(1 of 2) PTHR31942:SF29 - MLO-LIKE PROTEIN 12-RELATED,yellow,NA,gene
+Manes.07G105700.v8.1,Manes.07G105700,(1 of 1) PTHR11260//PTHR11260:SF320 - GLUTATHIONE S-TRANSFERASE; GST; SUPERFAMILY; GST DOMAIN CONTAINING // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.07G107300.v8.1,Manes.07G107300,,yellow,NA,gene
+Manes.07G108300.v8.1,Manes.07G108300,(1 of 3) K02918 - large subunit ribosomal protein L35e (RP-L35e; RPL35),magenta,NA,gene
+Manes.07G108900.v8.1,Manes.07G108900,(1 of 3) K02918 - large subunit ribosomal protein L35e (RP-L35e; RPL35),magenta,NA,gene
+Manes.07G109504.v8.1,Manes.07G109504,(1 of 3) K18422 - helicase MOV-10 [EC:3.6.4.13] (MOV10),yellow,NA,gene
+Manes.07G111900.v8.1,Manes.07G111900,(1 of 54) PF13912 - C2H2-type zinc finger (zf-C2H2_6),yellow,NA,gene
+Manes.07G113900.v8.1,Manes.07G113900,(1 of 3) K10575 - ubiquitin-conjugating enzyme E2 G1 (UBE2G1; UBC7),red,NA,gene
+Manes.07G118000.v8.1,Manes.07G118000,(1 of 2) K16283 - E3 ubiquitin-protein ligase SDIR1 [EC:6.3.2.19] (SDIR1),magenta,NA,gene
+Manes.07G125400.v8.1,Manes.07G125400,,red,NA,gene
+Manes.07G126100.v8.1,Manes.07G126100,(1 of 3) K03038 - 26S proteasome regulatory subunit N8 (PSMD7; RPN8),yellow,NA,gene
+Manes.07G126300.v8.1,Manes.07G126300,(1 of 2) K03249 - translation initiation factor 3 subunit F (EIF3F),red,NA,gene
+Manes.07G128600.v8.1,Manes.07G128600,(1 of 4) K10802 - high mobility group protein B1 (HMGB1),red,NA,gene
+Manes.07G128800.v8.1,Manes.07G128800,(1 of 2) PTHR34953:SF1 - ALPHA/BETA HYDROLASE RELATED PROTEIN,yellow,NA,gene
+Manes.07G128900.v8.1,Manes.07G128900,(1 of 2) PTHR10566//PTHR10566:SF58 - CHAPERONE-ACTIVITY OF BC1 COMPLEX  CABC1 -RELATED // PROTEIN D2023.6,yellow,NA,gene
+Manes.07G132200.v8.1,Manes.07G132200,(1 of 2) PTHR31301:SF24 - LOB DOMAIN-CONTAINING PROTEIN 21,magenta,NA,gene
+Manes.07G134400.v8.1,Manes.07G134400,(1 of 25) PF04749 - PLAC8 family (PLAC8),yellow,NA,gene
+Manes.07G135966.v8.1,Manes.07G135966,,magenta,NA,gene
+Manes.07G140600.v8.1,Manes.07G140600,(1 of 6) PF01661 - Macro domain (Macro),yellow,NA,gene
+Manes.07G141000.v8.1,Manes.07G141000,,red,NA,gene
+Manes.07G141100.v8.1,Manes.07G141100,(1 of 7) 6.1.1.10 - Methionine--tRNA ligase / MetRS,magenta,NA,gene
+Manes.07G141600.v8.1,Manes.07G141600,(1 of 1) PTHR11935:SF94 - PROTEIN Y17G7B.3,yellow,NA,gene
+Manes.08G015300.v8.1,Manes.08G015300,(1 of 1) PTHR32116//PTHR32116:SF7 - FAMILY NOT NAMED // GALACTURONOSYLTRANSFERASE 4-RELATED,magenta,NA,gene
+Manes.08G002800.v8.1,Manes.08G002800,(1 of 6) PF07714//PF12819 - Protein tyrosine kinase (Pkinase_Tyr) // Carbohydrate-binding protein of the ER (Malectin_like),yellow,NA,gene
+Manes.08G002900.v8.1,Manes.08G002900,(1 of 3) PTHR11064//PTHR11064:SF27 - CCAAT-BINDING TRANSCRIPTION FACTOR-RELATED // NUCLEAR TRANSCRIPTION FACTOR Y SUBUNIT B-2-RELATED,red,NA,gene
+Manes.08G008000.v8.1,Manes.08G008000,(1 of 8) K11294 - nucleolin (NCL; NSR1),yellow,NA,gene
+Manes.08G010900.v8.1,Manes.08G010900,,magenta,NA,gene
+Manes.08G011200.v8.1,Manes.08G011200,,yellow,NA,gene
+Manes.08G015700.v8.1,Manes.08G015700,(1 of 2) K18655 - ATP-dependent RNA helicase DDX19/DBP5 [EC:3.6.4.13] (DDX19; DBP5),red,NA,gene
+Manes.08G015800.v8.1,Manes.08G015800,(1 of 1) K19373 - DnaJ homolog subfamily C member 28 (DNAJC28),yellow,NA,gene
+Manes.08G017200.v8.1,Manes.08G017200,(1 of 1) PTHR21737:SF4 - CACTIN,red,NA,gene
+Manes.08G017400.v8.1,Manes.08G017400,(1 of 2) 4.3.1.19 - Threonine ammonia-lyase / Threonine dehydratase,yellow,NA,gene
+Manes.08G020700.v8.1,Manes.08G020700,(1 of 2) PTHR10015:SF164 - HEAT STRESS TRANSCRIPTION FACTOR A-3,yellow,NA,gene
+Manes.08G022800.v8.1,Manes.08G022800,(1 of 2) K12873 - bud site selection protein 31 (BUD31; G10),yellow,NA,gene
+Manes.08G027400.v8.1,Manes.08G027400,(1 of 4) K02927//K08770 - large subunit ribosomal protein L40e (RP-L40e; RPL40) // ubiquitin C (UBC),red,NA,gene
+Manes.08G032300.v8.1,Manes.08G032300,(1 of 2) PTHR11638//PTHR11638:SF69 - ATP-DEPENDENT CLP PROTEASE // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.08G035200.v8.1,Manes.08G035200,,magenta,NA,gene
+Manes.08G036300.v8.1,Manes.08G036300,(1 of 2) PTHR24349:SF161 - CALCIUM-DEPENDENT PROTEIN KINASE 1-RELATED,yellow,NA,gene
+Manes.08G040700.v8.1,Manes.08G040700,(1 of 4) K11594 - ATP-dependent RNA helicase DDX3X (DDX3X; bel),red,NA,gene
+Manes.08G043500.v8.1,Manes.08G043500,(1 of 1) PTHR34122//PTHR34122:SF1 - FAMILY NOT NAMED // EXPRESSED PROTEIN,yellow,NA,gene
+Manes.08G045100.v8.1,Manes.08G045100,(1 of 1) PTHR21032//PTHR21032:SF0 - UNCHARACTERIZED // G PATCH DOMAIN-CONTAINING PROTEIN 11,red,NA,gene
+Manes.08G047400.v8.1,Manes.08G047400,(1 of 2) PTHR12565:SF112 - TRANSCRIPTION FACTOR BHLH48-RELATED,yellow,NA,gene
+Manes.08G048300.v8.1,Manes.08G048300,(1 of 3) K13523 - lysophosphatidic acid acyltransferase / lysophosphatidylinositol acyltransferase (AGPAT3_4),red,NA,gene
+Manes.08G053700.v8.1,Manes.08G053700,(1 of 599) PF13041 - PPR repeat family (PPR_2),magenta,NA,gene
+Manes.08G056100.v8.1,Manes.08G056100,(1 of 3) PTHR10891//PTHR10891:SF573 - EF-HAND CALCIUM-BINDING DOMAIN CONTAINING PROTEIN // CALCIUM-BINDING PROTEIN CML24-RELATED,yellow,NA,gene
+Manes.08G059700.v8.1,Manes.08G059700,(1 of 5) K01527 - nascent polypeptide-associated complex subunit beta (EGD1; BTF3),red,NA,gene
+Manes.08G060000.v8.1,Manes.08G060000,(1 of 2) PTHR22950:SF269 - EXPRESSED PROTEIN,yellow,NA,gene
+Manes.08G061800.v8.1,Manes.08G061800,(1 of 4) PF16711 - Actin-binding domain of plant-specific actin-binding protein (SCAB-ABD),magenta,NA,gene
+Manes.08G062600.v8.1,Manes.08G062600,(1 of 2) KOG2953 - mRNA-binding protein Encore,red,NA,gene
+Manes.08G062701.v8.1,Manes.08G062701,(1 of 1) PTHR11802//PTHR11802:SF3//PTHR11802:SF65 - SERINE PROTEASE FAMILY S10 SERINE CARBOXYPEPTIDASE // RETINOID-INDUCIBLE SERINE CARBOXYPEPTIDASE // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.08G062966.v8.1,Manes.08G062966,(1 of 1) 3.5.1.89 - N-acetylglucosaminylphosphatidylinositol deacetylase / N-acetylglucosaminylphosphatidylinositol de-N-acetylase,magenta,NA,gene
+Manes.08G064200.v8.1,Manes.08G064200,(1 of 2) K02144 - V-type H+-transporting ATPase subunit H (ATPeV1H),magenta,NA,gene
+Manes.08G064700.v8.1,Manes.08G064700,(1 of 1) K13176 - THO complex subunit 7 (THOC7),red,NA,gene
+Manes.08G065000.v8.1,Manes.08G065000,(1 of 6) PTHR31989:SF5 - F11O4.3-RELATED,yellow,NA,gene
+Manes.08G066100.v8.1,Manes.08G066100,(1 of 1) PTHR22763//PTHR22763:SF44 - RING ZINC FINGER PROTEIN // E3 UBIQUITIN LIGASE,magenta,NA,gene
+Manes.08G070000.v8.1,Manes.08G070000,(1 of 9) PF13041//PF13812 - PPR repeat family (PPR_2) // Pentatricopeptide repeat domain (PPR_3),yellow,NA,gene
+Manes.08G069730.v8.1,Manes.08G069730,(1 of 5) K08272 - calcium binding protein 39 (CAB39; MO25),yellow,NA,gene
+Manes.08G071412.v8.1,Manes.08G071412,(1 of 1) 2.7.4.2 - Phosphomevalonate kinase,red,NA,gene
+Manes.08G073101.v8.1,Manes.08G073101,(1 of 15) PF00069//PF01453 - Protein kinase domain (Pkinase) // D-mannose binding lectin (B_lectin),yellow,NA,gene
+Manes.08G073600.v8.1,Manes.08G073600,(1 of 3) PTHR10857:SF34 - COPINE (CALCIUM-DEPENDENT PHOSPHOLIPID-BINDING PROTEIN) FAMILY PROTEIN,yellow,NA,gene
+Manes.08G074300.v8.1,Manes.08G074300,(1 of 2) PTHR21231//PTHR21231:SF8 - XPA-BINDING PROTEIN 1-RELATED // GPN-LOOP GTPASE 1,magenta,NA,gene
+Manes.08G076011.v8.1,Manes.08G076011,,magenta,NA,gene
+Manes.08G075500.v8.1,Manes.08G075500,(1 of 1) K04708 - 3-dehydrosphinganine reductase (E1.1.1.102),magenta,NA,gene
+Manes.08G079262.v8.1,Manes.08G079262,(1 of 9) PF01439 - Metallothionein (Metallothio_2),magenta,NA,gene
+Manes.08G084400.v8.1,Manes.08G084400,(1 of 3) K18551 - pyrimidine and pyridine-specific 5'-nucleotidase (SDT1),red,NA,gene
+Manes.08G085300.v8.1,Manes.08G085300,(1 of 4) 5.4.99.24 - 23S rRNA pseudouridine(955/2504/2580) synthase,magenta,NA,gene
+Manes.08G082400.v8.1,Manes.08G082400,(1 of 46) PF00582 - Universal stress protein family (Usp),yellow,NA,gene
+Manes.08G086700.v8.1,Manes.08G086700,(1 of 1) PTHR15852//PTHR15852:SF20 - FAMILY NOT NAMED // CHAPERONE PROTEIN DNAJ-LIKE PROTEIN,yellow,NA,gene
+Manes.08G087100.v8.1,Manes.08G087100,(1 of 2) K01962 - acetyl-CoA carboxylase carboxyl transferase subunit alpha (accA),yellow,NA,gene
+Manes.08G092100.v8.1,Manes.08G092100,(1 of 2) PTHR31503:SF1 - VACUOLAR CATION/PROTON EXCHANGER 1-RELATED,yellow,NA,gene
+Manes.08G092600.v8.1,Manes.08G092600,(1 of 2) PTHR12321//PTHR12321:SF46 - CPG BINDING PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.08G093600.v8.1,Manes.08G093600,(1 of 1) PTHR10293//PTHR10293:SF45 - GLUTAREDOXIN-RELATED PROTEIN // MONOTHIOL GLUTAREDOXIN-S16; CHLOROPLASTIC,yellow,NA,gene
+Manes.08G096600.v8.1,Manes.08G096600,(1 of 1) PTHR11206:SF101 - MATE EFFLUX FAMILY PROTEIN 2; CHLOROPLASTIC,magenta,NA,gene
+Manes.08G096900.v8.1,Manes.08G096900,(1 of 2) PTHR31241:SF2 - DEHYDRATION-RESPONSIVE ELEMENT-BINDING PROTEIN 2A-RELATED,yellow,NA,gene
+Manes.08G097700.v8.1,Manes.08G097700,(1 of 4) K02987 - small subunit ribosomal protein S4e (RP-S4e; RPS4),red,NA,gene
+Manes.08G103000.v8.1,Manes.08G103000,(1 of 1) PTHR31969//PTHR31969:SF3 - FAMILY NOT NAMED // GEM-LIKE PROTEIN 5,yellow,NA,gene
+Manes.08G105600.v8.1,Manes.08G105600,(1 of 3) PF00646//PF14299 - F-box domain (F-box) // Phloem protein 2 (PP2),yellow,NA,gene
+Manes.08G108000.v8.1,Manes.08G108000,(1 of 2) PTHR32227//PTHR32227:SF118 - FAMILY NOT NAMED // CARBOHYDRATE-BINDING X8 DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.08G110200.v8.1,Manes.08G110200,(1 of 4) 3.1.26.11 - Ribonuclease Z / tRNase Z,red,NA,gene
+Manes.08G111900.v8.1,Manes.08G111900,(1 of 13) K01507 - inorganic pyrophosphatase (ppa),yellow,NA,gene
+Manes.08G112100.v8.1,Manes.08G112100,(1 of 1) PTHR11711//PTHR11711:SF194 - ADP RIBOSYLATION FACTOR-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.08G112700.v8.1,Manes.08G112700,(1 of 1) PTHR13620//PTHR13620:SF15 - 3-5 EXONUCLEASE // EXONUCLEASE MUT-7 HOMOLOG-RELATED,yellow,NA,gene
+Manes.08G113300.v8.1,Manes.08G113300,(1 of 3) PTHR10071:SF203 - GATA TRANSCRIPTION FACTOR 15-RELATED,red,NA,gene
+Manes.08G113400.v8.1,Manes.08G113400,(1 of 3) PTHR31875:SF0 - PROTEIN DEHYDRATION-INDUCED 19-RELATED,magenta,NA,gene
+Manes.08G115600.v8.1,Manes.08G115600,,red,NA,gene
+Manes.08G117800.v8.1,Manes.08G117800,(1 of 5) PF05755 - Rubber elongation factor protein (REF) (REF),yellow,NA,gene
+Manes.08G118700.v8.1,Manes.08G118700,(1 of 1) PTHR19375:SF219 - MEDIATOR OF RNA POLYMERASE II TRANSCRIPTION SUBUNIT 37A-RELATED,yellow,NA,gene
+Manes.08G118800.v8.1,Manes.08G118800,(1 of 1) K10900 - werner syndrome ATP-dependent helicase [EC:3.6.4.12] (WRN; RECQL2),red,NA,gene
+Manes.08G120400.v8.1,Manes.08G120400,(1 of 1) PTHR20932//PTHR20932:SF9 - LOC443603 PROTEIN-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.08G121600.v8.1,Manes.08G121600,,magenta,NA,gene
+Manes.08G124000.v8.1,Manes.08G124000,(1 of 9) PTHR23500:SF62 - SUGAR TRANSPORTER ERD6-LIKE 14-RELATED,magenta,NA,gene
+Manes.08G125300.v8.1,Manes.08G125300,(1 of 2) KOG3316 - Transport protein particle (TRAPP) complex subunit,magenta,NA,gene
+Manes.08G127700.v8.1,Manes.08G127700,(1 of 2) 3.5.4.3 - Guanine deaminase / Guanine aminase,magenta,NA,gene
+Manes.08G134300.v8.1,Manes.08G134300,,yellow,NA,gene
+Manes.08G137200.v8.1,Manes.08G137200,(1 of 2) PTHR31500:SF22 - AT HOOK MOTIF DNA-BINDING FAMILY PROTEIN-RELATED,yellow,NA,gene
+Manes.08G145200.v8.1,Manes.08G145200,(1 of 2) PTHR11960:SF18 - 4EHP; ISOFORM B,red,NA,gene
+Manes.08G145800.v8.1,Manes.08G145800,(1 of 3) PTHR19957//PTHR19957:SF131 - SYNTAXIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.08G145900.v8.1,Manes.08G145900,,yellow,NA,gene
+Manes.08G155600.v8.1,Manes.08G155600,,magenta,NA,gene
+Manes.08G157900.v8.1,Manes.08G157900,(1 of 2) PTHR31956//PTHR31956:SF1 - FAMILY NOT NAMED // NON-SPECIFIC PHOSPHOLIPASE C3-RELATED,yellow,NA,gene
+Manes.08G158200.v8.1,Manes.08G158200,(1 of 1) PTHR10060//PTHR10060:SF24 - TATD FAMILY DEOXYRIBONUCLEASE // DEOXYRIBONUCLEASE TATDN3-RELATED,magenta,NA,gene
+Manes.08G159800.v8.1,Manes.08G159800,(1 of 138) KOG0156 - Cytochrome P450 CYP2 subfamily,magenta,NA,gene
+Manes.08G161900.v8.1,Manes.08G161900,(1 of 11) PF01612 - 3'-5' exonuclease (DNA_pol_A_exo1),yellow,NA,gene
+Manes.08G162000.v8.1,Manes.08G162000,,yellow,NA,gene
+Manes.08G162700.v8.1,Manes.08G162700,(1 of 1) K11352 - NADH dehydrogenase (ubiquinone) 1 alpha subcomplex subunit 12 (NDUFA12),magenta,NA,gene
+Manes.08G163800.v8.1,Manes.08G163800,(1 of 1) K15425 - serine/threonine-protein phosphatase 4 regulatory subunit 2 (PPP4R2),magenta,NA,gene
+Manes.08G164400.v8.1,Manes.08G164400,(1 of 1) KOG0621 - Phospholipid scramblase,magenta,NA,gene
+Manes.08G164600.v8.1,Manes.08G164600,(1 of 4) K03363 - cell division cycle 20; cofactor of APC complex (CDC20),magenta,NA,gene
+Manes.08G168000.v8.1,Manes.08G168000,,yellow,NA,gene
+Manes.08G169900.v8.1,Manes.08G169900,(1 of 14) K06689 - ubiquitin-conjugating enzyme E2 D/E (UBE2D_E; UBC4; UBC5),yellow,NA,gene
+Manes.08G174200.v8.1,Manes.08G174200,,yellow,NA,gene
+Manes.08G174100.v8.1,Manes.08G174100,(1 of 1) PTHR13140:SF270 - MYOSIN-12,yellow,NA,gene
+Manes.09G001500.v8.1,Manes.09G001500,(1 of 1) PTHR22883//PTHR22883:SF15 - ZINC FINGER DHHC DOMAIN CONTAINING PROTEIN // PROTEIN S-ACYLTRANSFERASE 19-RELATED,red,NA,gene
+Manes.09G002200.v8.1,Manes.09G002200,(1 of 321) PF00249 - Myb-like DNA-binding domain (Myb_DNA-binding),red,NA,gene
+Manes.09G007200.v8.1,Manes.09G007200,(1 of 1) K17262 - tubulin-folding cofactor B (TBCB; CKAP1; ALF1),red,NA,gene
+Manes.09G009100.v8.1,Manes.09G009100,(1 of 44) K13448 - calcium-binding protein CML (CML),yellow,NA,gene
+Manes.09G022900.v8.1,Manes.09G022900,(1 of 86) PTHR23155//PTHR23155:SF563 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.09G029400.v8.1,Manes.09G029400,(1 of 10) PTHR10593//PTHR10593:SF27 - SERINE/THREONINE-PROTEIN KINASE RIO // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.09G029500.v8.1,Manes.09G029500,(1 of 1) PTHR32060:SF5 - PEPTIDASE S41 FAMILY PROTEIN,red,NA,gene
+Manes.09G029800.v8.1,Manes.09G029800,(1 of 3) PTHR34672//PTHR34672:SF2 - FAMILY NOT NAMED // ARABINOGALACTAN PEPTIDE 23-RELATED,yellow,NA,gene
+Manes.09G031900.v8.1,Manes.09G031900,(1 of 5) PTHR10024//PTHR10024:SF243 - SYNAPTOTAGMIN // ANTHRANILATE PHOSPHORIBOSYLTRANSFERASE-LIKE PROTEIN,yellow,NA,gene
+Manes.09G034500.v8.1,Manes.09G034500,(1 of 2) KOG2866 - Uncharacterized conserved protein,yellow,NA,gene
+Manes.09G036600.v8.1,Manes.09G036600,(1 of 1) PF00046//PF02183//PF03101//PF04618 - Homeobox domain (Homeobox) // Homeobox associated leucine zipper (HALZ) // FAR1 DNA-binding domain (FAR1) // HD-ZIP protein N terminus (HD-ZIP_N),yellow,NA,gene
+Manes.09G037300.v8.1,Manes.09G037300,(1 of 1) K16570 - gamma-tubulin complex component 3 (TUBGCP3; GCP3),red,NA,gene
+Manes.09G038600.v8.1,Manes.09G038600,,yellow,NA,gene
+Manes.09G039200.v8.1,Manes.09G039200,(1 of 2) K02889 - large subunit ribosomal protein L21e (RP-L21e; RPL21),red,NA,gene
+Manes.09G040700.v8.1,Manes.09G040700,(1 of 2) K03252 - translation initiation factor 3 subunit C (EIF3C),yellow,NA,gene
+Manes.09G042800.v8.1,Manes.09G042800,,yellow,NA,gene
+Manes.09G044200.v8.1,Manes.09G044200,(1 of 2) PTHR12632:SF7 - NUCLEAR TRANSCRIPTION FACTOR Y SUBUNIT A-10-RELATED,yellow,NA,gene
+Manes.09G045000.v8.1,Manes.09G045000,(1 of 1) PTHR11839:SF10 - NUDIX HYDROLASE 27; CHLOROPLASTIC,yellow,NA,gene
+Manes.09G046600.v8.1,Manes.09G046600,(1 of 67) PF03168 - Late embryogenesis abundant protein (LEA_2),magenta,NA,gene
+Manes.09G046700.v8.1,Manes.09G046700,(1 of 2) PTHR31415//PTHR31415:SF2 - FAMILY NOT NAMED // LATE EMBRYOGENESIS ABUNDANT HYDROXYPROLINE-RICH GLYCOPROTEIN-RELATED,yellow,NA,gene
+Manes.09G049300.v8.1,Manes.09G049300,(1 of 8) PF00076//PF00098 - RNA recognition motif. (a.k.a. RRM; RBD; or RNP domain) (RRM_1) // Zinc knuckle (zf-CCHC),red,NA,gene
+Manes.09G056200.v8.1,Manes.09G056200,(1 of 3) PTHR10992//PTHR10992:SF740 - ALPHA/BETA HYDROLASE FOLD-CONTAINING PROTEIN // ALPHA/BETA-HYDROLASES SUPERFAMILY PROTEIN-RELATED,red,carb,gene
+Manes.09G056700.v8.1,Manes.09G056700,(1 of 1) PTHR12264:SF21 - TRANSCRIPTION INITIATION FACTOR TFIID SUBUNIT 12,red,NA,gene
+Manes.09G057000.v8.1,Manes.09G057000,(1 of 2) PTHR22835//PTHR22835:SF216 - ZINC FINGER FYVE DOMAIN CONTAINING PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.09G058632.v8.1,Manes.09G058632,(1 of 4) PTHR19241//PTHR19241:SF261 - ATP-BINDING CASSETTE TRANSPORTER // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.09G058896.v8.1,Manes.09G058896,(1 of 2) PTHR31972:SF16 - EXPRESSED PROTEIN,red,NA,gene
+Manes.09G059028.v8.1,Manes.09G059028,(1 of 2) PTHR10015//PTHR10015:SF164 - HEAT SHOCK TRANSCRIPTION FACTOR // HEAT STRESS TRANSCRIPTION FACTOR A-3,yellow,NA,gene
+Manes.09G049118.v8.1,Manes.09G049118,(1 of 2) K18655 - ATP-dependent RNA helicase DDX19/DBP5 [EC:3.6.4.13] (DDX19; DBP5),yellow,NA,gene
+Manes.09G065000.v8.1,Manes.09G065000,(1 of 2) K15691 - E3 ubiquitin-protein ligase RFWD3 [EC:6.3.2.19] (RFWD3),red,NA,gene
+Manes.09G066828.v8.1,Manes.09G066828,(1 of 1) PTHR11406//PTHR11406:SF13 - PHOSPHOGLYCERATE KINASE // SUBFAMILY NOT NAMED,magenta,carb,gene
+Manes.09G067260.v8.1,Manes.09G067260,(1 of 5) K13525 - transitional endoplasmic reticulum ATPase (VCP; CDC48),red,NA,gene
+Manes.09G068000.v8.1,Manes.09G068000,(1 of 2) PF15375 - Domain of unknown function (DUF4602) (DUF4602),magenta,NA,gene
+Manes.09G067800.v8.1,Manes.09G067800,(1 of 8) K11294 - nucleolin (NCL; NSR1),red,NA,gene
+Manes.09G068812.v8.1,Manes.09G068812,(1 of 4) K02152 - V-type H+-transporting ATPase subunit G (ATPeV1G; ATP6G),yellow,NA,gene
+Manes.09G071000.v8.1,Manes.09G071000,(1 of 3) PTHR27001:SF211 - PROTEIN KINASE FAMILY PROTEIN,yellow,NA,gene
+Manes.09G072000.v8.1,Manes.09G072000,(1 of 5) K12896 - splicing factor; arginine/serine-rich 7 (SFRS7),red,NA,gene
+Manes.09G076319.v8.1,Manes.09G076319,(1 of 5) K12462 - Rho GDP-dissociation inhibitor (ARHGDI; RHOGDI),red,NA,gene
+Manes.09G070538.v8.1,Manes.09G070538,(1 of 4) PTHR11926//PTHR11926:SF242 - GLUCOSYL/GLUCURONOSYL TRANSFERASES // UDP-GLYCOSYLTRANSFERASE 71B2-RELATED,yellow,NA,gene
+Manes.09G074500.v8.1,Manes.09G074500,(1 of 1) K01209 - alpha-N-arabinofuranosidase (E3.2.1.55; abfA),yellow,NA,gene
+Manes.09G074200.v8.1,Manes.09G074200,(1 of 1) PTHR35118:SF2 - PROTEIN KINASE FAMILY PROTEIN,red,NA,gene
+Manes.09G073000.v8.1,Manes.09G073000,(1 of 3) K02901 - large subunit ribosomal protein L27e (RP-L27e; RPL27),red,NA,gene
+Manes.09G077400.v8.1,Manes.09G077400,(1 of 1) PTHR32133:SF121 - F-BOX PROTEIN CPR30,yellow,NA,gene
+Manes.09G083900.v8.1,Manes.09G083900,(1 of 2) PTHR11759//PTHR11759:SF8 - 40S RIBOSOMAL PROTEIN S14/30S RIBOSOMAL PROTEIN S11 // 30S RIBOSOMAL PROTEIN S11-RELATED,red,NA,gene
+Manes.09G085100.v8.1,Manes.09G085100,(1 of 3) PTHR32227//PTHR32227:SF11 - FAMILY NOT NAMED // O-GLYCOSYL HYDROLASES FAMILY 17 PROTEIN,yellow,NA,gene
+Manes.09G087400.v8.1,Manes.09G087400,(1 of 1) K12492 - ADP-ribosylation factor GTPase-activating protein 1 (ARFGAP1),red,NA,gene
+Manes.09G092548.v8.1,Manes.09G092548,(1 of 1) PTHR31048:SF21 - PATHOGENESIS-RELATED THAUMATIN-LIKE PROTEIN,yellow,NA,gene
+Manes.09G098300.v8.1,Manes.09G098300,(1 of 1) K06700 - proteasome inhibitor subunit 1 (PI31) (PSMF1),yellow,NA,gene
+Manes.09G098500.v8.1,Manes.09G098500,,red,NA,gene
+Manes.09G098800.v8.1,Manes.09G098800,(1 of 9) PTHR11260//PTHR11260:SF303 - GLUTATHIONE S-TRANSFERASE; GST; SUPERFAMILY; GST DOMAIN CONTAINING // GLUTATHIONE S-TRANSFERASE U1-RELATED,yellow,NA,gene
+Manes.09G098760.v8.1,Manes.09G098760,(1 of 46) PF00582 - Universal stress protein family (Usp),yellow,NA,gene
+Manes.09G102500.v8.1,Manes.09G102500,(1 of 2) PTHR11654//PTHR11654:SF125 - OLIGOPEPTIDE TRANSPORTER-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.09G103700.v8.1,Manes.09G103700,(1 of 2) PTHR31503//PTHR31503:SF1 - FAMILY NOT NAMED // VACUOLAR CATION/PROTON EXCHANGER 1-RELATED,yellow,NA,gene
+Manes.09G113600.v8.1,Manes.09G113600,(1 of 2) PTHR12902//PTHR12902:SF12 - WASP-1 // PROTEIN SCAR2-RELATED,yellow,NA,gene
+Manes.09G114300.v8.1,Manes.09G114300,(1 of 3) PTHR31087//PTHR31087:SF11 - FAMILY NOT NAMED // PROTEIN LURP-ONE-RELATED 1-RELATED,magenta,NA,gene
+Manes.09G115100.v8.1,Manes.09G115100,(1 of 1) PF01453//PF08277 - D-mannose binding lectin (B_lectin) // PAN-like domain (PAN_3),red,NA,gene
+Manes.09G118300.v8.1,Manes.09G118300,(1 of 2) PTHR12668:SF19 - NON-GREEN PLASTID INNER ENVELOPE MEMBRANE PROTEIN-RELATED,red,NA,gene
+Manes.09G118400.v8.1,Manes.09G118400,(1 of 2) PTHR22765:SF58 - VACUOLAR-SORTING RECEPTOR 1-RELATED,yellow,NA,gene
+Manes.09G121000.v8.1,Manes.09G121000,(1 of 1) PTHR31419//PTHR31419:SF1 - FAMILY NOT NAMED // AUXIN EFFLUX CARRIER FAMILY PROTEIN,yellow,NA,gene
+Manes.09G123600.v8.1,Manes.09G123600,(1 of 5) K14802 - phospholipid-transporting ATPase [EC:3.6.3.1] (DRS2; ATP8A),red,NA,gene
+Manes.09G124900.v8.1,Manes.09G124900,(1 of 152) PF02365 - No apical meristem (NAM) protein (NAM),yellow,NA,gene
+Manes.09G130200.v8.1,Manes.09G130200,(1 of 138) KOG0156 - Cytochrome P450 CYP2 subfamily,yellow,NA,gene
+Manes.09G132900.v8.1,Manes.09G132900,(1 of 2) K17292 - tubulin-specific chaperone A (TBCA),yellow,NA,gene
+Manes.09G135500.v8.1,Manes.09G135500,(1 of 2) PTHR23180:SF202 - ADP-RIBOSYLATION FACTOR GTPASE-ACTIVATING PROTEIN AGD14-RELATED,yellow,NA,gene
+Manes.09G136400.v8.1,Manes.09G136400,,yellow,NA,gene
+Manes.09G138100.v8.1,Manes.09G138100,,yellow,NA,gene
+Manes.09G139300.v8.1,Manes.09G139300,(1 of 1) PTHR10024:SF182 - C2 CALCIUM/LIPID-BINDING AND PHOSPHORIBOSYLTRANSFERASE C-TERMINAL DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.09G139700.v8.1,Manes.09G139700,(1 of 2) PTHR31741//PTHR31741:SF6 - FAMILY NOT NAMED // O-FUCOSYLTRANSFERASE-LIKE PROTEIN,magenta,NA,gene
+Manes.09G142200.v8.1,Manes.09G142200,(1 of 2) PTHR24322//PTHR24322:SF429 - FAMILY NOT NAMED // NAD(P)-BINDING ROSSMANN-FOLD SUPERFAMILY PROTEIN,magenta,NA,gene
+Manes.09G142400.v8.1,Manes.09G142400,(1 of 2) K12580 - CCR4-NOT transcription complex subunit 3 (CNOT3; NOT3),magenta,NA,gene
+Manes.09G142900.v8.1,Manes.09G142900,(1 of 2) PTHR33605//PTHR33605:SF3 - FAMILY NOT NAMED // EARLY NODULIN-RELATED PROTEIN,magenta,NA,gene
+Manes.09G143100.v8.1,Manes.09G143100,(1 of 4) PTHR22763:SF59 - GENOMIC DNA; CHROMOSOME 3; P1 CLONE: MRP15,magenta,NA,gene
+Manes.09G148600.v8.1,Manes.09G148600,(1 of 2) PTHR24349//PTHR24349:SF76 - SERINE/THREONINE-PROTEIN KINASE // PHOSPHOENOLPYRUVATE CARBOXYLASE KINASE 1-RELATED,red,NA,gene
+Manes.09G148700.v8.1,Manes.09G148700,(1 of 12) K06269 - serine/threonine-protein phosphatase PP1 catalytic subunit (PPP1C),red,NA,gene
+Manes.09G150900.v8.1,Manes.09G150900,(1 of 3) PTHR10288//PTHR10288:SF155 - KH DOMAIN CONTAINING RNA BINDING PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.09G154700.v8.1,Manes.09G154700,(1 of 2) KOG3060 - Uncharacterized conserved protein,magenta,NA,gene
+Manes.09G165000.v8.1,Manes.09G165000,(1 of 6) K08066 - nuclear transcription factor Y; gamma (NFYC),yellow,NA,gene
+Manes.09G165100.v8.1,Manes.09G165100,(1 of 2) PTHR34661//PTHR34661:SF3 - FAMILY NOT NAMED // ALPHA-CRYSTALLIN DOMAIN OF HEAT SHOCK PROTEIN-CONTAINING PROTEIN,magenta,NA,gene
+Manes.09G167600.v8.1,Manes.09G167600,(1 of 1) PTHR10992//PTHR10992:SF773 - ALPHA/BETA HYDROLASE FOLD-CONTAINING PROTEIN // PROTEIN AUXIN RESPONSE 4,red,NA,gene
+Manes.09G168400.v8.1,Manes.09G168400,(1 of 7) K03347 - cullin 1 (CUL1; CDC53),yellow,NA,gene
+Manes.09G168500.v8.1,Manes.09G168500,(1 of 7) K03347 - cullin 1 (CUL1; CDC53),yellow,NA,gene
+Manes.09G169700.v8.1,Manes.09G169700,(1 of 4) PTHR22814//PTHR22814:SF75 - COPPER TRANSPORT PROTEIN ATOX1-RELATED // HEAVY METAL TRANSPORT/DETOXIFICATION DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.09G169800.v8.1,Manes.09G169800,(1 of 2) K02971 - small subunit ribosomal protein S21e (RP-S21e; RPS21),red,NA,gene
+Manes.09G170100.v8.1,Manes.09G170100,(1 of 4) K02937 - large subunit ribosomal protein L7e (RP-L7e; RPL7),yellow,NA,gene
+Manes.09G170800.v8.1,Manes.09G170800,(1 of 4) KOG1727 - Microtubule-binding protein (translationally controlled tumor protein),yellow,NA,gene
+Manes.09G174600.v8.1,Manes.09G174600,(1 of 3) PTHR31875//PTHR31875:SF0 - FAMILY NOT NAMED // PROTEIN DEHYDRATION-INDUCED 19-RELATED,yellow,NA,gene
+Manes.09G179800.v8.1,Manes.09G179800,(1 of 3) 3.4.19.3 - Pyroglutamyl-peptidase I / Pyrrolidone-carboxylate peptidase,red,NA,gene
+Manes.09G180500.v8.1,Manes.09G180500,(1 of 2) PTHR32227:SF118 - CARBOHYDRATE-BINDING X8 DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.09G180600.v8.1,Manes.09G180600,,yellow,NA,gene
+Manes.09G181200.v8.1,Manes.09G181200,(1 of 1) PTHR13683//PTHR13683:SF312 - ASPARTYL PROTEASES // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.09G181600.v8.1,Manes.09G181600,(1 of 6) PF12861 - Anaphase-promoting complex subunit 11 RING-H2 finger (zf-ANAPC11),red,NA,gene
+Manes.09G183100.v8.1,Manes.09G183100,(1 of 6) PTHR32278//PTHR32278:SF6 - FAMILY NOT NAMED // F-BOX PROTEIN PP2-B1-RELATED,yellow,NA,gene
+Manes.09G183950.v8.1,Manes.09G183950,(1 of 1) PF00350//PF02212 - Dynamin family (Dynamin_N) // Dynamin GTPase effector domain (GED),yellow,NA,gene
+Manes.09G184000.v8.1,Manes.09G184000,(1 of 4) PTHR11566:SF45 - DYNAMIN-RELATED PROTEIN 4C-RELATED,yellow,NA,gene
+Manes.09G186000.v8.1,Manes.09G186000,(1 of 2) PTHR31373//PTHR31373:SF0 - FAMILY NOT NAMED // EMB|CAB86628.1,yellow,NA,gene
+Manes.10G004400.v8.1,Manes.10G004400,(1 of 1) PTHR13355//PTHR13355:SF12 - GLUCOSAMINE 6-PHOSPHATE N-ACETYLTRANSFERASE // GCN5-RELATED N-ACETYLTRANSFERASE (GNAT) FAMILY PROTEIN,red,NA,gene
+Manes.10G004900.v8.1,Manes.10G004900,(1 of 1) PTHR31187//PTHR31187:SF0 - FAMILY NOT NAMED // TLC ATP/ADP TRANSPORTER,magenta,NA,gene
+Manes.10G009400.v8.1,Manes.10G009400,(1 of 1) PTHR12585:SF26 - SISTER CHROMATID COHESION 1 PROTEIN 1,red,NA,gene
+Manes.10G010100.v8.1,Manes.10G010100,(1 of 1) PTHR11952//PTHR11952:SF8 - UDP- GLUCOSE PYROPHOSPHORYLASE // UDP-GLUCOSE PYROPHOSPHORYLASE 3,yellow,carb,gene
+Manes.10G012200.v8.1,Manes.10G012200,(1 of 1) K15683 - NF-X1-type zinc finger protein NFXL1 (NFXL1; OZFP),magenta,NA,gene
+Manes.10G013600.v8.1,Manes.10G013600,(1 of 1) K14318 - nuclear pore complex protein Nup88 (NUP88),red,NA,gene
+Manes.10G014100.v8.1,Manes.10G014100,(1 of 3) PTHR10639:SF10 - CLATHRIN LIGHT CHAIN 2,red,NA,gene
+Manes.10G020500.v8.1,Manes.10G020500,(1 of 2) 2.4.1.118 - Cytokinin 7-beta-glucosyltransferase / Uridine diphosphoglucose-zeatin 7-glucosyltransferase,magenta,NA,gene
+Manes.10G020700.v8.1,Manes.10G020700,,yellow,NA,gene
+Manes.10G020800.v8.1,Manes.10G020800,,yellow,NA,gene
+Manes.10G024240.v8.1,Manes.10G024240,(1 of 21) PF03208 - PRA1 family protein (PRA1),magenta,NA,gene
+Manes.10G024133.v8.1,Manes.10G024133,(1 of 21) PF03208 - PRA1 family protein (PRA1),magenta,NA,gene
+Manes.10G025000.v8.1,Manes.10G025000,(1 of 2) 2.7.7.13//2.7.7.22 - Mannose-1-phosphate guanylyltransferase / GTP-mannose-1-phosphate guanylyltransferase // Mannose-1-phosphate guanylyltransferase (GDP) / GDP-mannose pyrophosphorylase,yellow,NA,gene
+Manes.10G026200.v8.1,Manes.10G026200,(1 of 2) PTHR10108//PTHR10108:SF789 - METHYLTRANSFERASE // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.10G026300.v8.1,Manes.10G026300,(1 of 1) PTHR12271//PTHR12271:SF40 - POLY A  POLYMERASE CID  PAP -RELATED // POLY(A) RNA POLYMERASE GLD2,yellow,NA,gene
+Manes.10G029200.v8.1,Manes.10G029200,(1 of 79) PF03514 - GRAS domain family (GRAS),magenta,NA,gene
+Manes.10G029700.v8.1,Manes.10G029700,(1 of 1) PTHR30544:SF6 - RADICAL SAM DOMAIN-CONTAINING PROTEIN,magenta,NA,gene
+Manes.10G030001.v8.1,Manes.10G030001,,magenta,NA,gene
+Manes.10G031200.v8.1,Manes.10G031200,(1 of 2) PTHR31992:SF26 - DOF ZINC FINGER PROTEIN DOF2.4,yellow,NA,gene
+Manes.10G033300.v8.1,Manes.10G033300,(1 of 101) PF02362 - B3 DNA binding domain (B3),magenta,NA,gene
+Manes.10G033600.v8.1,Manes.10G033600,(1 of 6) PTHR11913//PTHR11913:SF22 - COFILIN-RELATED // ACTIN-DEPOLYMERIZING FACTOR 1-RELATED,magenta,NA,gene
+Manes.10G034500.v8.1,Manes.10G034500,(1 of 3) 1.2.4.2 - Oxoglutarate dehydrogenase (succinyl-transferring) / Oxoglutarate dehydrogenase (lipoamide),yellow,NA,gene
+Manes.10G038000.v8.1,Manes.10G038000,(1 of 8) PF05056 - Protein of unknown function (DUF674) (DUF674),yellow,NA,gene
+Manes.10G036400.v8.1,Manes.10G036400,(1 of 2) PTHR11614//PTHR11614:SF92 - PHOSPHOLIPASE-RELATED // ALPHA/BETA-HYDROLASES SUPERFAMILY PROTEIN-RELATED,magenta,NA,gene
+Manes.10G040200.v8.1,Manes.10G040200,(1 of 1) PTHR22957//PTHR22957:SF269//PTHR22957:SF328 - TBC1 DOMAIN FAMILY MEMBER GTPASE-ACTIVATING PROTEIN // RABGAP/TBC DOMAIN-CONTAINING PROTEIN // RABGAP/TBC DOMAIN-CONTAINING PROTEIN,magenta,NA,gene
+Manes.10G040500.v8.1,Manes.10G040500,(1 of 2) K16546 - FGFR1 oncogene partner (FGFR10P),magenta,NA,gene
+Manes.10G041600.v8.1,Manes.10G041600,(1 of 17) KOG0149 - Predicted RNA-binding protein SEB4 (RRM superfamily),yellow,NA,gene
+Manes.10G043300.v8.1,Manes.10G043300,(1 of 4) PTHR32295//PTHR32295:SF32 - FAMILY NOT NAMED // PROTEIN IQ-DOMAIN 3-RELATED,red,NA,gene
+Manes.10G049200.v8.1,Manes.10G049200,(1 of 1) PTHR10438//PTHR10438:SF297 - THIOREDOXIN // THIOREDOXIN-LIKE 3-2; CHLOROPLASTIC,magenta,NA,gene
+Manes.10G057700.v8.1,Manes.10G057700,(1 of 12) PF12899 - Alkaline and neutral invertase (Glyco_hydro_100),magenta,NA,gene
+Manes.10G059900.v8.1,Manes.10G059900,(1 of 1) 1.7.3.3 - Factor independent urate hydroxylase / Uricase II,red,NA,gene
+Manes.10G060650.v8.1,Manes.10G060650,(1 of 6) K09503 - DnaJ homolog subfamily A member 2 (DNAJA2),red,NA,gene
+Manes.10G060800.v8.1,Manes.10G060800,(1 of 6) K09503 - DnaJ homolog subfamily A member 2 (DNAJA2),red,NA,gene
+Manes.10G063700.v8.1,Manes.10G063700,(1 of 1) PTHR10887//PTHR10887:SF372//PTHR21529 - DNA2/NAM7 HELICASE FAMILY // SUBFAMILY NOT NAMED // MAMMARY TURMOR VIRUS RECEPTOR HOMOLOG 1; 2  MTVR1; 2,yellow,NA,gene
+Manes.10G063900.v8.1,Manes.10G063900,(1 of 2) PTHR15725//PTHR15725:SF3 - ZN-FINGER; C-X8-C-X5-C-X3-H TYPE-CONTAINING // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.10G065901.v8.1,Manes.10G065901,(1 of 1) PTHR13555//PTHR13555:SF34 - C2H2 ZINC FINGER CGI-62-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.10G067800.v8.1,Manes.10G067800,(1 of 4) PTHR12357//PTHR12357:SF21 - YTH  YT521-B HOMOLOGY  DOMAIN-CONTAINING // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.10G068500.v8.1,Manes.10G068500,(1 of 8) PF00069//PF00560//PF13855 - Protein kinase domain (Pkinase) // Leucine Rich Repeat (LRR_1) // Leucine rich repeat (LRR_8),yellow,NA,gene
+Manes.10G056200.v8.1,Manes.10G056200,(1 of 3) PF08553 - VID27 cytoplasmic protein (VID27),yellow,NA,gene
+Manes.10G076211.v8.1,Manes.10G076211,(1 of 7) PF05542 - Protein of unknown function (DUF760) (DUF760),red,NA,gene
+Manes.10G076700.v8.1,Manes.10G076700,(1 of 3) PTHR11695//PTHR11695:SF574 - ALCOHOL DEHYDROGENASE RELATED // CINNAMYL ALCOHOL DEHYDROGENASE 4-RELATED,red,NA,gene
+Manes.10G081400.v8.1,Manes.10G081400,,magenta,NA,gene
+Manes.10G081475.v8.1,Manes.10G081475,,yellow,NA,gene
+Manes.10G082300.v8.1,Manes.10G082300,,magenta,NA,gene
+Manes.10G084200.v8.1,Manes.10G084200,(1 of 1) PF02162//PF12734 - XYPPX repeat (two copies) (XYPPX) // Cysteine-rich TM module stress tolerance (CYSTM),red,NA,gene
+Manes.10G087600.v8.1,Manes.10G087600,(1 of 36) PTHR11017//PTHR11017:SF162 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.10G088500.v8.1,Manes.10G088500,(1 of 36) PTHR11017//PTHR11017:SF162 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.10G091700.v8.1,Manes.10G091700,(1 of 9) PTHR23155//PTHR23155:SF562 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.10G093200.v8.1,Manes.10G093200,(1 of 2) PTHR22880//PTHR22880:SF147 - FALZ-RELATED BROMODOMAIN-CONTAINING PROTEINS // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.10G094333.v8.1,Manes.10G094333,(1 of 2) PTHR22880//PTHR22880:SF147 - FALZ-RELATED BROMODOMAIN-CONTAINING PROTEINS // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.10G095900.v8.1,Manes.10G095900,(1 of 2) PTHR11699:SF183 - METHYLMALONATE-SEMIALDEHYDE DEHYDROGENASE [ACYLATING]; MITOCHONDRIAL,red,NA,gene
+Manes.10G096900.v8.1,Manes.10G096900,(1 of 3) PTHR11922:SF42 - CLASS I GLUTAMINE AMIDOTRANSFERASE DOMAIN-CONTAINING PROTEIN-RELATED,yellow,NA,gene
+Manes.10G096950.v8.1,Manes.10G096950,(1 of 1) PF03732//PF14244 - Retrotransposon gag protein (Retrotrans_gag) // gag-polypeptide of LTR copia-type (UBN2_3),yellow,NA,gene
+Manes.10G102200.v8.1,Manes.10G102200,(1 of 6) PTHR32370//PTHR32370:SF6 - FAMILY NOT NAMED // ROOT PHOTOTROPISM PROTEIN 3,red,NA,gene
+Manes.10G102850.v8.1,Manes.10G102850,(1 of 7) PTHR31376//PTHR31376:SF1 - FAMILY NOT NAMED // PURINE PERMEASE 1-RELATED,yellow,NA,gene
+Manes.10G105300.v8.1,Manes.10G105300,(1 of 24) 2.4.1.324 - 7-deoxyloganetin glucosyltransferase / UGT85A24,yellow,NA,gene
+Manes.10G106300.v8.1,Manes.10G106300,(1 of 1) PTHR13479//PTHR13479:SF44 - 30S RIBOSOMAL PROTEIN S18 // F10K1.8 PROTEIN,red,NA,gene
+Manes.10G109523.v8.1,Manes.10G109523,(1 of 3) 6.1.1.11 - Serine--tRNA ligase / Seryl-tRNA synthetase,red,NA,gene
+Manes.10G109900.v8.1,Manes.10G109900,(1 of 4) K02960 - small subunit ribosomal protein S16e (RP-S16e; RPS16),red,NA,gene
+Manes.10G110600.v8.1,Manes.10G110600,(1 of 1) PTHR31669//PTHR31669:SF34 - FAMILY NOT NAMED // PROTEIN FAR1-RELATED SEQUENCE 11,magenta,NA,gene
+Manes.10G116300.v8.1,Manes.10G116300,(1 of 2) PTHR11208//PTHR11208:SF48 - RNA-BINDING PROTEIN RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.10G117300.v8.1,Manes.10G117300,(1 of 2) PTHR19375//PTHR19375:SF147 - HEAT SHOCK PROTEIN 70KDA // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.10G119000.v8.1,Manes.10G119000,(1 of 2) PTHR10374//PTHR10374:SF13 - LACTOYLGLUTATHIONE LYASE  GLYOXALASE I // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.10G130100.v8.1,Manes.10G130100,(1 of 10) PF11891 - Domain of unknown function (DUF3411) (DUF3411),red,NA,gene
+Manes.10G133710.v8.1,Manes.10G133710,(1 of 86) PTHR23155//PTHR23155:SF563 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.10G136400.v8.1,Manes.10G136400,(1 of 1) PTHR19306//PTHR19306:SF1 - STRUCTURAL MAINTENANCE OF CHROMOSOMES 5;6  SMC5; SMC6 // STRUCTURAL MAINTENANCE OF CHROMOSOMES PROTEIN 5,red,NA,gene
+Manes.10G139300.v8.1,Manes.10G139300,,yellow,NA,gene
+Manes.10G141400.v8.1,Manes.10G141400,(1 of 3) PTHR12632//PTHR12632:SF15 - TRANSCRIPTION FACTOR NF-Y ALPHA-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.10G141500.v8.1,Manes.10G141500,(1 of 86) PTHR23155//PTHR23155:SF563 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.10G141601.v8.1,Manes.10G141601,(1 of 86) PTHR23155//PTHR23155:SF563 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.10G141700.v8.1,Manes.10G141700,(1 of 86) PTHR23155//PTHR23155:SF563 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.10G141900.v8.1,Manes.10G141900,(1 of 6) PTHR23155//PTHR23155:SF414 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.10G142200.v8.1,Manes.10G142200,(1 of 86) PTHR23155//PTHR23155:SF563 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.10G144700.v8.1,Manes.10G144700,(1 of 2) K15687 - E3 ubiquitin-protein ligase makorin [EC:6.3.2.19] (MKRN),red,NA,gene
+Manes.11G002300.v8.1,Manes.11G002300,(1 of 2) K11841 - ubiquitin carboxyl-terminal hydrolase 10 [EC:3.4.19.12] (USP10; UBP3),red,NA,gene
+Manes.11G002500.v8.1,Manes.11G002500,(1 of 79) PF03514 - GRAS domain family (GRAS),magenta,NA,gene
+Manes.11G002900.v8.1,Manes.11G002900,,magenta,NA,gene
+Manes.11G003800.v8.1,Manes.11G003800,(1 of 2) PTHR10502//PTHR10502:SF104 - ANNEXIN // ANNEXIN D4,magenta,NA,gene
+Manes.11G004100.v8.1,Manes.11G004100,(1 of 1) PTHR10315//PTHR10315:SF29 - SEVEN IN ABSENTIA HOMOLOG // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.11G004600.v8.1,Manes.11G004600,(1 of 7) PTHR23155//PTHR23155:SF580 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.11G004700.v8.1,Manes.11G004700,(1 of 2) K15542 - polyadenylation factor subunit 2 (PFS2),magenta,NA,gene
+Manes.11G004900.v8.1,Manes.11G004900,(1 of 2) PTHR26402//PTHR26402:SF574 - RESPONSE REGULATOR OF TWO-COMPONENT SYSTEM // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.11G005100.v8.1,Manes.11G005100,(1 of 5) PTHR11746//PTHR11746:SF111 - O-METHYLTRANSFERASE // O-METHYLTRANSFERASE FAMILY PROTEIN,magenta,NA,gene
+Manes.11G016500.v8.1,Manes.11G016500,(1 of 1) PTHR10098//PTHR10098:SF117 - RAPSYN-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.11G017501.v8.1,Manes.11G017501,,magenta,NA,gene
+Manes.11G018150.v8.1,Manes.11G018150,(1 of 4) PTHR18937:SF231 - STRUCTURAL MAINTENANCE OF CHROMOSOMES PROTEIN,magenta,NA,gene
+Manes.11G018300.v8.1,Manes.11G018300,,magenta,NA,gene
+Manes.11G018700.v8.1,Manes.11G018700,(1 of 8) PF00631 - GGL domain (G-gamma),magenta,NA,gene
+Manes.11G019300.v8.1,Manes.11G019300,(1 of 1569) 2.7.11.1 - Non-specific serine/threonine protein kinase / Threonine-specific protein kinase,yellow,NA,gene
+Manes.11G024800.v8.1,Manes.11G024800,(1 of 3) 1.4.3.3 - D-amino-acid oxidase,yellow,NA,gene
+Manes.11G026800.v8.1,Manes.11G026800,,red,NA,gene
+Manes.11G027100.v8.1,Manes.11G027100,,red,NA,gene
+Manes.11G028200.v8.1,Manes.11G028200,(1 of 2) K04354 - serine/threonine-protein phosphatase 2A regulatory subunit B (PPP2R2),magenta,NA,gene
+Manes.11G029600.v8.1,Manes.11G029600,(1 of 1) PTHR11061:SF30 - TRNA (URACIL(54)-C(5))-METHYLTRANSFERASE,magenta,NA,gene
+Manes.11G030400.v8.1,Manes.11G030400,(1 of 3) 1.13.99.1 - Inositol oxygenase / Myo-inositol oxygenase,magenta,NA,gene
+Manes.11G032200.v8.1,Manes.11G032200,(1 of 4) PTHR32295//PTHR32295:SF10 - FAMILY NOT NAMED // CALMODULIN-BINDING FAMILY PROTEIN,magenta,NA,gene
+Manes.11G032600.v8.1,Manes.11G032600,,magenta,NA,gene
+Manes.11G037600.v8.1,Manes.11G037600,(1 of 1) PF12325//PF12329 - TATA element modulatory factor 1 TATA binding (TMF_TATA_bd) // TATA element modulatory factor 1 DNA binding (TMF_DNA_bd),red,NA,gene
+Manes.11G040376.v8.1,Manes.11G040376,(1 of 3) PF00069//PF00085 - Protein kinase domain (Pkinase) // Thioredoxin (Thioredoxin),magenta,NA,gene
+Manes.11G040441.v8.1,Manes.11G040441,(1 of 1) PF00069//PF00085//PF02617 - Protein kinase domain (Pkinase) // Thioredoxin (Thioredoxin) // ATP-dependent Clp protease adaptor protein ClpS (ClpS),magenta,NA,gene
+Manes.11G041300.v8.1,Manes.11G041300,(1 of 1569) 2.7.11.1 - Non-specific serine/threonine protein kinase / Threonine-specific protein kinase,magenta,NA,gene
+Manes.11G041375.v8.1,Manes.11G041375,(1 of 1569) 2.7.11.1 - Non-specific serine/threonine protein kinase / Threonine-specific protein kinase,magenta,NA,gene
+Manes.11G042600.v8.1,Manes.11G042600,(1 of 1569) 2.7.11.1 - Non-specific serine/threonine protein kinase / Threonine-specific protein kinase,magenta,NA,gene
+Manes.11G043250.v8.1,Manes.11G043250,(1 of 20) PTHR27001//PTHR27001:SF27 - FAMILY NOT NAMED // PROLINE-RICH RECEPTOR-LIKE PROTEIN KINASE PERK15,magenta,NA,gene
+Manes.11G051400.v8.1,Manes.11G051400,(1 of 2) K06184 - ATP-binding cassette; subfamily F; member 1 (ABCF1),red,NA,gene
+Manes.11G057400.v8.1,Manes.11G057400,(1 of 2) K12856 - pre-mRNA-processing factor 8 (PRPF8; PRP8),magenta,NA,gene
+Manes.11G057800.v8.1,Manes.11G057800,(1 of 1) K14769 - U3 small nucleolar RNA-associated protein 11 (UTP11),red,NA,gene
+Manes.11G058300.v8.1,Manes.11G058300,(1 of 1) K10903 - HUS1 checkpoint protein (HUS1),magenta,NA,gene
+Manes.11G058600.v8.1,Manes.11G058600,(1 of 3) PTHR10666:SF150 - POLYUBIQUITIN 3,magenta,NA,gene
+Manes.11G059000.v8.1,Manes.11G059000,(1 of 46) PF05678 - VQ motif (VQ),magenta,NA,gene
+Manes.11G060183.v8.1,Manes.11G060183,,red,NA,gene
+Manes.11G060474.v8.1,Manes.11G060474,(1 of 39) PTHR27004:SF29 - RECEPTOR LIKE PROTEIN 13-RELATED,magenta,NA,gene
+Manes.11G060900.v8.1,Manes.11G060900,,yellow,NA,gene
+Manes.11G062800.v8.1,Manes.11G062800,(1 of 1) 1.1.1.85 - 3-isopropylmalate dehydrogenase / IMDH,magenta,NA,gene
+Manes.11G063200.v8.1,Manes.11G063200,(1 of 166) PF00646 - F-box domain (F-box),red,NA,gene
+Manes.11G066800.v8.1,Manes.11G066800,(1 of 1) K05674 - ATP-binding cassette; subfamily C (CFTR/MRP); member 10 (ABCC10),yellow,NA,gene
+Manes.11G067700.v8.1,Manes.11G067700,,yellow,NA,gene
+Manes.11G071600.v8.1,Manes.11G071600,(1 of 5) K11975 - E3 ubiquitin-protein ligase RNF144 [EC:6.3.2.19] (RNF144),yellow,NA,gene
+Manes.11G071700.v8.1,Manes.11G071700,(1 of 6) PTHR21596//PTHR21596:SF12 - RIBONUCLEASE P SUBUNIT P38 // PROTEIN SUPPRESSOR OF GENE SILENCING 3,yellow,NA,gene
+Manes.11G075000.v8.1,Manes.11G075000,(1 of 1) 3.6.1.31 - Phosphoribosyl-ATP diphosphatase / Phosphoribosyladenosine triphosphate pyrophosphatase,red,NA,gene
+Manes.11G078800.v8.1,Manes.11G078800,(1 of 16) PF02893 - GRAM domain (GRAM),yellow,NA,gene
+Manes.11G079700.v8.1,Manes.11G079700,(1 of 1) PTHR21087:SF4 - INACTIVE SHIKIMATE KINASE LIKE 1; CHLOROPLASTIC-RELATED,red,NA,gene
+Manes.11G086500.v8.1,Manes.11G086500,(1 of 1) PTHR31964:SF26 - SUGAR UTILIZATION REGULATORY PROTEIN IMP2,yellow,NA,gene
+Manes.11G085200.v8.1,Manes.11G085200,(1 of 13) PF14364 - Domain of unknown function (DUF4408) (DUF4408),yellow,NA,gene
+Manes.11G088451.v8.1,Manes.11G088451,(1 of 2) PTHR23070//PTHR23070:SF32 - BCS1 AAA-TYPE ATPASE // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.11G084300.v8.1,Manes.11G084300,(1 of 2) PTHR23070//PTHR23070:SF32 - BCS1 AAA-TYPE ATPASE // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.11G084400.v8.1,Manes.11G084400,(1 of 2) K13998 - dihydrofolate reductase / thymidylate synthase (DHFR-TS),yellow,NA,gene
+Manes.11G084600.v8.1,Manes.11G084600,(1 of 4) PTHR23324:SF43 - PHOSPHATIDYLINOSITOL/PHOSPHATIDYLCHOLINE TRANSFER PROTEIN SFH6-RELATED,yellow,NA,gene
+Manes.11G091200.v8.1,Manes.11G091200,(1 of 1) PTHR12790:SF0 - RNA POLYMERASE I-SPECIFIC TRANSCRIPTION INITIATION FACTOR RRN3-RELATED,yellow,NA,gene
+Manes.11G081400.v8.1,Manes.11G081400,(1 of 2) PTHR31421//PTHR31421:SF3 - FAMILY NOT NAMED // PROTEIN BASIC PENTACYSTEINE4-RELATED,yellow,NA,gene
+Manes.11G082579.v8.1,Manes.11G082579,(1 of 1) 4.6.1.13 - Phosphatidylinositol diacylglycerol-lyase / Phosphatidylinositol phospholipase C,yellow,NA,gene
+Manes.11G096000.v8.1,Manes.11G096000,(1 of 10) PF12776 - Myb/SANT-like DNA-binding domain (Myb_DNA-bind_3),red,NA,gene
+Manes.11G096400.v8.1,Manes.11G096400,(1 of 2) PTHR33876//PTHR33876:SF1 - FAMILY NOT NAMED // EXPRESSED PROTEIN-RELATED,yellow,NA,gene
+Manes.11G100600.v8.1,Manes.11G100600,(1 of 1) PTHR21680//PTHR21680:SF0 - UNCHARACTERIZED // COILED-COIL DOMAIN-CONTAINING PROTEIN 124,red,NA,gene
+Manes.11G101600.v8.1,Manes.11G101600,(1 of 1) PTHR24009//PTHR24009:SF3 - FAMILY NOT NAMED // RNA RECOGNITION MOTIF-CONTAINING PROTEIN-RELATED,yellow,NA,gene
+Manes.11G104560.v8.1,Manes.11G104560,(1 of 4) PTHR33264//PTHR33264:SF5 - FAMILY NOT NAMED // EXPRESSED PROTEIN-RELATED,magenta,NA,gene
+Manes.11G104600.v8.1,Manes.11G104600,(1 of 1) PTHR10302//PTHR10302:SF6 - SINGLE-STRANDED DNA-BINDING PROTEIN // SINGLE-STRANDED DNA-BINDING PROTEIN; MITOCHONDRIAL,magenta,NA,gene
+Manes.11G104500.v8.1,Manes.11G104500,(1 of 2) PTHR23002//PTHR23002:SF69 - ZINC FINGER CCHC DOMAIN CONTAINING PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.11G105451.v8.1,Manes.11G105451,,magenta,NA,gene
+Manes.11G108100.v8.1,Manes.11G108100,(1 of 2) PTHR32010:SF6 - PHOTOSYSTEM II STABILITY/ASSEMBLY FACTOR HCF136; CHLOROPLASTIC,red,NA,gene
+Manes.11G108901.v8.1,Manes.11G108901,(1 of 1) PF08167 - rRNA processing/ribosome biogenesis (RIX1),red,NA,gene
+Manes.11G112500.v8.1,Manes.11G112500,(1 of 1) K14773 - U3 small nucleolar RNA-associated protein 23 (UTP23),red,NA,gene
+Manes.11G114533.v8.1,Manes.11G114533,(1 of 1) PTHR21493:SF97 - GOT1/SFT2-LIKE VESCICLE TRANSPORT PROTEIN,red,NA,gene
+Manes.11G115100.v8.1,Manes.11G115100,(1 of 1) PTHR31476//PTHR31476:SF6 - FAMILY NOT NAMED // EMB|CAB68190.1,magenta,NA,gene
+Manes.11G116600.v8.1,Manes.11G116600,(1 of 50) 3.1.4.46 - Glycerophosphodiester phosphodiesterase / Glycerophosphoryl diester phosphodiesterase,magenta,NA,gene
+Manes.11G117500.v8.1,Manes.11G117500,(1 of 1) PTHR11592//PTHR11592:SF33 - GLUTATHIONE PEROXIDASE // GLUTATHIONE PEROXIDASE 2-RELATED,magenta,NA,gene
+Manes.11G120200.v8.1,Manes.11G120200,(1 of 1) PTHR12899:SF6 - F14B2.25/F14B2.25,red,NA,gene
+Manes.11G120950.v8.1,Manes.11G120950,,yellow,NA,gene
+Manes.11G122500.v8.1,Manes.11G122500,(1 of 2) PTHR19317//PTHR19317:SF15 - PRENYLATED RAB ACCEPTOR 1-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.11G122832.v8.1,Manes.11G122832,(1 of 13) PTHR23155//PTHR23155:SF513 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.11G125200.v8.1,Manes.11G125200,(1 of 3) 3.1.2.6 - Hydroxyacylglutathione hydrolase / Glyoxalase II,magenta,NA,gene
+Manes.11G125600.v8.1,Manes.11G125600,(1 of 1) 4.1.2.53 - 2-keto-3-deoxy-L-rhamnonate aldolase / KDR aldolase,red,NA,gene
+Manes.11G128600.v8.1,Manes.11G128600,(1 of 1) K02684 - DNA primase small subunit (PRI1),yellow,NA,gene
+Manes.11G131600.v8.1,Manes.11G131600,(1 of 45) PF02701 - Dof domain; zinc finger (zf-Dof),yellow,NA,gene
+Manes.11G132200.v8.1,Manes.11G132200,(1 of 3) K10575 - ubiquitin-conjugating enzyme E2 G1 (UBE2G1; UBC7),red,NA,gene
+Manes.11G140000.v8.1,Manes.11G140000,(1 of 1) PTHR15574:SF32 - TRANSDUCIN/WD40 DOMAIN-CONTAINING PROTEIN,red,NA,gene
+Manes.11G140900.v8.1,Manes.11G140900,(1 of 2) PTHR11685//PTHR11685:SF107 - RBR FAMILY  RING FINGER AND IBR DOMAIN-CONTAINING // C3H4 TYPE ZINC FINGER PROTEIN-RELATED,yellow,NA,gene
+Manes.11G142000.v8.1,Manes.11G142000,(1 of 2) K02736 - 20S proteasome subunit beta 7 (PSMB4),yellow,NA,gene
+Manes.11G148700.v8.1,Manes.11G148700,(1 of 14) PF04784//PF14389 - Protein of unknown function; DUF547 (DUF547) // Leucine-zipper of ternary complex factor MIP1 (Lzipper-MIP1),yellow,NA,gene
+Manes.11G155500.v8.1,Manes.11G155500,(1 of 2) K12449 - UDP-apiose/xylose synthase (AXS),red,NA,gene
+Manes.11G156700.v8.1,Manes.11G156700,(1 of 3) PTHR31802:SF5 - HISTONE DEACETYLASE HDT2-RELATED,red,NA,gene
+Manes.11G160000.v8.1,Manes.11G160000,(1 of 1) PTHR13547//PTHR13547:SF2 - UNCHARACTERIZED // ANTIPORTER/ DRUG TRANSPORTER-RELATED,red,NA,gene
+Manes.11G160500.v8.1,Manes.11G160500,(1 of 1) PTHR37211//PTHR37211:SF1 - FAMILY NOT NAMED // EXPRESSED PROTEIN,magenta,NA,gene
+Manes.11G161800.v8.1,Manes.11G161800,(1 of 2) K02865 - large subunit ribosomal protein L10Ae (RP-L10Ae; RPL10A),red,NA,gene
+Manes.11G161900.v8.1,Manes.11G161900,(1 of 1) PTHR19370//PTHR19370:SF96 - NADH-CYTOCHROME B5 REDUCTASE // FERREDOXIN-3; CHLOROPLASTIC,red,NA,gene
+Manes.11G164100.v8.1,Manes.11G164100,(1 of 3) K12611 - mRNA-decapping enzyme 1B (DCP1B),yellow,NA,gene
+Manes.12G003000.v8.1,Manes.12G003000,(1 of 5) K11592 - endoribonuclease Dicer (DICER1; DCR1),yellow,NA,gene
+Manes.12G007600.v8.1,Manes.12G007600,(1 of 15) 2.7.7.59 - [Protein-PII] uridylyltransferase / Uridylyl removing enzyme,red,NA,gene
+Manes.12G007900.v8.1,Manes.12G007900,(1 of 2) PTHR23429//PTHR23429:SF3 - GLUCOSE-6-PHOSPHATE 1-DEHYDROGENASE  G6PD // GLUCOSE-6-PHOSPHATE 1-DEHYDROGENASE 2; CHLOROPLASTIC-RELATED,yellow,NA,gene
+Manes.12G008600.v8.1,Manes.12G008600,(1 of 1) 4.1.2.27 - Sphinganine-1-phosphate aldolase / Sphingosine-1-phosphate lyase,red,NA,gene
+Manes.12G010800.v8.1,Manes.12G010800,(1 of 11) 2.8.1.9 - Molybdenum cofactor sulfurtransferase / Molybdenum cofactor sulfurase,yellow,NA,gene
+Manes.12G014600.v8.1,Manes.12G014600,(1 of 2) PTHR31446:SF5 - ACID PHOSPHATASE/VANADIUM-DEPENDENT HALOPEROXIDASE-RELATED PROTEIN,red,NA,gene
+Manes.12G016000.v8.1,Manes.12G016000,(1 of 2) PTHR10032//PTHR10032:SF222 - ZINC FINGER PROTEIN WITH KRAB AND SCAN DOMAINS // TRIHELIX TRANSCRIPTION FACTOR GT-1-RELATED,magenta,NA,gene
+Manes.12G017000.v8.1,Manes.12G017000,(1 of 6) 2.3.1.150 - Salutaridinol 7-O-acetyltransferase,red,NA,gene
+Manes.12G021900.v8.1,Manes.12G021900,(1 of 11) PF05212 - Protein of unknown function (DUF707) (DUF707),yellow,NA,gene
+Manes.12G023900.v8.1,Manes.12G023900,(1 of 2) PF00646//PF08238 - F-box domain (F-box) // Sel1 repeat (Sel1),red,NA,gene
+Manes.12G024500.v8.1,Manes.12G024500,(1 of 3) K12393 - AP-1 complex subunit mu (AP1M),red,NA,gene
+Manes.12G027700.v8.1,Manes.12G027700,(1 of 5) K17609 - nucleoredoxin [EC:1.8.1.8] (NXN),yellow,NA,gene
+Manes.12G027800.v8.1,Manes.12G027800,(1 of 5) K17609 - nucleoredoxin [EC:1.8.1.8] (NXN),yellow,NA,gene
+Manes.12G028100.v8.1,Manes.12G028100,(1 of 2) PTHR32263//PTHR32263:SF8 - FAMILY NOT NAMED // INACTIVE POLY [ADP-RIBOSE] POLYMERASE SRO2-RELATED,yellow,NA,gene
+Manes.12G029366.v8.1,Manes.12G029366,(1 of 1) KOG2681 - Metal-dependent phosphohydrolase,yellow,NA,gene
+Manes.12G044501.v8.1,Manes.12G044501,(1 of 1) PF08695 - Cytochrome oxidase complex assembly protein 1 (Coa1),magenta,NA,gene
+Manes.12G046867.v8.1,Manes.12G046867,(1 of 1569) 2.7.11.1 - Non-specific serine/threonine protein kinase / Threonine-specific protein kinase,magenta,NA,gene
+Manes.12G047500.v8.1,Manes.12G047500,(1 of 196) PF00847 - AP2 domain (AP2),red,NA,gene
+Manes.12G047900.v8.1,Manes.12G047900,(1 of 2) PTHR10693:SF23 - NUCLEAR TRANSPORT FACTOR 2 AND RNA RECOGNITION MOTIF DOMAIN-CONTAINING PROTEIN-RELATED,red,NA,gene
+Manes.12G049300.v8.1,Manes.12G049300,(1 of 1) PTHR14241//PTHR14241:SF10 - INTERFERON-INDUCED PROTEIN 44 // VON WILLEBRAND FACTOR A DOMAIN-CONTAINING PROTEIN DDB_G0292188,yellow,NA,gene
+Manes.12G049701.v8.1,Manes.12G049701,(1 of 12) 1.6.5.5 - NADPH:quinone reductase / Zeta-crystallin,yellow,NA,gene
+Manes.12G050500.v8.1,Manes.12G050500,,red,NA,gene
+Manes.12G051600.v8.1,Manes.12G051600,(1 of 1) PTHR24351:SF69 - AGC (CAMP-DEPENDENT; CGMP-DEPENDENT AND PROTEIN KINASE C) KINASE FAMILY PROTEIN-RELATED,yellow,NA,gene
+Manes.12G060109.v8.1,Manes.12G060109,(1 of 82) 5.2.1.8 - Peptidylprolyl isomerase / Rotamase,red,NA,gene
+Manes.12G055300.v8.1,Manes.12G055300,(1 of 1) PTHR31791//PTHR31791:SF12 - FAMILY NOT NAMED // FRIGIDA-LIKE PROTEIN 3,red,NA,gene
+Manes.12G058900.v8.1,Manes.12G058900,,red,NA,gene
+Manes.12G062302.v8.1,Manes.12G062302,(1 of 23) KOG4293 - Predicted membrane protein; contains DoH and Cytochrome b-561/ferric reductase transmembrane domains,yellow,NA,gene
+Manes.12G065950.v8.1,Manes.12G065950,,red,NA,gene
+Manes.12G063300.v8.1,Manes.12G063300,(1 of 1) PTHR10566//PTHR10566:SF50 - CHAPERONE-ACTIVITY OF BC1 COMPLEX  CABC1 -RELATED // PROTEIN LACT-3,magenta,NA,gene
+Manes.12G063603.v8.1,Manes.12G063603,(1 of 3) PTHR12758:SF13 - GBF-INTERACTING PROTEIN 1,red,NA,gene
+Manes.12G067301.v8.1,Manes.12G067301,(1 of 1) PTHR31133//PTHR31133:SF2 - FAMILY NOT NAMED // EXPRESSED PROTEIN,yellow,NA,gene
+Manes.12G073700.v8.1,Manes.12G073700,(1 of 1) PTHR11709//PTHR11709:SF106 - MULTI-COPPER OXIDASE // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.12G066500.v8.1,Manes.12G066500,(1 of 1) K12951 - cation-transporting P-type ATPase D (ctpD),yellow,NA,gene
+Manes.12G074900.v8.1,Manes.12G074900,(1 of 4) K10802 - high mobility group protein B1 (HMGB1),yellow,NA,gene
+Manes.12G085500.v8.1,Manes.12G085500,(1 of 2) PTHR15241//PTHR15241:SF4 - TRANSFORMER-2-RELATED // TRANSFORMER-SR RIBONUCLEOPROTEIN-RELATED,magenta,NA,gene
+Manes.12G080100.v8.1,Manes.12G080100,(1 of 16) PTHR23130:SF80 - AUXIN-INDUCED IN ROOT CULTURES PROTEIN 12,magenta,NA,gene
+Manes.12G083700.v8.1,Manes.12G083700,(1 of 1) PTHR13256:SF16 - N-ACETYLTRANSFERASE 9,magenta,NA,gene
+Manes.12G089500.v8.1,Manes.12G089500,(1 of 1) K03028 - 26S proteasome regulatory subunit N1 (PSMD2; RPN1),red,NA,gene
+Manes.12G089408.v8.1,Manes.12G089408,(1 of 2) PTHR31805:SF3 - PROLINE-RICH PROTEIN-RELATED,yellow,NA,gene
+Manes.12G089978.v8.1,Manes.12G089978,(1 of 2) PTHR10593//PTHR10593:SF28 - SERINE/THREONINE-PROTEIN KINASE RIO // C2H2 AND C2HC ZINC FINGER-CONTAINING PROTEIN,red,NA,gene
+Manes.12G088290.v8.1,Manes.12G088290,,yellow,NA,gene
+Manes.12G099300.v8.1,Manes.12G099300,(1 of 4) PTHR10891:SF568 - CALCIUM-BINDING PROTEIN CML41-RELATED,yellow,NA,gene
+Manes.12G104500.v8.1,Manes.12G104500,(1 of 63) PF12937 - F-box-like (F-box-like),red,NA,gene
+Manes.12G111400.v8.1,Manes.12G111400,,magenta,NA,gene
+Manes.12G112500.v8.1,Manes.12G112500,(1 of 4) PTHR13832:SF362 - PROTEIN PHOSPHATASE 2C 63-RELATED,yellow,NA,gene
+Manes.12G119200.v8.1,Manes.12G119200,(1 of 2) K02266 - cytochrome c oxidase subunit 6a (COX6A),yellow,NA,gene
+Manes.12G120100.v8.1,Manes.12G120100,(1 of 3) 4.1.1.32 - Phosphoenolpyruvate carboxykinase (GTP) / Phosphopyruvate carboxylase,red,carb,gene
+Manes.12G125400.v8.1,Manes.12G125400,(1 of 2) PTHR27001//PTHR27001:SF105 - FAMILY NOT NAMED // PROTEIN KINASE FAMILY PROTEIN-RELATED,yellow,NA,gene
+Manes.12G126200.v8.1,Manes.12G126200,(1 of 3) K17619 - magnesium-dependent phosphatase 1 [EC:3.1.3.48 3.1.3.-] (MDP1),red,NA,gene
+Manes.12G126800.v8.1,Manes.12G126800,(1 of 5) PTHR11945//PTHR11945:SF179 - MADS BOX PROTEIN // MADS-BOX PROTEIN SVP,red,NA,gene
+Manes.12G126900.v8.1,Manes.12G126900,(1 of 1) PTHR24115:SF469 - KINESIN-LIKE PROTEIN KCA1-RELATED,yellow,NA,gene
+Manes.12G127600.v8.1,Manes.12G127600,,yellow,NA,gene
+Manes.12G129700.v8.1,Manes.12G129700,(1 of 2) 4.1.99.12 - 3;4-dihydroxy-2-butanone-4-phosphate synthase / L-3;4-dihydroxybutan-2-one-4-phosphate synthase,red,NA,gene
+Manes.12G141800.v8.1,Manes.12G141800,(1 of 2) K12169 - Kip1 ubiquitination-promoting complex protein 1 [EC:6.3.2.19] (KPC1; RNF123),red,NA,gene
+Manes.12G141900.v8.1,Manes.12G141900,,magenta,NA,gene
+Manes.12G142400.v8.1,Manes.12G142400,,yellow,NA,gene
+Manes.12G149600.v8.1,Manes.12G149600,(1 of 1) 1.14.13.113 - FAD-dependent urate hydroxylase / Urate hydroxylase,red,NA,gene
+Manes.12G149800.v8.1,Manes.12G149800,(1 of 2) PTHR11695//PTHR11695:SF567 - ALCOHOL DEHYDROGENASE RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.12G151600.v8.1,Manes.12G151600,(1 of 4) K09131 - hypothetical protein (K09131),red,NA,gene
+Manes.12G152200.v8.1,Manes.12G152200,(1 of 2) PTHR22849//PTHR22849:SF20 - WDSAM1 PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.12G153000.v8.1,Manes.12G153000,(1 of 2) K02879 - large subunit ribosomal protein L17 (RP-L17; MRPL17; rplQ),red,NA,gene
+Manes.12G154400.v8.1,Manes.12G154400,(1 of 3) K00888 - phosphatidylinositol 4-kinase (PI4K),red,NA,gene
+Manes.12G157400.v8.1,Manes.12G157400,(1 of 53) PF14416 - PMR5 N terminal Domain (PMR5N),yellow,NA,gene
+Manes.12G159500.v8.1,Manes.12G159500,(1 of 2) PTHR21493//PTHR21493:SF130 - CGI-141-RELATED/LIPASE CONTAINING PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.13G000084.v8.1,Manes.13G000084,(1 of 1) K12849 - pre-mRNA-splicing factor 38A (PRPF38A),red,NA,gene
+Manes.13G002671.v8.1,Manes.13G002671,(1 of 1) PTHR11017//PTHR11017:SF155 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.13G003702.v8.1,Manes.13G003702,(1 of 599) PF13041 - PPR repeat family (PPR_2),magenta,NA,gene
+Manes.13G008400.v8.1,Manes.13G008400,(1 of 2) PTHR23429:SF3 - GLUCOSE-6-PHOSPHATE 1-DEHYDROGENASE 2; CHLOROPLASTIC-RELATED,red,NA,gene
+Manes.13G008500.v8.1,Manes.13G008500,(1 of 13) PF14364 - Domain of unknown function (DUF4408) (DUF4408),yellow,NA,gene
+Manes.13G011800.v8.1,Manes.13G011800,(1 of 1) 1.14.11.33//4.2.99.18 - DNA oxidative demethylase / Alkylated DNA repair protein // DNA-(apurinic or apyrimidinic site) lyase / Phage-T4 UV endonuclease,magenta,NA,gene
+Manes.13G014800.v8.1,Manes.13G014800,(1 of 2) PTHR10032//PTHR10032:SF222 - ZINC FINGER PROTEIN WITH KRAB AND SCAN DOMAINS // TRIHELIX TRANSCRIPTION FACTOR GT-1-RELATED,red,NA,gene
+Manes.13G019300.v8.1,Manes.13G019300,(1 of 2) PTHR12428//PTHR12428:SF18 - OXA1 // ALBINO3-LIKE PROTEIN 1; CHLOROPLASTIC,magenta,NA,gene
+Manes.13G020900.v8.1,Manes.13G020900,(1 of 1) K18723 - nucleoporin GLE1 (GLE1),magenta,NA,gene
+Manes.13G021100.v8.1,Manes.13G021100,(1 of 2) PTHR34937//PTHR34937:SF1 - FAMILY NOT NAMED // MYOSIN HEAVY CHAIN-RELATED,red,NA,gene
+Manes.13G021600.v8.1,Manes.13G021600,(1 of 1) K02970 - small subunit ribosomal protein S21 (RP-S21; MRPS21; rpsU),red,NA,gene
+Manes.13G026100.v8.1,Manes.13G026100,(1 of 3) K12393 - AP-1 complex subunit mu (AP1M),red,NA,gene
+Manes.13G026200.v8.1,Manes.13G026200,(1 of 7) PTHR23155//PTHR23155:SF458 - LEUCINE-RICH REPEAT-CONTAINING PROTEIN // DISEASE RESISTANCE RPP13-LIKE PROTEIN 4,magenta,NA,gene
+Manes.13G026700.v8.1,Manes.13G026700,(1 of 2) PTHR11220//PTHR11220:SF36 - HEME-BINDING PROTEIN-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.13G028100.v8.1,Manes.13G028100,(1 of 4) K02977//K08770 - small subunit ribosomal protein S27Ae (RP-S27Ae; RPS27A) // ubiquitin C (UBC),red,NA,gene
+Manes.13G029100.v8.1,Manes.13G029100,,magenta,NA,gene
+Manes.13G029600.v8.1,Manes.13G029600,(1 of 2) PTHR32263:SF8 - INACTIVE POLY [ADP-RIBOSE] POLYMERASE SRO2-RELATED,yellow,NA,gene
+Manes.13G029900.v8.1,Manes.13G029900,(1 of 2) PTHR11002//PTHR11002:SF15 - CARBONIC ANHYDRASE // CARBONIC ANHYDRASE,red,NA,gene
+Manes.13G030200.v8.1,Manes.13G030200,(1 of 8) K07466 - replication factor A1 (RFA1; RPA1; rpa),red,NA,gene
+Manes.13G030800.v8.1,Manes.13G030800,(1 of 1) PTHR23257:SF353 - KINASE-LIKE PROTEIN,yellow,NA,gene
+Manes.13G034900.v8.1,Manes.13G034900,(1 of 1) PTHR24188//PTHR24188:SF42 - ANKYRIN REPEAT PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.13G037800.v8.1,Manes.13G037800,(1 of 11) K14411 - RNA-binding protein Musashi (MSI),red,NA,gene
+Manes.13G038500.v8.1,Manes.13G038500,(1 of 2) 1.2.1.1 - Transferred entry: 1.1.1.284 and 4.4.1.22,red,carb,gene
+Manes.13G042200.v8.1,Manes.13G042200,(1 of 2) PTHR11260//PTHR11260:SF203 - GLUTATHIONE S-TRANSFERASE; GST; SUPERFAMILY; GST DOMAIN CONTAINING // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.13G044700.v8.1,Manes.13G044700,,magenta,NA,gene
+Manes.13G047800.v8.1,Manes.13G047800,(1 of 6) KOG4374 - RNA-binding protein Bicaudal-C,red,NA,gene
+Manes.13G052500.v8.1,Manes.13G052500,(1 of 2) K09561 - STIP1 homology and U-box containing protein 1 (STUB1; CHIP),yellow,NA,gene
+Manes.13G055600.v8.1,Manes.13G055600,(1 of 4) PTHR31669//PTHR31669:SF44 - FAMILY NOT NAMED // FAR-RED IMPAIRED RESPONSIVE 1-LIKE PROTEIN,red,NA,gene
+Manes.13G057500.v8.1,Manes.13G057500,,red,NA,gene
+Manes.13G057700.v8.1,Manes.13G057700,(1 of 4) PF12579 - Protein of unknown function (DUF3755) (DUF3755),red,NA,gene
+Manes.13G060700.v8.1,Manes.13G060700,(1 of 1) PF13396 - Phospholipase_D-nuclease N-terminal (PLDc_N),yellow,NA,gene
+Manes.13G061200.v8.1,Manes.13G061200,(1 of 3) 2.3.1.9 - Acetyl-CoA C-acetyltransferase / Acetoacetyl-CoA thiolase,yellow,NA,gene
+Manes.13G061500.v8.1,Manes.13G061500,(1 of 1) PTHR23244//PTHR23244:SF276 - KELCH REPEAT DOMAIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.13G068300.v8.1,Manes.13G068300,(1 of 1) PTHR12555//PTHR12555:SF14 - UBIQUITIN FUSION DEGRADATON PROTEIN 1 // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.13G068000.v8.1,Manes.13G068000,(1 of 7) 3.4.23.40 - Phytepsin,yellow,NA,gene
+Manes.13G069750.v8.1,Manes.13G069750,(1 of 3) K09875 - aquaporin SIP (SIP),yellow,NA,gene
+Manes.13G084500.v8.1,Manes.13G084500,(1 of 3) KOG1973 - Chromatin remodeling protein; contains PHD Zn-finger,magenta,NA,gene
+Manes.13G083600.v8.1,Manes.13G083600,(1 of 207) PF01535//PF13041 - PPR repeat (PPR) // PPR repeat family (PPR_2),magenta,NA,gene
+Manes.13G076112.v8.1,Manes.13G076112,(1 of 1) PTHR24414:SF37 - F-BOX/KELCH-REPEAT PROTEIN SKIP6,yellow,NA,gene
+Manes.13G088500.v8.1,Manes.13G088500,(1 of 2) PTHR23012//PTHR23012:SF50 - MEMBRANE ASSOCIATED RING FINGER // RING/FYVE/PHD ZINC FINGER-CONTAINING PROTEIN,red,NA,gene
+Manes.13G093430.v8.1,Manes.13G093430,(1 of 1) 4.2.1.104 - Cyanase / Cyanate lyase,magenta,NA,gene
+Manes.13G097101.v8.1,Manes.13G097101,(1 of 1) PTHR21327:SF11 - MONOFUNCTIONAL RIBOFLAVIN BIOSYNTHESIS PROTEIN RIBA 2; CHLOROPLASTIC,magenta,NA,gene
+Manes.13G101100.v8.1,Manes.13G101100,(1 of 4) PTHR11926//PTHR11926:SF199 - GLUCOSYL/GLUCURONOSYL TRANSFERASES // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.13G101600.v8.1,Manes.13G101600,(1 of 3) PTHR11624//PTHR11624:SF83 - DEHYDROGENASE RELATED // SUBFAMILY NOT NAMED,yellow,carot,gene
+Manes.13G104200.v8.1,Manes.13G104200,(1 of 16) PF12734 - Cysteine-rich TM module stress tolerance (CYSTM),yellow,NA,gene
+Manes.13G104800.v8.1,Manes.13G104800,(1 of 3) PTHR12170//PTHR12170:SF3 - MACROPHAGE ERYTHROBLAST ATTACHER-RELATED // REQUIRED FOR MEIOTIC NUCLEAR DIVISION 5 HOMOLOG B (S. CEREVISIAE),red,NA,gene
+Manes.13G105400.v8.1,Manes.13G105400,(1 of 6) KOG1330 - Sugar transporter/spinster transmembrane protein,magenta,NA,gene
+Manes.13G112201.v8.1,Manes.13G112201,(1 of 3) PTHR24093:SF262 - CALCIUM-TRANSPORTING ATPASE 2; PLASMA MEMBRANE-TYPE-RELATED,magenta,NA,gene
+Manes.13G115400.v8.1,Manes.13G115400,(1 of 2) KOG3080 - Nucleolar protein-like/EBNA1-binding protein,yellow,NA,gene
+Manes.13G115650.v8.1,Manes.13G115650,(1 of 2) PTHR13683//PTHR13683:SF342 - ASPARTYL PROTEASES // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.13G124400.v8.1,Manes.13G124400,(1 of 12) PF07939 - Protein of unknown function (DUF1685) (DUF1685),yellow,NA,gene
+Manes.13G131650.v8.1,Manes.13G131650,(1 of 1) PTHR16166//PTHR16166:SF98 - VACUOLAR PROTEIN SORTING-ASSOCIATED PROTEIN  VPS13 // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.13G135300.v8.1,Manes.13G135300,(1 of 4) PTHR10891//PTHR10891:SF568 - EF-HAND CALCIUM-BINDING DOMAIN CONTAINING PROTEIN // CALCIUM-BINDING PROTEIN CML41-RELATED,yellow,NA,gene
+Manes.13G135800.v8.1,Manes.13G135800,(1 of 3) 2.3.1.199//6.2.1.2 - Very-long-chain 3-oxoacyl-CoA synthase / Very-long-chain beta-ketoacyl-CoA synthase // Butyrate--CoA ligase / Fatty acid thiokinase (medium chain),red,NA,gene
+Manes.13G137100.v8.1,Manes.13G137100,(1 of 1) PTHR31636//PTHR31636:SF53 - FAMILY NOT NAMED // SCARECROW-LIKE PROTEIN 15,yellow,NA,gene
+Manes.13G137600.v8.1,Manes.13G137600,(1 of 3) 1.1.1.86 - Ketol-acid reductoisomerase (NADP(+)) / Dihydroxyisovalerate dehydrogenase (isomerizing),red,NA,gene
+Manes.13G144900.v8.1,Manes.13G144900,(1 of 1) K17560 - unconventional prefoldin RPB5 interactor 1 (URI1),yellow,NA,gene
+Manes.13G146400.v8.1,Manes.13G146400,(1 of 1) K16900 - two pore calcium channel protein; plant (TPC1; CCH1),red,NA,gene
+Manes.13G150700.v8.1,Manes.13G150700,(1 of 1) PTHR19297//PTHR19297:SF84 - GLYCOSYLTRANSFERASE 14 FAMILY MEMBER // CORE-2/I-BRANCHING BETA-1;6-N-ACETYLGLUCOSAMINYLTRANSFERASE FAMILY PROTEIN-RELATED,yellow,NA,gene
+Manes.13G151300.v8.1,Manes.13G151300,,yellow,NA,gene
+Manes.14G007600.v8.1,Manes.14G007600,,yellow,NA,gene
+Manes.14G011800.v8.1,Manes.14G011800,(1 of 2) PTHR10026//PTHR10026:SF75 - CYCLIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.14G012900.v8.1,Manes.14G012900,(1 of 4) PTHR12357//PTHR12357:SF21 - YTH  YT521-B HOMOLOGY  DOMAIN-CONTAINING // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.14G016400.v8.1,Manes.14G016400,(1 of 2) PTHR21043//PTHR21043:SF1 - IOJAP SUPERFAMILY ORTHOLOG // PROTEIN IOJAP; CHLOROPLASTIC,red,NA,gene
+Manes.14G013900.v8.1,Manes.14G013900,(1 of 3) K10277 - lysine-specific demethylase 8 [EC:1.14.11.27] (KDM8; JMJD5),red,NA,gene
+Manes.14G001000.v8.1,Manes.14G001000,(1 of 3) PTHR10634//PTHR10634:SF32 - AN1-TYPE ZINC FINGER PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.14G003600.v8.1,Manes.14G003600,(1 of 3) K02981 - small subunit ribosomal protein S2e (RP-S2e; RPS2),red,NA,gene
+Manes.14G004400.v8.1,Manes.14G004400,(1 of 2) K12876 - RNA-binding protein 8A (RBM8A; Y14),red,NA,gene
+Manes.14G006600.v8.1,Manes.14G006600,,red,NA,gene
+Manes.14G007924.v8.1,Manes.14G007924,(1 of 2) PTHR31213:SF12 - ABSCISIC ACID RECEPTOR PYL10-RELATED,yellow,NA,gene
+Manes.14G029701.v8.1,Manes.14G029701,(1 of 3) PTHR13148//PTHR13148:SF2 - PER1-RELATED // PER1-LIKE FAMILY PROTEIN,magenta,NA,gene
+Manes.14G035900.v8.1,Manes.14G035900,(1 of 3) 3.6.3.20 - Glycerol-3-phosphate-transporting ATPase,yellow,NA,gene
+Manes.14G047228.v8.1,Manes.14G047228,(1 of 3) K17592 - sacsin (SACS),yellow,NA,gene
+Manes.14G047264.v8.1,Manes.14G047264,(1 of 152) PF02365 - No apical meristem (NAM) protein (NAM),yellow,NA,gene
+Manes.14G047284.v8.1,Manes.14G047284,(1 of 3) K17592 - sacsin (SACS),yellow,NA,gene
+Manes.14G055400.v8.1,Manes.14G055400,(1 of 2) PTHR21385//PTHR21385:SF1 - ZINC FINGER PROTEIN-RELATED // C2H2-LIKE ZINC FINGER PROTEIN,yellow,NA,gene
+Manes.14G055800.v8.1,Manes.14G055800,(1 of 2) PTHR12506:SF20 - ZINC FINGER CCCH DOMAIN-CONTAINING PROTEIN 43,red,NA,gene
+Manes.14G057600.v8.1,Manes.14G057600,(1 of 8) K11294 - nucleolin (NCL; NSR1),red,NA,gene
+Manes.14G060700.v8.1,Manes.14G060700,(1 of 2) K17987 - next to BRCA1 gene 1 protein (NBR1),yellow,NA,gene
+Manes.14G061500.v8.1,Manes.14G061500,(1 of 3) PTHR10638//PTHR10638:SF34 - COPPER AMINE OXIDASE // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.14G065300.v8.1,Manes.14G065300,(1 of 207) PF01535//PF13041 - PPR repeat (PPR) // PPR repeat family (PPR_2),red,NA,gene
+Manes.14G065400.v8.1,Manes.14G065400,(1 of 5) PTHR10688 - PWWP DOMAIN-CONTAINING PROTEIN,magenta,NA,gene
+Manes.14G066600.v8.1,Manes.14G066600,(1 of 3) PF12014 - Domain of unknown function (DUF3506) (DUF3506),red,NA,gene
+Manes.14G071100.v8.1,Manes.14G071100,(1 of 5) PF06522 - NADH-ubiquinone reductase complex 1 MLRQ subunit (B12D),red,NA,gene
+Manes.14G071300.v8.1,Manes.14G071300,(1 of 4) PTHR26402//PTHR26402:SF526 - RESPONSE REGULATOR OF TWO-COMPONENT SYSTEM // TWO-COMPONENT RESPONSE REGULATOR ARR15-RELATED,yellow,NA,gene
+Manes.14G071900.v8.1,Manes.14G071900,(1 of 4) PTHR12374//PTHR12374:SF26 - TRANSCRIPTIONAL ADAPTOR 2  ADA2 -RELATED // F25A4.19 PROTEIN,yellow,NA,gene
+Manes.14G074000.v8.1,Manes.14G074000,(1 of 7) PTHR11654:SF59 - PROTEIN NRT1/ PTR FAMILY 2.10-RELATED,magenta,NA,gene
+Manes.14G081000.v8.1,Manes.14G081000,(1 of 4) 5.1.3.1 - Ribulose-phosphate 3-epimerase / Xylulose phosphate 3-epimerase,yellow,NA,gene
+Manes.14G089800.v8.1,Manes.14G089800,(1 of 3) PTHR11926//PTHR11926:SF253 - GLUCOSYL/GLUCURONOSYL TRANSFERASES // UDP-GLYCOSYLTRANSFERASE 89B1,magenta,NA,gene
+Manes.14G092900.v8.1,Manes.14G092900,(1 of 4) 1.1.1.44 - Phosphogluconate dehydrogenase (NADP(+)-dependent; decarboxylating) / Phosphogluconic acid dehydrogenase,red,NA,gene
+Manes.14G095000.v8.1,Manes.14G095000,(1 of 1) PTHR27001//PTHR27001:SF6 - FAMILY NOT NAMED // PROLINE-RICH RECEPTOR-LIKE PROTEIN KINASE PERK10-RELATED,magenta,NA,gene
+Manes.14G100500.v8.1,Manes.14G100500,(1 of 2) PTHR22814//PTHR22814:SF144 - COPPER TRANSPORT PROTEIN ATOX1-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.14G101900.v8.1,Manes.14G101900,(1 of 2) PTHR31194:SF8 - ETHYLENE-RESPONSIVE TRANSCRIPTION FACTOR ERF119,magenta,NA,gene
+Manes.14G102900.v8.1,Manes.14G102900,(1 of 1) PTHR12934:SF11 - 50S RIBOSOMAL PROTEIN L15; CHLOROPLASTIC,magenta,NA,gene
+Manes.14G103200.v8.1,Manes.14G103200,(1 of 1) PTHR11614//PTHR11614:SF94 - PHOSPHOLIPASE-RELATED // ALPHA/BETA-HYDROLASE-LIKE PROTEIN,red,NA,gene
+Manes.14G103500.v8.1,Manes.14G103500,,yellow,NA,gene
+Manes.14G107500.v8.1,Manes.14G107500,(1 of 3) PTHR31066:SF12 - EXPRESSED PROTEIN,red,NA,gene
+Manes.14G108500.v8.1,Manes.14G108500,(1 of 50) 3.1.4.46 - Glycerophosphodiester phosphodiesterase / Glycerophosphoryl diester phosphodiesterase,red,NA,gene
+Manes.14G136021.v8.1,Manes.14G136021,,red,NA,gene
+Manes.14G135300.v8.1,Manes.14G135300,,yellow,NA,gene
+Manes.14G122600.v8.1,Manes.14G122600,(1 of 1) PTHR13288//PTHR13288:SF8 - DNA-DAMAGE REPAIR PROTEIN DRT111 // SPLICING FACTOR 45,magenta,NA,gene
+Manes.14G127321.v8.1,Manes.14G127321,,magenta,NA,gene
+Manes.14G129300.v8.1,Manes.14G129300,(1 of 1) PTHR11006:SF68 - PROTEIN ARGININE N-METHYLTRANSFERASE PRMT10,red,NA,gene
+Manes.14G129500.v8.1,Manes.14G129500,(1 of 9) PF07800 - Protein of unknown function (DUF1644) (DUF1644),red,NA,gene
+Manes.14G132300.v8.1,Manes.14G132300,(1 of 21) PF01477 - PLAT/LH2 domain (PLAT),magenta,NA,gene
+Manes.14G133300.v8.1,Manes.14G133300,(1 of 4) PTHR26312//PTHR26312:SF75 - FAMILY NOT NAMED // F18B13.21 PROTEIN-RELATED,yellow,NA,gene
+Manes.14G133500.v8.1,Manes.14G133500,(1 of 1) PTHR33416:SF4 - NUCLEOPORIN-RELATED PROTEIN,red,NA,gene
+Manes.14G115300.v8.1,Manes.14G115300,(1 of 2) PTHR22957:SF34 - TBC1 DOMAIN FAMILY MEMBER 25,yellow,NA,gene
+Manes.14G117300.v8.1,Manes.14G117300,,magenta,NA,gene
+Manes.14G117700.v8.1,Manes.14G117700,(1 of 4) K15289 - solute carrier family 35; member F5 (SLC35F5),yellow,NA,gene
+Manes.14G119100.v8.1,Manes.14G119100,(1 of 3) PTHR35711:SF1 - EXPRESSED PROTEIN,red,NA,gene
+Manes.14G119700.v8.1,Manes.14G119700,(1 of 1) KOG2561 - Adaptor protein NUB1; contains UBA domain,yellow,NA,gene
+Manes.14G120700.v8.1,Manes.14G120700,,yellow,NA,gene
+Manes.14G140100.v8.1,Manes.14G140100,(1 of 3) PF02602 - Uroporphyrinogen-III synthase HemD (HEM4),magenta,NA,gene
+Manes.14G142200.v8.1,Manes.14G142200,(1 of 2) PTHR31422//PTHR31422:SF1 - FAMILY NOT NAMED // EXPRESSED PROTEIN,yellow,NA,gene
+Manes.14G151300.v8.1,Manes.14G151300,(1 of 43) PF05553 - Cotton fibre expressed protein (DUF761),yellow,NA,gene
+Manes.14G154000.v8.1,Manes.14G154000,(1 of 1) PTHR19384//PTHR19384:SF74 - FLAVODOXIN-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.14G154300.v8.1,Manes.14G154300,(1 of 1) K06085 - synovial sarcoma; X breakpoint 2 interacting protein (SSX2IP; ADIP),magenta,NA,gene
+Manes.14G155400.v8.1,Manes.14G155400,(1 of 3) K14565 - nucleolar protein 58 (NOP58),red,NA,gene
+Manes.14G157474.v8.1,Manes.14G157474,(1 of 1) PTHR11178//PTHR11178:SF25 - IRON-SULFUR CLUSTER SCAFFOLD PROTEIN NFU-RELATED // NIFU-LIKE PROTEIN 3; CHLOROPLASTIC,magenta,NA,gene
+Manes.14G162600.v8.1,Manes.14G162600,(1 of 16) K01537 - Ca2+-transporting ATPase (E3.6.3.8),yellow,NA,gene
+Manes.14G160966.v8.1,Manes.14G160966,(1 of 1) PTHR11760:SF21 - TAIL-ANCHORED PROTEIN INSERTION RECEPTOR WRB,magenta,NA,gene
+Manes.14G163700.v8.1,Manes.14G163700,(1 of 6) PTHR32191//PTHR32191:SF2 - FAMILY NOT NAMED // TETRASPANIN-11-RELATED,red,NA,gene
+Manes.14G166800.v8.1,Manes.14G166800,(1 of 4) PTHR33044:SF27 - BIFUNCTIONAL INHIBITOR/LIPID-TRANSFER PROTEIN/SEED STORAGE 2S ALBUMIN SUPERFAMILY PROTEIN-RELATED,red,NA,gene
+Manes.14G167666.v8.1,Manes.14G167666,(1 of 4) 2.6.1.83 - LL-diaminopimelate aminotransferase / LL-diaminopimelate transaminase,magenta,NA,gene
+Manes.14G167800.v8.1,Manes.14G167800,(1 of 2) PTHR11782:SF3 - APYRASE 7-RELATED,magenta,NA,gene
+Manes.14G168100.v8.1,Manes.14G168100,,red,NA,gene
+Manes.14G169500.v8.1,Manes.14G169500,(1 of 1) K05284 - phosphatidylinositol glycan; class M (PIGM),red,NA,gene
+Manes.14G171400.v8.1,Manes.14G171400,(1 of 4) 3.5.1.4 - Amidase / Acylase,red,NA,gene
+Manes.14G171700.v8.1,Manes.14G171700,(1 of 1) PTHR10388//PTHR10388:SF11 - EUKARYOTIC TRANSLATION INITIATION FACTOR SUI1 // APO PROTEIN 3; MITOCHONDRIAL,magenta,NA,gene
+Manes.14G171800.v8.1,Manes.14G171800,(1 of 2) PTHR10091//PTHR10091:SF8 - ALDOSE-1-EPIMERASE // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.14G172800.v8.1,Manes.14G172800,(1 of 2) PTHR12701//PTHR12701:SF20 - BCR-ASSOCIATED PROTEIN; BAP // GENOMIC DNA; CHROMOSOME 3; P1 CLONE: MIG5,yellow,NA,gene
+Manes.15G003900.v8.1,Manes.15G003900,(1 of 1) PTHR12176:SF28 - S-ADENOSYL-L-METHIONINE-DEPENDENT METHYLTRANSFERASE-LIKE PROTEIN,red,NA,gene
+Manes.15G003300.v8.1,Manes.15G003300,(1 of 2) PTHR12357//PTHR12357:SF22 - YTH  YT521-B HOMOLOGY  DOMAIN-CONTAINING // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.15G004200.v8.1,Manes.15G004200,(1 of 1) PTHR19248//PTHR19248:SF20 - ATP-BINDING TRANSPORT PROTEIN-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.15G006500.v8.1,Manes.15G006500,(1 of 3) KOG2880 - SMAD6 interacting protein AMSH; contains JAB/MPN/Mov34 domain,yellow,NA,gene
+Manes.15G011100.v8.1,Manes.15G011100,(1 of 2) PTHR33059//PTHR33059:SF10 - FAMILY NOT NAMED // GB|AAF17687.1,yellow,NA,gene
+Manes.15G011700.v8.1,Manes.15G011700,(1 of 4) KOG1727 - Microtubule-binding protein (translationally controlled tumor protein),red,NA,gene
+Manes.15G012200.v8.1,Manes.15G012200,(1 of 2) PTHR10903//PTHR10903:SF71 - GTPASE; IMAP FAMILY MEMBER-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.15G012300.v8.1,Manes.15G012300,(1 of 4) K08238 - xyloglucan 6-xylosyltransferase [EC:2.4.2.39] Xyl a1-6 Glc (XXT),red,NA,gene
+Manes.15G023300.v8.1,Manes.15G023300,(1 of 2) PTHR22996//PTHR22996:SF4 - MAHOGUNIN // E3 UBIQUITIN-PROTEIN LIGASE LUL3-RELATED,yellow,NA,gene
+Manes.15G023600.v8.1,Manes.15G023600,(1 of 2) PTHR11514//PTHR11514:SF49 - MYC // TRANSCRIPTION FACTOR MUTE,magenta,NA,gene
+Manes.15G024100.v8.1,Manes.15G024100,(1 of 2) PTHR11772:SF18 - ALUMINUM INDUCED PROTEIN WITH YGL AND LRDR MOTIFS,yellow,NA,gene
+Manes.15G029200.v8.1,Manes.15G029200,(1 of 3) PTHR31791:SF2 - FRIGIDA-LIKE PROTEIN 4A-RELATED,red,NA,gene
+Manes.15G032000.v8.1,Manes.15G032000,(1 of 3) PTHR22904:SF289 - CARBOXYLATE CLAMP-TETRATRICOPEPTIDE REPEAT PROTEIN-RELATED,red,NA,gene
+Manes.15G033900.v8.1,Manes.15G033900,(1 of 3) 2.1.1.295 - 2-methyl-6-phytyl-1;4-hydroquinone methyltransferase / MPBQ/MSBQ methyltransferase,yellow,NA,gene
+Manes.15G036800.v8.1,Manes.15G036800,(1 of 2) PTHR11467//PTHR11467:SF44 - HISTONE H1/H5 // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.15G038950.v8.1,Manes.15G038950,(1 of 2) PTHR10209//PTHR10209:SF135 - OXIDOREDUCTASE; 2OG-FE II  OXYGENASE FAMILY PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.15G043400.v8.1,Manes.15G043400,(1 of 4) 1.1.3.20 - Long-chain-alcohol oxidase,yellow,NA,gene
+Manes.15G043800.v8.1,Manes.15G043800,(1 of 1) PTHR13528//PTHR13528:SF6 - 39S RIBOSOMAL PROTEIN L28; MITOCHONDRIAL // 50S RIBOSOMAL PROTEIN L28; CHLOROPLASTIC,yellow,NA,gene
+Manes.15G044100.v8.1,Manes.15G044100,(1 of 11) K14411 - RNA-binding protein Musashi (MSI),yellow,NA,gene
+Manes.15G045500.v8.1,Manes.15G045500,(1 of 2) PTHR23354//PTHR23354:SF74 - NUCLEOLAR PROTEIN 7/ESTROGEN RECEPTOR COACTIVATOR-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.15G047000.v8.1,Manes.15G047000,(1 of 2) PTHR10641:SF456 - MYB DOMAIN PROTEIN 79,yellow,NA,gene
+Manes.15G048400.v8.1,Manes.15G048400,(1 of 1) PTHR22814//PTHR22814:SF112 - COPPER TRANSPORT PROTEIN ATOX1-RELATED // HEAVY METAL TRANSPORT/DETOXIFICATION-LIKE PROTEIN,magenta,NA,gene
+Manes.15G048800.v8.1,Manes.15G048800,(1 of 2) 3.6.1.19 - Nucleoside-triphosphate diphosphatase / Nucleoside-triphosphate pyrophosphatase,yellow,NA,gene
+Manes.15G050712.v8.1,Manes.15G050712,(1 of 1) PTHR22763//PTHR22763:SF54 - RING ZINC FINGER PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.15G050825.v8.1,Manes.15G050825,(1 of 1) K01687 - dihydroxy-acid dehydratase (ilvD),yellow,NA,gene
+Manes.15G051384.v8.1,Manes.15G051384,(1 of 7) K08511 - vesicle-associated membrane protein 72 (ATVAMP72),yellow,NA,gene
+Manes.15G052800.v8.1,Manes.15G052800,(1 of 2) K03032 - 26S proteasome regulatory subunit N2 (PSMD1; RPN2),yellow,NA,gene
+Manes.15G053700.v8.1,Manes.15G053700,(1 of 21) PF04576 - Zein-binding (Zein-binding),yellow,NA,gene
+Manes.15G057800.v8.1,Manes.15G057800,(1 of 3) PTHR12758//PTHR12758:SF13 - APOPTOSIS INHIBITOR 5-RELATED // GBF-INTERACTING PROTEIN 1,red,NA,gene
+Manes.15G059750.v8.1,Manes.15G059750,,magenta,NA,gene
+Manes.15G070387.v8.1,Manes.15G070387,(1 of 1) 2.7.1.130 - Tetraacyldisaccharide 4'-kinase / Lipid-A 4'-kinase,red,NA,gene
+Manes.15G071500.v8.1,Manes.15G071500,(1 of 2) PTHR10388//PTHR10388:SF16 - EUKARYOTIC TRANSLATION INITIATION FACTOR SUI1 // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.15G072700.v8.1,Manes.15G072700,(1 of 4) PTHR24012//PTHR24012:SF333 - FAMILY NOT NAMED // POLYADENYLATE-BINDING PROTEIN RBP45B-RELATED,red,NA,gene
+Manes.15G080800.v8.1,Manes.15G080800,(1 of 21) PF00954//PF01453//PF07714//PF08276//PF11883 - S-locus glycoprotein domain (S_locus_glycop) // D-mannose binding lectin (B_lectin) // Protein tyrosine kinase (Pkinase_Tyr) // PAN-like domain (PAN_2) // Domain of unknown function (DUF3403) (DUF3403),magenta,NA,gene
+Manes.15G082000.v8.1,Manes.15G082000,(1 of 3) PTHR11255:SF29 - DIACYLGLYCEROL KINASE 5-RELATED,red,NA,gene
+Manes.15G101100.v8.1,Manes.15G101100,(1 of 4) PF02798//PF14497 - Glutathione S-transferase; N-terminal domain (GST_N) // Glutathione S-transferase; C-terminal domain (GST_C_3),yellow,NA,gene
+Manes.15G103500.v8.1,Manes.15G103500,(1 of 3) PTHR12741//PTHR12741:SF21 - LYST-INTERACTING PROTEIN LIP5  DOPAMINE RESPONSIVE PROTEIN DRG-1 // CALLOSE SYNTHASE 3,yellow,NA,gene
+Manes.15G106400.v8.1,Manes.15G106400,(1 of 1) PTHR24031//PTHR24031:SF264 - RNA HELICASE // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.15G106600.v8.1,Manes.15G106600,(1 of 2) PTHR11785//PTHR11785:SF378 - AMINO ACID TRANSPORTER // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.15G107700.v8.1,Manes.15G107700,(1 of 7) 1.14.12.20 - Pheophorbide a oxygenase / Pheide a oxygenase,magenta,NA,gene
+Manes.15G108200.v8.1,Manes.15G108200,(1 of 4) PTHR10641//PTHR10641:SF455 - MYB-LIKE DNA-BINDING PROTEIN MYB // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.15G113000.v8.1,Manes.15G113000,(1 of 599) PF13041 - PPR repeat family (PPR_2),red,NA,gene
+Manes.15G116300.v8.1,Manes.15G116300,(1 of 2) PTHR22880:SF153 - TRANSCRIPTION FACTOR GTE11-RELATED,magenta,NA,gene
+Manes.15G118200.v8.1,Manes.15G118200,(1 of 2) PTHR11003:SF126 - POTASSIUM INWARD RECTIFIER (KIR)-LIKE CHANNEL 3-RELATED,magenta,NA,gene
+Manes.15G121100.v8.1,Manes.15G121100,(1 of 1) PF00076//PF05383 - RNA recognition motif. (a.k.a. RRM; RBD; or RNP domain) (RRM_1) // La domain (La),red,NA,gene
+Manes.15G123600.v8.1,Manes.15G123600,(1 of 2) 2.6.1.13 - Ornithine aminotransferase / Ornithine--oxo-acid transaminase,magenta,NA,gene
+Manes.15G124500.v8.1,Manes.15G124500,(1 of 1) K14807 - ATP-dependent RNA helicase DDX51/DBP6 [EC:3.6.4.13] (DDX51; DBP6),red,NA,gene
+Manes.15G126800.v8.1,Manes.15G126800,(1 of 2) 1.3.3.5 - Bilirubin oxidase,magenta,NA,gene
+Manes.15G128200.v8.1,Manes.15G128200,(1 of 5) PTHR24055//PTHR24055:SF211 - MITOGEN-ACTIVATED PROTEIN KINASE // MITOGEN-ACTIVATED PROTEIN KINASE 16-RELATED,yellow,NA,gene
+Manes.15G129800.v8.1,Manes.15G129800,(1 of 8) PTHR31338:SF15 - F17F8.9-RELATED,magenta,NA,gene
+Manes.15G131000.v8.1,Manes.15G131000,(1 of 3) KOG4467 - Uncharacterized conserved protein,red,NA,gene
+Manes.15G135600.v8.1,Manes.15G135600,(1 of 1) PF05183//PF14259 - RNA dependent RNA polymerase (RdRP) // RNA recognition motif (a.k.a. RRM; RBD; or RNP domain) (RRM_6),yellow,NA,gene
+Manes.15G137800.v8.1,Manes.15G137800,(1 of 3) PTHR31062//PTHR31062:SF44 - FAMILY NOT NAMED // XYLOGLUCAN ENDOTRANSGLUCOSYLASE/HYDROLASE PROTEIN 27-RELATED,yellow,NA,gene
+Manes.15G138200.v8.1,Manes.15G138200,(1 of 9) KOG2679 - Purple (tartrate-resistant) acid phosphatase,yellow,NA,gene
+Manes.15G138400.v8.1,Manes.15G138400,(1 of 12) KOG0819 - Annexin,yellow,NA,gene
+Manes.15G139400.v8.1,Manes.15G139400,(1 of 11) PTHR11732:SF239 - ALDO/KETO REDUCTASE-RELATED,yellow,NA,gene
+Manes.15G139900.v8.1,Manes.15G139900,(1 of 2) PTHR10110:SF86 - SODIUM/HYDROGEN EXCHANGER 7-RELATED,magenta,NA,gene
+Manes.15G141100.v8.1,Manes.15G141100,(1 of 2) 3.1.21.7 - Deoxyribonuclease V / Escherichia coli endodeoxyribonuclease V,yellow,NA,gene
+Manes.15G141200.v8.1,Manes.15G141200,(1 of 2) 3.1.21.7 - Deoxyribonuclease V / Escherichia coli endodeoxyribonuclease V,yellow,NA,gene
+Manes.15G141800.v8.1,Manes.15G141800,(1 of 3) K11650 - SWI/SNF-related matrix-associated actin-dependent regulator of chromatin subfamily D (SMARCD),red,NA,gene
+Manes.15G144501.v8.1,Manes.15G144501,,yellow,NA,gene
+Manes.15G147300.v8.1,Manes.15G147300,(1 of 14) PF04784//PF14389 - Protein of unknown function; DUF547 (DUF547) // Leucine-zipper of ternary complex factor MIP1 (Lzipper-MIP1),yellow,NA,gene
+Manes.15G149500.v8.1,Manes.15G149500,(1 of 7) K07937//K07977 - ADP-ribosylation factor 1 (ARF1) // Arf/Sar family; other (ARF),yellow,NA,gene
+Manes.15G151000.v8.1,Manes.15G151000,,red,NA,gene
+Manes.15G151500.v8.1,Manes.15G151500,(1 of 2) PTHR31079:SF2 - F4P13.14 PROTEIN-RELATED,yellow,NA,gene
+Manes.15G152600.v8.1,Manes.15G152600,,yellow,NA,gene
+Manes.15G155400.v8.1,Manes.15G155400,(1 of 1) PTHR34278//PTHR34278:SF1 - FAMILY NOT NAMED // GB|AAC02775.1,yellow,NA,gene
+Manes.15G158900.v8.1,Manes.15G158900,(1 of 2) PTHR23359//PTHR23359:SF86 - NUCLEOTIDE KINASE // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.15G160800.v8.1,Manes.15G160800,(1 of 1) PTHR10857//PTHR10857:SF43 - COPINE // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.15G161000.v8.1,Manes.15G161000,(1 of 1) PTHR17490//PTHR17490:SF7 - SUA5 // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.15G161100.v8.1,Manes.15G161100,(1 of 2) PTHR11945//PTHR11945:SF176 - MADS BOX PROTEIN // PROTEIN AGAMOUS-LIKE 82,red,NA,gene
+Manes.15G161800.v8.1,Manes.15G161800,(1 of 1) PTHR21354:SF0 - ZINC FINGER PROTEIN 511,yellow,NA,gene
+Manes.15G161900.v8.1,Manes.15G161900,(1 of 1) PTHR31517:SF7 - PEROXIDASE 55,yellow,NA,gene
+Manes.15G162100.v8.1,Manes.15G162100,(1 of 11) PF11820 - Protein of unknown function (DUF3339) (DUF3339),yellow,NA,gene
+Manes.15G162300.v8.1,Manes.15G162300,(1 of 1) PTHR33128//PTHR33128:SF13 - FAMILY NOT NAMED // EMB|CAB62355.1,yellow,NA,gene
+Manes.15G174300.v8.1,Manes.15G174300,,magenta,NA,gene
+Manes.15G173750.v8.1,Manes.15G173750,(1 of 2) PTHR19282//PTHR19282:SF262 - TETRASPANIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.15G174600.v8.1,Manes.15G174600,(1 of 3) K03115 - casein kinase II subunit beta (CSNK2B),red,NA,gene
+Manes.15G175400.v8.1,Manes.15G175400,(1 of 1) 2.7.4.24 - Diphosphoinositol-pentakisphosphate kinase / PP-IP(5) kinase,yellow,NA,gene
+Manes.15G175500.v8.1,Manes.15G175500,(1 of 1) PTHR23070//PTHR23070:SF19 - BCS1 AAA-TYPE ATPASE // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.15G182800.v8.1,Manes.15G182800,(1 of 1) PF00439//PF00628//PF01429//PF05965//PF15612 - Bromodomain (Bromodomain) // PHD-finger (PHD) // Methyl-CpG binding domain (MBD) // F/Y rich C-terminus (FYRC) // WSTF; HB1; Itc1p; MBD9 motif 1 (WHIM1),red,NA,gene
+Manes.15G190625.v8.1,Manes.15G190625,,red,NA,gene
+Manes.15G192300.v8.1,Manes.15G192300,(1 of 2) PTHR31062//PTHR31062:SF16 - FAMILY NOT NAMED // XYLOGLUCAN ENDOTRANSGLUCOSYLASE/HYDROLASE PROTEIN 29-RELATED,yellow,NA,gene
+Manes.15G192700.v8.1,Manes.15G192700,(1 of 2) PTHR10218//PTHR10218:SF192 - GTP-BINDING PROTEIN ALPHA SUBUNIT // EXTRA-LARGE GUANINE NUCLEOTIDE-BINDING PROTEIN 3,red,NA,gene
+Manes.15G192920.v8.1,Manes.15G192920,(1 of 22) PF13371 - Tetratricopeptide repeat (TPR_9),magenta,NA,gene
+Manes.16G001000.v8.1,Manes.16G001000,(1 of 1) PTHR31579:SF15 - F2401.16,yellow,NA,gene
+Manes.16G006100.v8.1,Manes.16G006100,(1 of 2) PTHR10374:SF17 - GLYOXALASE I HOMOLOG,magenta,NA,gene
+Manes.16G006500.v8.1,Manes.16G006500,(1 of 9) K08341 - GABA(A) receptor-associated protein (GABARAP; ATG8; LC3),red,NA,gene
+Manes.16G014100.v8.1,Manes.16G014100,(1 of 3) PTHR27002//PTHR27002:SF29 - FAMILY NOT NAMED // CYSTEINE-RICH RECEPTOR-LIKE PROTEIN KINASE 41,magenta,NA,gene
+Manes.16G014233.v8.1,Manes.16G014233,(1 of 30) PF01657//PF07714 - Salt stress response/antifungal (Stress-antifung) // Protein tyrosine kinase (Pkinase_Tyr),magenta,NA,gene
+Manes.16G014800.v8.1,Manes.16G014800,(1 of 2) PF01657//PF07714//PF11883 - Salt stress response/antifungal (Stress-antifung) // Protein tyrosine kinase (Pkinase_Tyr) // Domain of unknown function (DUF3403) (DUF3403),magenta,NA,gene
+Manes.16G017200.v8.1,Manes.16G017200,(1 of 3) PTHR10438:SF242 - THIOREDOXIN-LIKE PROTEIN CXXS1,yellow,NA,gene
+Manes.16G016400.v8.1,Manes.16G016400,(1 of 1) K08695 - anthocyanidin reductase (ANR),yellow,NA,gene
+Manes.16G019135.v8.1,Manes.16G019135,(1 of 35) PTHR27002//PTHR27002:SF84 - FAMILY NOT NAMED // ATP BINDING / PROTEIN KINASE-RELATED,magenta,NA,gene
+Manes.16G020100.v8.1,Manes.16G020100,(1 of 2) PTHR23500//PTHR23500:SF55 - FAMILY NOT NAMED // SUGAR TRANSPORT PROTEIN 1-RELATED,magenta,NA,gene
+Manes.16G021200.v8.1,Manes.16G021200,(1 of 1) K04718 - sphingosine kinase (SPHK),magenta,NA,gene
+Manes.16G021900.v8.1,Manes.16G021900,(1 of 2) PTHR23423//PTHR23423:SF15 - ORGANIC SOLUTE TRANSPORTER-RELATED // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.16G023000.v8.1,Manes.16G023000,(1 of 11) PF05212 - Protein of unknown function (DUF707) (DUF707),magenta,NA,gene
+Manes.16G024500.v8.1,Manes.16G024500,(1 of 45) PF02701 - Dof domain; zinc finger (zf-Dof),yellow,NA,gene
+Manes.16G024900.v8.1,Manes.16G024900,(1 of 1) K15178 - RNA polymerase-associated protein RTF1 (RTF1),red,NA,gene
+Manes.16G025200.v8.1,Manes.16G025200,(1 of 1) PTHR22100//PTHR22100:SF13 - FAMILY NOT NAMED // WINGS APART-LIKE PROTEIN HOMOLOG,red,NA,gene
+Manes.16G026500.v8.1,Manes.16G026500,(1 of 1) PTHR10293:SF40 - GLUTAREDOXIN-3,red,NA,gene
+Manes.16G032500.v8.1,Manes.16G032500,(1 of 3) PTHR31079:SF5 - NAC DOMAIN CONTAINING PROTEIN 10,yellow,NA,gene
+Manes.16G036300.v8.1,Manes.16G036300,,magenta,NA,gene
+Manes.16G046301.v8.1,Manes.16G046301,(1 of 1) PTHR13343//PTHR13343:SF16 - CREG1 PROTEIN // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.16G048683.v8.1,Manes.16G048683,(1 of 2) PTHR22891:SF4 - PROTEIN ARGONAUTE 2-RELATED,yellow,NA,gene
+Manes.16G057118.v8.1,Manes.16G057118,(1 of 2) 1.1.1.183 - Geraniol dehydrogenase (NADP(+)),magenta,NA,gene
+Manes.16G060450.v8.1,Manes.16G060450,,magenta,NA,gene
+Manes.16G055300.v8.1,Manes.16G055300,(1 of 1) PTHR33133:SF12 - F28K20.6 PROTEIN-RELATED,red,NA,gene
+Manes.16G055700.v8.1,Manes.16G055700,(1 of 1) PTHR10281//PTHR10281:SF40 - MEMBRANE-ASSOCIATED PROGESTERONE RECEPTOR COMPONENT-RELATED // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.16G059325.v8.1,Manes.16G059325,(1 of 1) K01092 - myo-inositol-1(or 4)-monophosphatase (E3.1.3.25; IMPA; suhB),magenta,NA,gene
+Manes.16G060900.v8.1,Manes.16G060900,(1 of 2) PTHR27000//PTHR27000:SF121 - FAMILY NOT NAMED // LEUCINE-RICH REPEAT RECEPTOR-LIKE SERINE/THREONINE-PROTEIN KINASE BAM3,yellow,NA,gene
+Manes.16G062800.v8.1,Manes.16G062800,(1 of 1) PTHR13768:SF2 - GAMMA-SOLUBLE NSF ATTACHMENT PROTEIN,red,NA,gene
+Manes.16G068300.v8.1,Manes.16G068300,(1 of 1) PTHR31407:SF7 - PSBP DOMAIN-CONTAINING PROTEIN 5; CHLOROPLASTIC,magenta,NA,gene
+Manes.16G069500.v8.1,Manes.16G069500,(1 of 1) K14767 - U3 small nucleolar RNA-associated protein 3 (UTP3; SAS10),red,NA,gene
+Manes.16G065800.v8.1,Manes.16G065800,(1 of 16) 4.2.3.19 - Ent-kaurene synthase / Ent-kaurene synthetase B,magenta,NA,gene
+Manes.16G078000.v8.1,Manes.16G078000,(1 of 1) PTHR13832//PTHR13832:SF315 - PROTEIN PHOSPHATASE 2C // PROTEIN PHOSPHATASE 2C 61-RELATED,magenta,NA,gene
+Manes.16G078100.v8.1,Manes.16G078100,(1 of 1) PTHR15660:SF1 - BRISC AND BRCA1-A COMPLEX MEMBER 1,magenta,NA,gene
+Manes.16G080300.v8.1,Manes.16G080300,(1 of 1) 1.4.4.2 - Glycine dehydrogenase (aminomethyl-transferring) / Glycine-cleavage complex P-protein,red,NA,gene
+Manes.16G080700.v8.1,Manes.16G080700,(1 of 1) PTHR11214:SF85 - BETA-1;3-GALACTOSYLTRANSFERASE 12-RELATED,magenta,NA,gene
+Manes.16G081200.v8.1,Manes.16G081200,(1 of 2) 1.14.19.3 - Acyl-CoA 6-desaturase / Long-chain fatty acid Delta(6)-desaturase,yellow,NA,gene
+Manes.16G085300.v8.1,Manes.16G085300,(1 of 3) PTHR21654//PTHR21654:SF19 - FAMILY NOT NAMED // DUPLICATED HOMEODOMAIN-LIKE SUPERFAMILY PROTEIN,yellow,NA,gene
+Manes.16G085400.v8.1,Manes.16G085400,(1 of 1) PTHR24282//PTHR24282:SF24 - CYTOCHROME P450 FAMILY MEMBER // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.16G086000.v8.1,Manes.16G086000,(1 of 2) PTHR27000:SF188 - LRR RECEPTOR-LIKE SERINE/THREONINE-PROTEIN KINASE ERECTA,yellow,NA,gene
+Manes.16G088800.v8.1,Manes.16G088800,(1 of 1) PF06941 - 5' nucleotidase; deoxy (Pyrimidine); cytosolic type C protein (NT5C) (NT5C),red,NA,gene
+Manes.16G089600.v8.1,Manes.16G089600,(1 of 2) PF04136 - Sec34-like family (Sec34),red,NA,gene
+Manes.16G100800.v8.1,Manes.16G100800,(1 of 3) K11279 - nucleosome assembly protein 1-like 1 (NAP1L1; NRP),red,NA,gene
+Manes.16G101100.v8.1,Manes.16G101100,(1 of 1) PTHR10992:SF808 - ALPHA/BETA-HYDROLASES SUPERFAMILY PROTEIN-RELATED,yellow,NA,gene
+Manes.16G101200.v8.1,Manes.16G101200,(1 of 1) PTHR31846//PTHR31846:SF7 - FAMILY NOT NAMED // CRS1 / YHBY (CRM) DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.16G104100.v8.1,Manes.16G104100,(1 of 4) K11434 - protein arginine N-methyltransferase 1 (PRMT1),red,NA,gene
+Manes.16G110000.v8.1,Manes.16G110000,(1 of 1) PTHR23079:SF13 - RNA-DEPENDENT RNA POLYMERASE 3-RELATED,yellow,NA,gene
+Manes.16G116400.v8.1,Manes.16G116400,,red,NA,gene
+Manes.16G117400.v8.1,Manes.16G117400,(1 of 2) PTHR31307:SF8 - ALCOHOL DEHYDROGENASE TRANSCRIPTION FACTOR MYB/SANT-LIKE PROTEIN,red,NA,gene
+Manes.16G121600.v8.1,Manes.16G121600,(1 of 3) PTHR18896//PTHR18896:SF11 - PHOSPHOLIPASE D // PHOSPHOLIPASE D ALPHA 1-RELATED,yellow,NA,gene
+Manes.16G128400.v8.1,Manes.16G128400,(1 of 1) PTHR11699//PTHR11699:SF176 - ALDEHYDE DEHYDROGENASE-RELATED // SUBFAMILY NOT NAMED,red,carb,gene
+Manes.16G130900.v8.1,Manes.16G130900,(1 of 2) KOG1766 - Enhancer of rudimentary,yellow,NA,gene
+Manes.16G131000.v8.1,Manes.16G131000,(1 of 2) K12842 - U2-associated protein SR140 (SR140),red,NA,gene
+Manes.16G131700.v8.1,Manes.16G131700,(1 of 1) PTHR19315:SF9 - ER MEMBRANE PROTEIN COMPLEX SUBUNIT 4,red,NA,gene
+Manes.16G133800.v8.1,Manes.16G133800,(1 of 10) K11855 - ubiquitin carboxyl-terminal hydrolase 36/42 [EC:3.4.19.12] (USP36_42),yellow,NA,gene
+Manes.16G137300.v8.1,Manes.16G137300,(1 of 2) PTHR22952//PTHR22952:SF113 - CAMP-RESPONSE ELEMENT BINDING PROTEIN-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.16G137600.v8.1,Manes.16G137600,(1 of 2) 2.7.1.46 - L-arabinokinase,yellow,NA,gene
+Manes.17G001120.v8.1,Manes.17G001120,(1 of 52) PF01535//PF13041//PF13812 - PPR repeat (PPR) // PPR repeat family (PPR_2) // Pentatricopeptide repeat domain (PPR_3),red,NA,gene
+Manes.17G002400.v8.1,Manes.17G002400,,red,NA,gene
+Manes.17G005100.v8.1,Manes.17G005100,(1 of 2) PF07741 - Brf1-like TBP-binding domain (BRF1),yellow,NA,gene
+Manes.17G008600.v8.1,Manes.17G008600,(1 of 11) PF04819 - Family of unknown function (DUF716) (DUF716),yellow,NA,gene
+Manes.17G006674.v8.1,Manes.17G006674,(1 of 2) 2.7.1.19 - Phosphoribulokinase / Phosphopentokinase,yellow,NA,gene
+Manes.17G010100.v8.1,Manes.17G010100,(1 of 3) PTHR14155:SF94 - RING-H2 FINGER PROTEIN ATL33-RELATED,yellow,NA,gene
+Manes.17G017700.v8.1,Manes.17G017700,(1 of 3) PF01535//PF13812//PF14432 - PPR repeat (PPR) // Pentatricopeptide repeat domain (PPR_3) // DYW family of nucleic acid deaminases (DYW_deaminase),magenta,NA,gene
+Manes.17G017708.v8.1,Manes.17G017708,(1 of 1) K05283 - phosphatidylinositol glycan; class W (PIGW),red,NA,gene
+Manes.17G019100.v8.1,Manes.17G019100,,magenta,NA,gene
+Manes.17G019700.v8.1,Manes.17G019700,(1 of 1) K14648 - poly(U)-specific endoribonuclease (ENDOU; PP11),red,NA,gene
+Manes.17G021100.v8.1,Manes.17G021100,(1 of 7) PTHR11654:SF59 - PROTEIN NRT1/ PTR FAMILY 2.10-RELATED,magenta,NA,gene
+Manes.17G029024.v8.1,Manes.17G029024,(1 of 6) PTHR24361:SF380 - MITOGEN-ACTIVATED PROTEIN KINASE KINASE KINASE 17-RELATED,yellow,NA,gene
+Manes.17G029048.v8.1,Manes.17G029048,(1 of 6) K14009 - B-cell receptor-associated protein 31 (BCAP31; BAP31),red,NA,gene
+Manes.17G038000.v8.1,Manes.17G038000,(1 of 4) PTHR24012//PTHR24012:SF333 - FAMILY NOT NAMED // POLYADENYLATE-BINDING PROTEIN RBP45B-RELATED,red,NA,gene
+Manes.17G030100.v8.1,Manes.17G030100,(1 of 7) PF04504 - Protein of unknown function; DUF573 (DUF573),yellow,NA,gene
+Manes.17G031200.v8.1,Manes.17G031200,(1 of 7) K03809 - NAD(P)H dehydrogenase (quinone) (wrbA),yellow,NA,gene
+Manes.17G032700.v8.1,Manes.17G032700,(1 of 46) PF00582 - Universal stress protein family (Usp),red,NA,gene
+Manes.17G033500.v8.1,Manes.17G033500,(1 of 5) PTHR10809:SF48 - VESICLE-ASSOCIATED PROTEIN 4-1,magenta,NA,gene
+Manes.17G042633.v8.1,Manes.17G042633,(1 of 19) PF06749 - Protein of unknown function (DUF1218) (DUF1218),yellow,NA,gene
+Manes.17G043100.v8.1,Manes.17G043100,(1 of 2) PTHR23081//PTHR23081:SF7 - RNA POLYMERASE II CTD PHOSPHATASE // RNA POLYMERASE II C-TERMINAL DOMAIN PHOSPHATASE-LIKE 1,red,NA,gene
+Manes.17G044200.v8.1,Manes.17G044200,(1 of 3) PTHR13308:SF17 - GENOMIC DNA; CHROMOSOME 3; P1 CLONE: MJK13,yellow,NA,gene
+Manes.17G045800.v8.1,Manes.17G045800,(1 of 2) K06027 - vesicle-fusing ATPase (NSF),yellow,NA,gene
+Manes.17G052300.v8.1,Manes.17G052300,(1 of 3) PTHR11817//PTHR11817:SF5 - PYRUVATE KINASE // PYRUVATE KINASE-RELATED,magenta,carb,gene
+Manes.17G055500.v8.1,Manes.17G055500,(1 of 1) PTHR22814:SF107 - F28N24.19 PROTEIN,yellow,NA,gene
+Manes.17G055900.v8.1,Manes.17G055900,(1 of 17) PF04852 - Protein of unknown function (DUF640) (DUF640),red,NA,gene
+Manes.17G058000.v8.1,Manes.17G058000,(1 of 2) PTHR23012//PTHR23012:SF76 - MEMBRANE ASSOCIATED RING FINGER // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.17G064100.v8.1,Manes.17G064100,,magenta,NA,gene
+Manes.17G066500.v8.1,Manes.17G066500,(1 of 3) PTHR31376//PTHR31376:SF17 - FAMILY NOT NAMED // PURINE PERMEASE 10-RELATED,magenta,NA,gene
+Manes.17G066600.v8.1,Manes.17G066600,(1 of 1) K07441 - beta-1;4-N-acetylglucosaminyltransferase (ALG14),red,NA,gene
+Manes.17G067700.v8.1,Manes.17G067700,(1 of 5) PF06454 - Protein of unknown function (DUF1084) (DUF1084),magenta,NA,gene
+Manes.17G068800.v8.1,Manes.17G068800,(1 of 1) K03189 - urease accessory protein (ureG),magenta,NA,gene
+Manes.17G069300.v8.1,Manes.17G069300,(1 of 2) PTHR10217//PTHR10217:SF520 - VOLTAGE AND LIGAND GATED POTASSIUM CHANNEL // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.17G071500.v8.1,Manes.17G071500,(1 of 1) PF07103 - Protein of unknown function (DUF1365) (DUF1365),magenta,NA,gene
+Manes.17G072000.v8.1,Manes.17G072000,(1 of 1) PTHR22939//PTHR22939:SF76 - SERINE PROTEASE FAMILY S1C HTRA-RELATED // PROTEASE DO-LIKE 5; CHLOROPLASTIC,red,NA,gene
+Manes.17G074200.v8.1,Manes.17G074200,(1 of 3) 3.1.4.55 - Phosphoribosyl 1;2-cyclic phosphate phosphodiesterase,red,NA,gene
+Manes.17G084733.v8.1,Manes.17G084733,(1 of 3) PTHR23079:SF9 - RNA-DEPENDENT RNA POLYMERASE 1,yellow,NA,gene
+Manes.17G084800.v8.1,Manes.17G084800,(1 of 3) PTHR23079:SF9 - RNA-DEPENDENT RNA POLYMERASE 1,yellow,NA,gene
+Manes.17G086700.v8.1,Manes.17G086700,(1 of 2) K02902 - large subunit ribosomal protein L28 (RP-L28; MRPL28; rpmB),magenta,NA,gene
+Manes.17G090900.v8.1,Manes.17G090900,(1 of 6) PTHR10766//PTHR10766:SF58 - TRANSMEMBRANE 9 SUPERFAMILY PROTEIN // SUBFAMILY NOT NAMED,red,NA,gene
+Manes.17G091100.v8.1,Manes.17G091100,(1 of 2) PTHR10110//PTHR10110:SF86 - SODIUM/HYDROGEN EXCHANGER // SODIUM/HYDROGEN EXCHANGER 7-RELATED,yellow,NA,gene
+Manes.17G094600.v8.1,Manes.17G094600,(1 of 1) PF03161 - LAGLIDADG DNA endonuclease family (LAGLIDADG_2),magenta,NA,gene
+Manes.17G094800.v8.1,Manes.17G094800,(1 of 4) K13210 - far upstream element-binding protein (FUBP),red,NA,gene
+Manes.17G098301.v8.1,Manes.17G098301,(1 of 3) PF00042 - Globin (Globin),magenta,NA,gene
+Manes.17G099100.v8.1,Manes.17G099100,(1 of 9) PF05055 - Protein of unknown function (DUF677) (DUF677),yellow,NA,gene
+Manes.17G100200.v8.1,Manes.17G100200,(1 of 2) PTHR24073:SF375 - RAS-RELATED PROTEIN RABG3F,red,NA,gene
+Manes.17G103400.v8.1,Manes.17G103400,(1 of 2) K00387 - sulfite oxidase (SUOX),yellow,NA,gene
+Manes.17G103600.v8.1,Manes.17G103600,(1 of 41) PF01344 - Kelch motif (Kelch_1),yellow,NA,gene
+Manes.17G104700.v8.1,Manes.17G104700,(1 of 44) PF03140 - Plant protein of unknown function (DUF247),red,NA,gene
+Manes.17G105100.v8.1,Manes.17G105100,(1 of 10) PTHR13068:SF28 - MITOCHONDRIAL TRANSCRIPTION TERMINATION FACTOR FAMILY PROTEIN-RELATED,magenta,NA,gene
+Manes.17G111100.v8.1,Manes.17G111100,,red,NA,gene
+Manes.17G111200.v8.1,Manes.17G111200,(1 of 2) PTHR10013 - GENERAL VESICULAR TRANSPORT FACTOR P115,red,NA,gene
+Manes.17G111400.v8.1,Manes.17G111400,(1 of 2) PTHR31079//PTHR31079:SF2 - FAMILY NOT NAMED // F4P13.14 PROTEIN-RELATED,yellow,NA,gene
+Manes.17G112900.v8.1,Manes.17G112900,(1 of 2) K14962 - COMPASS component SWD2 (WDR82; SWD2; CPS35),magenta,NA,gene
+Manes.17G113300.v8.1,Manes.17G113300,(1 of 1) PTHR10458:SF2 - PEPTIDE DEFORMYLASE 1B; CHLOROPLASTIC/MITOCHONDRIAL,magenta,NA,gene
+Manes.17G115500.v8.1,Manes.17G115500,(1 of 3) PTHR31268//PTHR31268:SF2 - FAMILY NOT NAMED // GALACTINOL--SUCROSE GALACTOSYLTRANSFERASE 5-RELATED,yellow,NA,gene
+Manes.17G116300.v8.1,Manes.17G116300,(1 of 1) PTHR24092//PTHR24092:SF75 - FAMILY NOT NAMED // PHOSPHOLIPID-TRANSPORTING ATPASE 8-RELATED,yellow,NA,gene
+Manes.17G121264.v8.1,Manes.17G121264,(1 of 4) 2.5.1.58 - Protein farnesyltransferase / FTase,magenta,NA,gene
+Manes.17G121600.v8.1,Manes.17G121600,(1 of 1) K05954 - protein farnesyltransferase subunit beta (FNTB),magenta,NA,gene
+Manes.17G122100.v8.1,Manes.17G122100,(1 of 2) 1.2.1.2 - Formate dehydrogenase,yellow,NA,gene
+Manes.17G122800.v8.1,Manes.17G122800,(1 of 3) PTHR11926//PTHR11926:SF250 - GLUCOSYL/GLUCURONOSYL TRANSFERASES // UDP-GLYCOSYLTRANSFERASE 90A1-RELATED,magenta,NA,gene
+Manes.17G117200.v8.1,Manes.17G117200,,magenta,NA,gene
+Manes.18G000350.v8.1,Manes.18G000350,(1 of 1) K12600 - superkiller protein 3 (SKI3; TTC37),magenta,NA,gene
+Manes.18G000900.v8.1,Manes.18G000900,(1 of 2) PF00270//PF00271//PF02889 - DEAD/DEAH box helicase (DEAD) // Helicase conserved C-terminal domain (Helicase_C) // Sec63 Brl domain (Sec63),magenta,NA,gene
+Manes.18G001000.v8.1,Manes.18G001000,(1 of 2) PTHR22952//PTHR22952:SF117 - CAMP-RESPONSE ELEMENT BINDING PROTEIN-RELATED // BZIP TRANSCRIPTION FACTOR 60,yellow,NA,gene
+Manes.18G001700.v8.1,Manes.18G001700,(1 of 1) PTHR10366//PTHR10366:SF461 - NAD DEPENDENT EPIMERASE/DEHYDRATASE // CINNAMOYL-COA:NADP OXIDOREDUCTASE-LIKE 1-RELATED,magenta,NA,gene
+Manes.18G005000.v8.1,Manes.18G005000,(1 of 2) PTHR22952//PTHR22952:SF117 - CAMP-RESPONSE ELEMENT BINDING PROTEIN-RELATED // BZIP TRANSCRIPTION FACTOR 60,yellow,NA,gene
+Manes.18G006830.v8.1,Manes.18G006830,(1 of 2) K10526 - OPC-8:0 CoA ligase 1 (OPCL1),red,NA,gene
+Manes.18G016500.v8.1,Manes.18G016500,(1 of 13) K11253 - histone H3 (H3),red,NA,gene
+Manes.18G020100.v8.1,Manes.18G020100,(1 of 1) KOG1324 - Dihydrofolate reductase,magenta,NA,gene
+Manes.18G020332.v8.1,Manes.18G020332,(1 of 4) PTHR23324//PTHR23324:SF43 - SEC14 RELATED PROTEIN // PHOSPHATIDYLINOSITOL/PHOSPHATIDYLCHOLINE TRANSFER PROTEIN SFH6-RELATED,magenta,NA,gene
+Manes.18G021101.v8.1,Manes.18G021101,(1 of 1) PTHR33510//PTHR33510:SF6 - FAMILY NOT NAMED // PROTEIN TIC 20-I; CHLOROPLASTIC,magenta,NA,gene
+Manes.18G027300.v8.1,Manes.18G027300,(1 of 3) PTHR10996//PTHR10996:SF162 - 2-HYDROXYACID DEHYDROGENASE-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.18G027901.v8.1,Manes.18G027901,(1 of 2) 3.6.1.23 - dUTP diphosphatase / dUTPase,magenta,NA,gene
+Manes.18G028500.v8.1,Manes.18G028500,(1 of 2) K12178 - COP9 signalosome complex subunit 4 (COPS4; CSN4),red,NA,gene
+Manes.18G029600.v8.1,Manes.18G029600,(1 of 3) K14503 - brassinosteroid resistant 1/2 (BZR1_2),red,NA,gene
+Manes.18G031400.v8.1,Manes.18G031400,(1 of 4) PTHR11685//PTHR11685:SF135 - RBR FAMILY  RING FINGER AND IBR DOMAIN-CONTAINING // E3 UBIQUITIN-PROTEIN LIGASE ARI10-RELATED,yellow,NA,gene
+Manes.18G036400.v8.1,Manes.18G036400,(1 of 19) PTHR10891:SF592 - CALCIUM-BINDING PROTEIN CML38-RELATED,red,NA,gene
+Manes.18G036500.v8.1,Manes.18G036500,(1 of 28) PF13202 - EF hand (EF-hand_5),yellow,NA,gene
+Manes.18G039601.v8.1,Manes.18G039601,(1 of 2) PTHR12565:SF92 - TRANSCRIPTION FACTOR SPATULA,red,NA,gene
+Manes.18G043000.v8.1,Manes.18G043000,(1 of 5) 1.14.13.53 - 4'-methoxyisoflavone 2'-hydroxylase / Isoflavone 2'-monooxygenase,magenta,NA,gene
+Manes.18G043500.v8.1,Manes.18G043500,(1 of 24) 1.14.13.89 - Isoflavone 2'-hydroxylase / Isoflavone 2'-monooxygenase,yellow,NA,gene
+Manes.18G043901.v8.1,Manes.18G043901,,yellow,NA,gene
+Manes.18G048600.v8.1,Manes.18G048600,(1 of 2) PTHR21477//PTHR21477:SF12 - FAMILY NOT NAMED // CF9 PROTEIN-RELATED,red,NA,gene
+Manes.18G049100.v8.1,Manes.18G049100,(1 of 2) PTHR22952//PTHR22952:SF115 - CAMP-RESPONSE ELEMENT BINDING PROTEIN-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.18G051900.v8.1,Manes.18G051900,(1 of 2) PTHR12482:SF17 - ALPHA/BETA-HYDROLASES SUPERFAMILY PROTEIN,yellow,NA,gene
+Manes.18G054064.v8.1,Manes.18G054064,,red,NA,gene
+Manes.18G054150.v8.1,Manes.18G054150,(1 of 2) PTHR22952//PTHR22952:SF145 - CAMP-RESPONSE ELEMENT BINDING PROTEIN-RELATED // SUBFAMILY NOT NAMED,yellow,NA,gene
+Manes.18G057444.v8.1,Manes.18G057444,(1 of 3) PTHR23257:SF349 - PROTEIN KINASE FAMILY PROTEIN,red,NA,gene
+Manes.18G058066.v8.1,Manes.18G058066,(1 of 1) PTHR36054//PTHR36054:SF1 - FAMILY NOT NAMED // HYDROXYPROLINE-RICH GLYCOPROTEIN FAMILY PROTEIN,magenta,NA,gene
+Manes.18G058100.v8.1,Manes.18G058100,(1 of 3) 1.6.2.4 - NADPH--hemoprotein reductase / TPNH-cytochrome c reductase,red,NA,gene
+Manes.18G059200.v8.1,Manes.18G059200,(1 of 5) PTHR11945:SF179 - MADS-BOX PROTEIN SVP,yellow,NA,gene
+Manes.18G059600.v8.1,Manes.18G059600,(1 of 3) K12402 - AP-4 complex subunit mu-1 (AP4M1),red,NA,gene
+Manes.18G059800.v8.1,Manes.18G059800,(1 of 2) PTHR31100:SF1 - AT-HOOK MOTIF NUCLEAR LOCALIZED PROTEIN 17-RELATED,yellow,NA,gene
+Manes.18G062000.v8.1,Manes.18G062000,(1 of 2) 1.4.3.5//5.1.99.6 - Pyridoxal 5'-phosphate synthase / Pyridoxine (pyridoxamine)phosphate oxidase // NAD(P)H-hydrate epimerase / NAD(P)HX epimerase,magenta,NA,gene
+Manes.18G064500.v8.1,Manes.18G064500,(1 of 13) K11253 - histone H3 (H3),red,NA,gene
+Manes.18G065300.v8.1,Manes.18G065300,(1 of 4) K02991 - small subunit ribosomal protein S6e (RP-S6e; RPS6),red,NA,gene
+Manes.18G069600.v8.1,Manes.18G069600,(1 of 2) K01834 - 2;3-bisphosphoglycerate-dependent phosphoglycerate mutase (PGAM; gpmA),magenta,carb,gene
+Manes.18G070700.v8.1,Manes.18G070700,(1 of 2) PTHR22814:SF84 - HEAVY-METAL-ASSOCIATED DOMAIN-CONTAINING PROTEIN,yellow,NA,gene
+Manes.18G071700.v8.1,Manes.18G071700,(1 of 1) PTHR22952:SF180 - TRANSCRIPTION FACTOR TGA1-RELATED,yellow,NA,gene
+Manes.18G071800.v8.1,Manes.18G071800,(1 of 1) PTHR24074//PTHR24074:SF10 - FAMILY NOT NAMED // PROTEIN DNJ-29; ISOFORM B,red,NA,gene
+Manes.18G072200.v8.1,Manes.18G072200,(1 of 1) PF15938 - Domain of unknown function (DUF4750) (DUF4750),magenta,NA,gene
+Manes.18G073581.v8.1,Manes.18G073581,(1 of 5) 3.1.1.31 - 6-phosphogluconolactonase,magenta,NA,gene
+Manes.18G077024.v8.1,Manes.18G077024,(1 of 6) PTHR32278:SF6 - F-BOX PROTEIN PP2-B1-RELATED,yellow,NA,gene
+Manes.18G077300.v8.1,Manes.18G077300,(1 of 6) PTHR32278:SF6 - F-BOX PROTEIN PP2-B1-RELATED,yellow,NA,gene
+Manes.18G078225.v8.1,Manes.18G078225,(1 of 63) PF00651 - BTB/POZ domain (BTB),magenta,NA,gene
+Manes.18G078475.v8.1,Manes.18G078475,(1 of 2) 4.2.1.24 - Porphobilinogen synthase / Delta-aminolevulinic acid dehydratase,magenta,NA,gene
+Manes.18G084700.v8.1,Manes.18G084700,,yellow,NA,gene
+Manes.18G085300.v8.1,Manes.18G085300,(1 of 7) K07910 - Ras-related protein Rab-18 (RAB18),magenta,NA,gene
+Manes.18G093201.v8.1,Manes.18G093201,(1 of 3) PF02496 - ABA/WDS induced protein (ABA_WDS),red,NA,gene
+Manes.18G097500.v8.1,Manes.18G097500,(1 of 2) PTHR12161:SF21 - REGULATOR OF VPS4 ACTIVITY IN THE MVB PATHWAY PROTEIN,yellow,NA,gene
+Manes.18G100300.v8.1,Manes.18G100300,(1 of 11) KOG2922 - Uncharacterized conserved protein,red,NA,gene
+Manes.18G101100.v8.1,Manes.18G101100,(1 of 2) PTHR10795//PTHR10795:SF316 - PROPROTEIN CONVERTASE SUBTILISIN/KEXIN // SERINE PROTEASE-LIKE PROTEIN-RELATED,yellow,NA,gene
+Manes.18G102500.v8.1,Manes.18G102500,,yellow,NA,gene
+Manes.18G103000.v8.1,Manes.18G103000,(1 of 2) PTHR31916:SF3 - ALKALINE/NEUTRAL INVERTASE CINV1-RELATED,red,carb,gene
+Manes.18G106451.v8.1,Manes.18G106451,(1 of 29) PF03083 - Sugar efflux transporter for intercellular exchange (MtN3_slv),magenta,NA,gene
+Manes.18G107800.v8.1,Manes.18G107800,(1 of 5) PF00646//PF08268 - F-box domain (F-box) // F-box associated domain (FBA_3),yellow,NA,gene
+Manes.18G107900.v8.1,Manes.18G107900,(1 of 1) PF00931//PF07725//PF13855 - NB-ARC domain (NB-ARC) // Leucine Rich Repeat (LRR_3) // Leucine rich repeat (LRR_8),yellow,NA,gene
+Manes.18G108600.v8.1,Manes.18G108600,(1 of 2) PTHR31745//PTHR31745:SF1 - FAMILY NOT NAMED // SINGLE-STRANDED DNA-BINDING PROTEIN WHY2; MITOCHONDRIAL,red,NA,gene
+Manes.18G113901.v8.1,Manes.18G113901,(1 of 1) K19054 - frataxin (FXN),red,NA,gene
+Manes.18G116100.v8.1,Manes.18G116100,,red,NA,gene
+Manes.18G116401.v8.1,Manes.18G116401,(1 of 3) 1.1.1.3//2.7.2.4 - Homoserine dehydrogenase // Aspartate kinase / Aspartokinase,yellow,NA,gene
+Manes.18G117901.v8.1,Manes.18G117901,(1 of 2) PTHR23509:SF10 - PHOSPHOLIPASE DDHD1,magenta,NA,gene
+Manes.18G122000.v8.1,Manes.18G122000,(1 of 1) PTHR13439//PTHR13439:SF13 - CT120 PROTEIN // SUBFAMILY NOT NAMED,magenta,NA,gene
+Manes.18G125800.v8.1,Manes.18G125800,(1 of 1) KOG0417//KOG0421 - Ubiquitin-protein ligase // Ubiquitin-protein ligase,yellow,NA,gene
+Manes.18G126800.v8.1,Manes.18G126800,,red,NA,gene
+Manes.18G140750.v8.1,Manes.18G140750,(1 of 1) PF16940 - Chloroplast envelope transporter (Tic110),red,NA,gene
+Manes.18G126600.v8.1,Manes.18G126600,(1 of 1) PTHR31087//PTHR31087:SF16 - FAMILY NOT NAMED // PROTEIN LURP-ONE-RELATED 7,red,NA,gene
+Manes.18G124500.v8.1,Manes.18G124500,(1 of 1) K07765 - S2P endopeptidase (MBTPS2),yellow,NA,gene
+Manes.18G141951.v8.1,Manes.18G141951,(1 of 4) K08059 - interferon; gamma-inducible protein 30 (IFI30; GILT),red,NA,gene
+Manes.18G143600.v8.1,Manes.18G143600,(1 of 82) 5.2.1.8 - Peptidylprolyl isomerase / Rotamase,yellow,NA,gene
+Manes.18G143400.v8.1,Manes.18G143400,(1 of 82) 5.2.1.8 - Peptidylprolyl isomerase / Rotamase,red,NA,gene
+Phytofluene,Phytofluene,NA,yellow,carot,metabolite
+Zeta.Carotene,Zeta.Carotene,NA,yellow,carot,metabolite
+total_carotenoids,total_carotenoids,NA,yellow,carot,metabolite
+Beta.Carotene,Beta.Carotene,NA,yellow,carot,metabolite
+ratio_viola_bc,ratio_viola_bc,NA,yellow,carot,metabolite
+i_o_diff_TC,i_o_diff_TC,NA,red,carot,metabolite

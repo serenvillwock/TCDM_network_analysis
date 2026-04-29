@@ -1,0 +1,37 @@
+"","node1","node2","weight","class.x","gene_metabolite.x","Description.x","class.y","gene_metabolite.y","Description.y"
+"1","Manes.07G056100.v8.1","Zeta.Carotene",0.0125251435338388,"carb","gene","(1 of 2) PTHR11817//PTHR11817:SF21 - PYRUVATE KINASE // SUBFAMILY NOT NAMED","carot","metabolite",NA
+"2","Manes.07G056100.v8.1","ratio_viola_bc",0.010374890899279,"carb","gene","(1 of 2) PTHR11817//PTHR11817:SF21 - PYRUVATE KINASE // SUBFAMILY NOT NAMED","carot","metabolite",NA
+"3","Manes.02G034900.v8.1","Zeta.Carotene",0.00948481860165546,"carb","gene","(1 of 4) PTHR31080:SF8 - F23N19.12","carot","metabolite",NA
+"4","Manes.02G034900.v8.1","total_carotenoids",0.00853901437588222,"carb","gene","(1 of 4) PTHR31080:SF8 - F23N19.12","carot","metabolite",NA
+"5","Manes.07G056100.v8.1","Phytofluene",0.00824761253233308,"carb","gene","(1 of 2) PTHR11817//PTHR11817:SF21 - PYRUVATE KINASE // SUBFAMILY NOT NAMED","carot","metabolite",NA
+"6","Manes.02G034900.v8.1","Beta.Carotene",0.00798084494551166,"carb","gene","(1 of 4) PTHR31080:SF8 - F23N19.12","carot","metabolite",NA
+"7","Manes.13G028600.v8.1","Phytofluene",0.00796751641965083,"carb","gene","(1 of 2) PTHR31375:SF46 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"8","Manes.13G028600.v8.1","Phytoene",0.00779347624807355,"carb","gene","(1 of 2) PTHR31375:SF46 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"9","Manes.08G108800.v8.1","Phytofluene",0.00762990005790878,"carb","gene","(1 of 1) PTHR31375:SF13 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"10","Manes.08G108800.v8.1","Phytoene",0.007525776758588,"carb","gene","(1 of 1) PTHR31375:SF13 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"11","Manes.07G056100.v8.1","Phytoene",0.00751864963105401,"carb","gene","(1 of 2) PTHR11817//PTHR11817:SF21 - PYRUVATE KINASE // SUBFAMILY NOT NAMED","carot","metabolite",NA
+"12","Manes.13G028600.v8.1","Zeta.Carotene",0.0075087033566752,"carb","gene","(1 of 2) PTHR31375:SF46 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"13","Manes.07G056100.v8.1","Beta.Carotene",0.00740268972104907,"carb","gene","(1 of 2) PTHR11817//PTHR11817:SF21 - PYRUVATE KINASE // SUBFAMILY NOT NAMED","carot","metabolite",NA
+"14","Manes.07G056100.v8.1","total_carotenoids",0.007186369216392,"carb","gene","(1 of 2) PTHR11817//PTHR11817:SF21 - PYRUVATE KINASE // SUBFAMILY NOT NAMED","carot","metabolite",NA
+"15","Manes.08G108800.v8.1","Zeta.Carotene",0.00661434622075904,"carb","gene","(1 of 1) PTHR31375:SF13 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"16","Manes.13G028600.v8.1","Beta.Carotene",0.00551817511373009,"carb","gene","(1 of 2) PTHR31375:SF46 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"17","Manes.13G028600.v8.1","total_carotenoids",0.0054906517085443,"carb","gene","(1 of 2) PTHR31375:SF46 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"18","Manes.02G034900.v8.1","Phytofluene",0.00532012386975742,"carb","gene","(1 of 4) PTHR31080:SF8 - F23N19.12","carot","metabolite",NA
+"19","Manes.02G034900.v8.1","Phytoene",0.0049506589639832,"carb","gene","(1 of 4) PTHR31080:SF8 - F23N19.12","carot","metabolite",NA
+"20","Manes.02G110200.v8.1","Zeta.Carotene",0.00384267008055642,"carb","gene","(1 of 1) PTHR11670//PTHR11670:SF40 - ACONITASE // ACONITATE HYDRATASE 1","carot","metabolite",NA
+"21","Manes.13G028600.v8.1","ratio_viola_bc",0.0038417204402761,"carb","gene","(1 of 2) PTHR31375:SF46 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"22","Manes.02G034900.v8.1","ratio_viola_bc",0.00341946429155459,"carb","gene","(1 of 4) PTHR31080:SF8 - F23N19.12","carot","metabolite",NA
+"23","Manes.02G034700.v8.1","Zeta.Carotene",0.00286680353872684,"carb","gene","(1 of 2) PTHR31080:SF2 - F23N19.14-RELATED","carot","metabolite",NA
+"24","Manes.02G110200.v8.1","total_carotenoids",0.00258062528872868,"carb","gene","(1 of 1) PTHR11670//PTHR11670:SF40 - ACONITASE // ACONITATE HYDRATASE 1","carot","metabolite",NA
+"25","Manes.02G110200.v8.1","Phytofluene",0.00251391249861086,"carb","gene","(1 of 1) PTHR11670//PTHR11670:SF40 - ACONITASE // ACONITATE HYDRATASE 1","carot","metabolite",NA
+"26","Manes.02G034700.v8.1","Phytofluene",0.00250750943621163,"carb","gene","(1 of 2) PTHR31080:SF2 - F23N19.14-RELATED","carot","metabolite",NA
+"27","Manes.08G108800.v8.1","total_carotenoids",0.00247161860886278,"carb","gene","(1 of 1) PTHR31375:SF13 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"28","Manes.02G034700.v8.1","Phytoene",0.00244990496956774,"carb","gene","(1 of 2) PTHR31080:SF2 - F23N19.14-RELATED","carot","metabolite",NA
+"29","Manes.02G110200.v8.1","Phytoene",0.00236549489845893,"carb","gene","(1 of 1) PTHR11670//PTHR11670:SF40 - ACONITASE // ACONITATE HYDRATASE 1","carot","metabolite",NA
+"30","Manes.02G110200.v8.1","Beta.Carotene",0.00236212206429903,"carb","gene","(1 of 1) PTHR11670//PTHR11670:SF40 - ACONITASE // ACONITATE HYDRATASE 1","carot","metabolite",NA
+"31","Manes.08G108800.v8.1","Beta.Carotene",0.0022576663654427,"carb","gene","(1 of 1) PTHR31375:SF13 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
+"32","Manes.02G034700.v8.1","ratio_viola_bc",0.00193971729513126,"carb","gene","(1 of 2) PTHR31080:SF2 - F23N19.14-RELATED","carot","metabolite",NA
+"33","Manes.02G034700.v8.1","Beta.Carotene",0.00144460605936872,"carb","gene","(1 of 2) PTHR31080:SF2 - F23N19.14-RELATED","carot","metabolite",NA
+"34","Manes.02G034700.v8.1","total_carotenoids",0.00140264566526014,"carb","gene","(1 of 2) PTHR31080:SF2 - F23N19.14-RELATED","carot","metabolite",NA
+"35","Manes.02G110200.v8.1","ratio_viola_bc",0.000766564894903161,"carb","gene","(1 of 1) PTHR11670//PTHR11670:SF40 - ACONITASE // ACONITATE HYDRATASE 1","carot","metabolite",NA
+"36","Manes.08G108800.v8.1","ratio_viola_bc",0.000736225893901434,"carb","gene","(1 of 1) PTHR31375:SF13 - PECTIN LYASE-LIKE PROTEIN","carot","metabolite",NA
