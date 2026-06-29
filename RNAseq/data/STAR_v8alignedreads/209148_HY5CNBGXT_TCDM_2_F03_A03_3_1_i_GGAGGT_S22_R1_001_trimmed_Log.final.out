@@ -1,0 +1,37 @@
+                                 Started job on |	Feb 12 22:39:22
+                             Started mapping on |	Feb 12 22:39:26
+                                    Finished on |	Feb 12 22:41:16
+       Mapping speed, Million of reads per hour |	76.74
+
+                          Number of input reads |	2344895
+                      Average input read length |	66
+                                    UNIQUE READS:
+                   Uniquely mapped reads number |	1779368
+                        Uniquely mapped reads % |	75.88%
+                          Average mapped length |	65.48
+                       Number of splices: Total |	59079
+            Number of splices: Annotated (sjdb) |	57220
+                       Number of splices: GT/AG |	58215
+                       Number of splices: GC/AG |	777
+                       Number of splices: AT/AC |	36
+               Number of splices: Non-canonical |	51
+                      Mismatch rate per base, % |	0.62%
+                         Deletion rate per base |	0.04%
+                        Deletion average length |	2.34
+                        Insertion rate per base |	0.03%
+                       Insertion average length |	1.72
+                             MULTI-MAPPING READS:
+        Number of reads mapped to multiple loci |	60679
+             % of reads mapped to multiple loci |	2.59%
+        Number of reads mapped to too many loci |	3208
+             % of reads mapped to too many loci |	0.14%
+                                  UNMAPPED READS:
+  Number of reads unmapped: too many mismatches |	1853
+       % of reads unmapped: too many mismatches |	0.08%
+            Number of reads unmapped: too short |	452827
+                 % of reads unmapped: too short |	19.31%
+                Number of reads unmapped: other |	46960
+                     % of reads unmapped: other |	2.00%
+                                  CHIMERIC READS:
+                       Number of chimeric reads |	0
+                            % of chimeric reads |	0.00%
