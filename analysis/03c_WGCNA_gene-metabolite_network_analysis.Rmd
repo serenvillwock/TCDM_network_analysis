@@ -13,8 +13,8 @@ library(WGCNA) #BiocManager::install("impute")
 allowWGCNAThreads() #allow multi-threading
 
 
-dir <- "/workdir/ssv42/RNAseq/"
-dir2 <- "/workdir/ssv42/RNAseq_yr2/"
+dir <- "../RNAseq/" #"/workdir/ssv42/RNAseq/"
+dir2 <- "../RNAseq_yr2/" #"/workdir/ssv42/RNAseq_yr2/"
 set.seed(14850)
 ```
 
@@ -1184,7 +1184,7 @@ table(overall_modules_annot %>% filter(class=="carot" & gene_metabolite=="metabo
 overall_modules_annot %>% filter(class=="carot" & gene_metabolite=="metabolite") %>% dplyr::select(colors, gene_id) %>%
   rmarkdown::paged_table()
 
-#purple and grey
+#purple 
 purple_mod <- overall_modules_annot %>% filter(colors=="purple")
 nrow(purple_mod)
 
@@ -1247,9 +1247,6 @@ write.csv(head(TOM_PSY2_wcorr, n=20), file=paste0(dir2, "output/PSY2_most_connec
 
 ## note: since a lot of the most closely associated genes are related to general transcriptional regulation, maybe that is a sign that PSY2 is not really under any important gene-specific transcriptional regulation (which checks out with what we know so far) -- so maybe don't include this in the paper
 ```
-
-
-
 
 
 
@@ -1886,7 +1883,7 @@ sum(sum_nongeno_carb > obs_carot_carb_sum)/length(sum_nongeno_carb)
 Read in genotypic expression estimates (SV-adjusted, log2-normalized count data):
 ```{r}
 #read in variance-transformed normalized count estimates for genetic effect on expression (non-genetic effect and SVs regressed out)
-geno_estimates <- readRDS(file=paste0(dir2, "output/genotypicLFCestimates.RDS")) %>% as.data.frame() %>%
+geno_estimates <- readRDS(file= paste0(dir2, "output/genotypicLFCestimates.RDS")) %>% as.data.frame() %>%
   rownames_to_column("trait")
 
 #read in log2 geno estimates for metabolite data
@@ -1920,6 +1917,7 @@ gsg$allOK
 #confirm no missingness so no need to impute:
 sum(is.na(genocounts_t)) == 0 
 ```
+
 Pick power for correlations
 ```{r, eval=FALSE}
 # Choose a set of soft-thresholding powers
@@ -2268,39 +2266,8 @@ geno_tophubs_annot <- geno_tophubs_df %>% left_join(geno_modules_annot, by=c("hu
 geno_hubs_topmodules <- geno_tophubs_annot %>% filter(module %in% geno_top_modules)
 
 
-#correlation of black hub gene (Manes.09G098760) with carotenoid gene/metabolites class in that module:
-carot_genes_black <- geno_modules_annot %>% filter(colors=="black" & class=="carot")
-
-blackhub_carot_cor <- cor(
-  genocounts_t[,colnames(genocounts_t) %in% c("Manes.03G111200.v8.1", carot_genes_black$gene_id)],
-  use="pairwise.complete.obs" ) %>% 
-  reshape2::melt() %>% filter(Var1=="Manes.03G111200.v8.1")
-
-blackhub_carot_cor
-
-#Test of correlation between hub gene and total carotenoids
-cor.test(genocounts_t[,"Manes.03G111200.v8.1"], genocounts_t[,"total_carotenoids"])
-
-#Test of correlation between hub gene and PSY2
-cor.test(genocounts_t[,"Manes.03G111200.v8.1"], genocounts_t[,"Manes.01G124200.v8.1"])
-
-
-#Test of correlation between hub gene and PDS
-cor.test(genocounts_t[,"Manes.03G111200.v8.1"], genocounts_t[,"Manes.05G193700.v8.1"])
-
-
 #hubGeneSignificance(datKME, GS)
 ```
-
-GO enrichment of the black module
-```{r}
-geno_modules_black <- geno_modules_annot %>% filter(colors=="black")
-
-```
-
-
-
-
 
 Test whether carotenoid and carbohydrate genes (genes only bc I don't have a null set of metabolites) are more highly connected than expected by chance in the genetic network:
 ```{r}
@@ -2544,11 +2511,11 @@ sum(sum_geno_carb > obs_carot_carb_sum)/length(sum_geno_carb)
 
 
 
-#### Comparison of networks ####
 
 
 
-# Comparison of carotenoid/carbohydrate TOM across networks:
+
+#Comparison of networks:
 Mantel test for correlation between dissimilarity matrices from genetic and nongenetic networks:
 Use 1 -TOM to get dissimilarity matrix and as.dist() to take lower triangle.
 ```{r}
@@ -2573,6 +2540,9 @@ mantel_geno_nongeno_TOM <- ecodist::mantel(as.dist(1 - geno_TOM) ~ as.dist(1 - n
 mantel_geno_nongeno_TOM["pval3"]
 
 mantel_geno_nongeno_TOM_cargenes <-  ecodist::mantel(as.dist(1 -genoTOM_car_genes) ~ as.dist(1 - nongeno_TOM_car_genes), nperm=1000, nboot=500)
+
+
+
 
 
 ```
@@ -2689,575 +2659,125 @@ modulePreservation()
 Module stability?
 
 
-### Topology comparison across overall, genetic, and non-genetic networks
+#### GO enrichment of co-expression modules
+
+Identify GO enriched terms in the network modules with clusterProfiler 
 ```{r}
-library(tidyverse)
-library(data.table)
-library(WGCNA)
+library(clusterProfiler)
 
-#----------------------------
-# 0. Load data
-#----------------------------
-
+#Get a list of all genes & annotations from the RNAseq dataset
+allgenes_observed <- colnames(overallcounts_t) %>% gsub(".v8.1","",.)
 fullgene_annotations <- readRDS(file="../RNAseq_yr2/output/fullgene_annotations_wcarot-carb_class.RDS")
-carb_traits <- readRDS(file="../RNAseq_yr2/data/carbohydrate_trait_names.RDS")
-carb_traits <- unique(c(carb_traits, "meansuc_mg_g", "mean_totalsugar", "meanglc_mg_g", "mean_starch_mg_g"))
-carot_traits <- readRDS(file="../RNAseq_yr2/data/carotenoid_trait_names.RDS")
 
+# Get GO Term to GeneID keye:
+go_annotations_clean <- fullgene_annotations %>%
+  tidyr::separate_rows(GO, sep = " ") %>% #put individual GO terms in their own rows
+  dplyr::select(GO, locusName, GODescription) %>%
+  rename("geneID" = "locusName", "Description" = "GODescription")
 
-overall_netwk <- readRDS("../RNAseq_yr2/output/overall_gene-metabolite_netwk.RDS")
-overall_module_df <- read_delim("../RNAseq_yr2/output/overall_gene-metabolite_network_gene_modules.txt", delim = "\t")
-load("../RNAseq_yr2/output/large_files/overall_gene-metab_ntwk_pwr7_-block.1.RData")
-overall_TOM <- as.matrix(TOM)
+go_descriptions <- go_annotations_clean %>% 
+  dplyr::select(GO, Description) %>%
+  group_by(GO) %>% dplyr::summarise(Description = paste0(unique(Description), collapse=";"))
 
-geno_netwk <- readRDS("../RNAseq_yr2/output/geno_gene-metabolite_netwk_ds2.RDS")
-geno_module_df <- read_delim("../RNAseq_yr2/output/geno_gene-metabolite_network_ds2_gene_modules.txt", delim = "\t")
-load("../RNAseq_yr2/output/large_files/geno_gene-metabolite_ntwk_pwr6_ds2_-block.1.RData")
-geno_TOM <- as.matrix(TOM)
+# Set background genes
+KEGG_universe <- fullgene_annotations %>% filter(locusName %in% allgenes_observed) %>%
+  tidyr::separate_rows(KO, sep = " ") %>% #put individual KO terms in their own rows
+  dplyr::select(KO, locusName) %>%
+  dplyr::rename("geneID" = "locusName")
 
+GO_universe <- fullgene_annotations %>% filter(locusName %in% allgenes_observed) %>%
+  tidyr::separate_rows(GO, sep = " ") %>% #put individual KO terms in their own rows
+  dplyr::select(GO, locusName) %>%
+  dplyr::rename("geneID" = "locusName")
 
-#nongeno_netwk <- readRDS("../RNAseq_yr2/output/nongeno_gene-metabolite_netwk.RDS") #not found
-nongeno_module_df <- read_delim("../RNAseq_yr2/output/nongeno_gene-metabolite_network_gene_modules.txt", delim = "\t")
-load("../RNAseq_yr2/output/large_files/nongeno_gene-metaabolite_ntwk_pwr10_-block.1.RData")
-nongeno_TOM <-  as.matrix(TOM)
 
+pcutoff <- 0.1
+qcutoff <- 0.1
+foldchange_cutoff <- 0.5
 
-#merge gene annotations with network module dataframe
-overall_modules_annot <- overall_module_df %>% 
-  mutate(locusName = gsub(".v8.1", "", gene_id)) %>%
-  left_join(., fullgene_annotations) %>%
-  mutate(class = case_when(gene_id %in% carot_traits ~ "carot", gene_id %in% carb_traits ~ "carb", T ~ class)) %>%
-  mutate(gene_metabolite = ifelse(grepl("Manes", locusName), "gene", "metabolite"))
 
-geno_modules_annot <- geno_module_df %>% 
-  mutate(locusName = gsub(".v8.1", "", gene_id)) %>%
-  left_join(., fullgene_annotations) %>%
-  mutate(class = case_when(gene_id %in% carot_traits ~ "carot", gene_id %in% carb_traits ~ "carb", T ~ class)) %>%
-  mutate(gene_metabolite = ifelse(grepl("Manes", locusName), "gene", "metabolite"))
 
-nongeno_modules_annot <- nongeno_module_df %>% 
-  mutate(locusName = gsub(".v8.1", "", gene_id)) %>%
-  left_join(., fullgene_annotations) %>%
-  mutate(class = case_when(gene_id %in% carot_traits ~ "carot", gene_id %in% carb_traits ~ "carb", T ~ class)) %>%
-  mutate(gene_metabolite = ifelse(grepl("Manes", locusName), "gene", "metabolite"))
+# Test enrichment in the key carotenoid modules
+# Overall network:
+overall_purple <- overall_modules_annot %>% filter(colors == "purple")
 
-
-
-
-#----------------------------
-# 1. Standardize TOM row/col names
-#----------------------------
-
-standardize_TOM_names <- function(TOM, module_df) {
-  TOM <- as.matrix(TOM)
-  stopifnot(nrow(TOM) == nrow(module_df))
-  rownames(TOM) <- module_df$gene_id
-  colnames(TOM) <- module_df$gene_id
-  TOM
-}
-
-overall_TOM <- standardize_TOM_names(overall_TOM, overall_module_df)
-nongeno_TOM <- standardize_TOM_names(nongeno_TOM, nongeno_module_df)
-geno_TOM    <- standardize_TOM_names(geno_TOM, geno_module_df)
-
-#----------------------------
-# 2. Helper functions
-#----------------------------
-
-# Total TOM connectivity, excluding the self-edge on the diagonal.
-# Memory-safe TOM connectivity
-
-
-get_TOM_connectivity_blocked <- function(TOM,
-                                         cache_file = NULL,
-                                         block_size = 100,
-                                         force_recalc = FALSE) {
-  if (!is.null(cache_file) && file.exists(cache_file) && !force_recalc) {
-    message("Reading cached connectivity: ", cache_file)
-    return(readRDS(cache_file))
-  }
-
-  TOM <- as.matrix(TOM)
-
-  if (is.null(rownames(TOM))) {
-    stop("TOM must have rownames matching module_df$gene_id.")
-  }
-
-  n <- nrow(TOM)
-  ids <- rownames(TOM)
-  k <- numeric(n)
-
-  message("Calculating TOM connectivity in blocks of ", block_size, " rows...")
-
-  starts <- seq(1, n, by = block_size)
-
-  for (s in starts) {
-    e <- min(s + block_size - 1, n)
-    idx <- s:e
-
-    message("  rows ", s, ":", e, " of ", n)
-
-    # Only hold a small block in memory
-    block <- TOM[idx, , drop = FALSE]
-
-    # Exclude self-TOM on the diagonal
-    k[idx] <- rowSums(block, na.rm = TRUE) - TOM[cbind(idx, idx)]
-
-    rm(block)
-    gc(verbose = FALSE)
-  }
-
-  out <- tibble::tibble(
-    gene_id = ids,
-    TOM_k = as.numeric(k),
-    TOM_k_percentile = round(100 * dplyr::percent_rank(TOM_k), 1)
-  )
-
-  if (!is.null(cache_file)) {
-    saveRDS(out, cache_file)
-  }
-
-  out
-}
-
-add_connectivity_percentile <- function(connectivity_df) {
-  connectivity_df %>%
-    mutate(
-      TOM_k_percentile = percent_rank(TOM_k),
-      TOM_k_percentile = round(100 * TOM_k_percentile, 1)
-    )
-}
-
-get_sft_summary <- function(sft_file, selected_power) {
-  if (!file.exists(sft_file)) {
-    return(tibble(
-      selected_power = selected_power,
-      scale_free_R2 = NA_real_,
-      mean_connectivity_at_power = NA_real_
-    ))
-  }
-
-  sft <- readRDS(sft_file)
-  fit <- as_tibble(sft$fitIndices)
-
-  fit %>%
-    filter(Power == selected_power) %>%
-    transmute(
-      selected_power = selected_power,
-      scale_free_R2 = round(-sign(slope) * SFT.R.sq, 3),
-      mean_connectivity_at_power = round(mean.k., 2)
-    )
-}
-
-# Memory-safe global topology summary
-# Avoids TOM[upper.tri(TOM)], which is too memory intensive for ~20k x ~20k TOMs.
-
-sample_offdiag_TOM <- function(TOM, n_sample = 1e6, seed = 1, chunk_size = 1e5) {
-  set.seed(seed)
-
-  n <- nrow(TOM)
-  vals <- numeric(n_sample)
-
-  filled <- 0
-  while (filled < n_sample) {
-    m <- min(chunk_size, n_sample - filled)
-
-    i <- sample.int(n, m, replace = TRUE)
-    j <- sample.int(n, m, replace = TRUE)
-
-    # Resample diagonal entries so we only summarize off-diagonal TOM values
-    same <- i == j
-    while (any(same)) {
-      j[same] <- sample.int(n, sum(same), replace = TRUE)
-      same <- i == j
-    }
-
-    vals[(filled + 1):(filled + m)] <- TOM[cbind(i, j)]
-    filled <- filled + m
-  }
-
-  vals
-}
-
-summarize_global_topology <- function(network_name, TOM, module_df,
-                                      selected_power, sft_file,
-                                      tom_sample_n = 1e6,
-                                      seed = 1) {
-  n <- nrow(TOM)
-
-  # Module summaries
-  module_sizes <- table(module_df$colors)
-  module_sizes_no_grey <- module_sizes[names(module_sizes) != "grey"]
-
-  # Exact mean off-diagonal TOM.
-  # sum(TOM) includes both upper and lower triangles, so divide by n*(n-1).
-  mean_TOM_exact <- (sum(TOM, na.rm = TRUE) - sum(diag(TOM), na.rm = TRUE)) /
-    (n * (n - 1))
-
-  # Approximate distribution summaries from random off-diagonal samples.
-  # This is enough for a descriptive topology table and avoids huge memory use.
-  tom_sample <- sample_offdiag_TOM(
-    TOM = TOM,
-    n_sample = tom_sample_n,
-    seed = seed
-  )
-
-  sft_row <- get_sft_summary(sft_file, selected_power)
-
-  tibble(
-    network = network_name,
-    n_nodes = nrow(module_df),
-    n_modules_including_grey = length(module_sizes),
-    n_modules_excluding_grey = sum(names(module_sizes) != "grey"),
-    n_grey_nodes = ifelse("grey" %in% names(module_sizes),
-                          as.integer(module_sizes[["grey"]]), 0),
-    median_module_size = median(as.numeric(module_sizes_no_grey)),
-    largest_module_size = max(as.numeric(module_sizes_no_grey)),
-    mean_TOM = mean_TOM_exact,
-    median_TOM_approx = median(tom_sample, na.rm = TRUE),
-    q95_TOM_approx = as.numeric(quantile(tom_sample, 0.95, na.rm = TRUE)),
-    q99_TOM_approx = as.numeric(quantile(tom_sample, 0.99, na.rm = TRUE)),
-    TOM_sample_n = tom_sample_n
-  ) %>%
-    bind_cols(sft_row) %>%
-    mutate(
-      mean_TOM = round(mean_TOM, 5),
-      median_TOM_approx = round(median_TOM_approx, 5),
-      q95_TOM_approx = round(q95_TOM_approx, 5),
-      q99_TOM_approx = round(q99_TOM_approx, 5)
-    )
-}
-
-summarize_focal_classes_lowmem <- function(network_name,
-                                           TOM,
-                                           modules_annot,
-                                           cache_file,
-                                           block_size = 100,
-                                           force_recalc = FALSE) {
-
-  k_df <- get_TOM_connectivity_blocked(
-    TOM = TOM,
-    cache_file = cache_file,
-    block_size = block_size,
-    force_recalc = force_recalc
-  )
-
-  focal_annot <- modules_annot %>%
-    mutate(
-      focal_class = case_when(
-        class == "carot" & gene_metabolite == "gene" ~ "carotenoid genes",
-        class == "carot" & gene_metabolite == "metabolite" ~ "carotenoid metabolites",
-        class == "carb" & gene_metabolite == "gene" ~ "starch/carbohydrate genes",
-        class == "carb" & gene_metabolite == "metabolite" ~ "starch/carbohydrate metabolites",
-        TRUE ~ NA_character_
-      )
-    ) %>%
-    filter(!is.na(focal_class)) %>%
-    left_join(k_df, by = "gene_id")
-
-  focal_annot %>%
-    group_by(focal_class) %>%
-    summarise(
-      n_nodes = n(),
-      n_modules = n_distinct(colors),
-      top_module = names(sort(table(colors), decreasing = TRUE))[1],
-      top_module_n = max(as.numeric(table(colors))),
-      median_TOM_k = median(TOM_k, na.rm = TRUE),
-      mean_TOM_k = mean(TOM_k, na.rm = TRUE),
-      median_TOM_k_percentile = median(TOM_k_percentile, na.rm = TRUE),
-      max_node = gene_id[which.max(TOM_k)],
-      max_node_name = locusName[which.max(TOM_k)],
-      max_node_module = colors[which.max(TOM_k)],
-      max_node_TOM_k_percentile = max(TOM_k_percentile, na.rm = TRUE),
-      max_node_description = Description[which.max(TOM_k)],
-      .groups = "drop"
-    ) %>%
-    mutate(network = network_name, .before = 1)
-}
-
-summarize_key_nodes_lowmem <- function(network_name,
-                                       TOM,
-                                       modules_annot,
-                                       key_nodes,
-                                       cache_file,
-                                       block_size = 100,
-                                       force_recalc = FALSE) {
-
-  k_df <- get_TOM_connectivity_blocked(
-    TOM = TOM,
-    cache_file = cache_file,
-    block_size = block_size,
-    force_recalc = force_recalc
-  )
-
-  key_annot <- modules_annot %>%
-    filter(gene_id %in% key_nodes | locusName %in% key_nodes) %>%
-    left_join(k_df, by = "gene_id")
-
-  key_annot %>%
-    rowwise() %>%
-    mutate(
-      module_size = sum(modules_annot$colors == colors, na.rm = TRUE),
-      n_carot_genes_same_module = sum(
-        modules_annot$colors == colors &
-          modules_annot$class == "carot" &
-          modules_annot$gene_metabolite == "gene",
-        na.rm = TRUE
-      ),
-      n_carot_metabolites_same_module = sum(
-        modules_annot$colors == colors &
-          modules_annot$class == "carot" &
-          modules_annot$gene_metabolite == "metabolite",
-        na.rm = TRUE
-      ),
-      n_carb_genes_same_module = sum(
-        modules_annot$colors == colors &
-          modules_annot$class == "carb" &
-          modules_annot$gene_metabolite == "gene",
-        na.rm = TRUE
-      ),
-      n_carb_metabolites_same_module = sum(
-        modules_annot$colors == colors &
-          modules_annot$class == "carb" &
-          modules_annot$gene_metabolite == "metabolite",
-        na.rm = TRUE
-      )
-    ) %>%
-    ungroup() %>%
-    transmute(
-      network = network_name,
-      gene_id,
-      locusName,
-      Description,
-      class,
-      gene_metabolite,
-      module = colors,
-      module_size,
-      TOM_k = round(TOM_k, 3),
-      TOM_k_percentile,
-      n_carot_genes_same_module,
-      n_carot_metabolites_same_module,
-      n_carb_genes_same_module,
-      n_carb_metabolites_same_module
-    ) %>%
-    arrange(network, class, gene_metabolite, gene_id)
-}
-
-summarize_cross_class_TOM <- function(network_name, TOM, modules_annot) {
-
-  annot <- modules_annot %>%
-    filter(!is.na(class), class %in% c("carot", "carb")) %>%
-    mutate(
-      node_group = case_when(
-        class == "carot" & gene_metabolite == "gene" ~ "carotenoid_gene",
-        class == "carot" & gene_metabolite == "metabolite" ~ "carotenoid_metabolite",
-        class == "carb" & gene_metabolite == "gene" ~ "carbohydrate_gene",
-        class == "carb" & gene_metabolite == "metabolite" ~ "carbohydrate_metabolite",
-        TRUE ~ NA_character_
-      )
-    ) %>%
-    filter(!is.na(node_group), gene_id %in% rownames(TOM))
-
-  # Keep annotation order matched to TOM order
-  annot <- annot[match(annot$gene_id, rownames(TOM)), ]
-  annot <- annot[!is.na(annot$gene_id), ]
-
-  focal_TOM <- TOM[annot$gene_id, annot$gene_id, drop = FALSE]
-
-  # Upper triangle only, no self-pairs
-  ij <- which(upper.tri(focal_TOM), arr.ind = TRUE)
-
-  edge_df <- tibble(
-    node1 = rownames(focal_TOM)[ij[, 1]],
-    node2 = colnames(focal_TOM)[ij[, 2]],
-    TOM = focal_TOM[ij]
-  ) %>%
-    left_join(
-      annot %>%
-        select(
-          gene_id,
-          group1 = node_group,
-          class1 = class,
-          type1 = gene_metabolite,
-          desc1 = Description
-        ),
-      by = c("node1" = "gene_id")
-    ) %>%
-    left_join(
-      annot %>%
-        select(
-          gene_id,
-          group2 = node_group,
-          class2 = class,
-          type2 = gene_metabolite,
-          desc2 = Description
-        ),
-      by = c("node2" = "gene_id")
-    ) %>%
-    # Keep only carotenoid-carbohydrate pairs
-    filter(class1 != class2) %>%
-    mutate(
-      comparison = case_when(
-        group1 == "carotenoid_gene" &
-          group2 == "carbohydrate_gene" ~ "carotenoid_gene vs carbohydrate_gene",
-        group1 == "carbohydrate_gene" &
-          group2 == "carotenoid_gene" ~ "carotenoid_gene vs carbohydrate_gene",
-
-        group1 == "carotenoid_gene" &
-          group2 == "carbohydrate_metabolite" ~ "carotenoid_gene vs carbohydrate_metabolite",
-        group1 == "carbohydrate_metabolite" &
-          group2 == "carotenoid_gene" ~ "carotenoid_gene vs carbohydrate_metabolite",
-
-        group1 == "carotenoid_metabolite" &
-          group2 == "carbohydrate_gene" ~ "carotenoid_metabolite vs carbohydrate_gene",
-        group1 == "carbohydrate_gene" &
-          group2 == "carotenoid_metabolite" ~ "carotenoid_metabolite vs carbohydrate_gene",
-
-        group1 == "carotenoid_metabolite" &
-          group2 == "carbohydrate_metabolite" ~ "carotenoid_metabolite vs carbohydrate_metabolite",
-        group1 == "carbohydrate_metabolite" &
-          group2 == "carotenoid_metabolite" ~ "carotenoid_metabolite vs carbohydrate_metabolite",
-
-        TRUE ~ NA_character_
-      )
-    ) %>%
-    filter(!is.na(comparison))
-
-  edge_summary <- edge_df %>%
-    group_by(comparison) %>%
-    summarise(
-      n_edges = n(),
-      TOM_sum = sum(TOM, na.rm = TRUE),
-      TOM_mean = mean(TOM, na.rm = TRUE),
-      TOM_median = median(TOM, na.rm = TRUE),
-      TOM_q90 = as.numeric(quantile(TOM, 0.90, na.rm = TRUE)),
-      TOM_q95 = as.numeric(quantile(TOM, 0.95, na.rm = TRUE)),
-      top_edge_TOM = max(TOM, na.rm = TRUE),
-      top_edge_node1 = node1[which.max(TOM)],
-      top_edge_node2 = node2[which.max(TOM)],
-      top_edge_desc1 = desc1[which.max(TOM)],
-      top_edge_desc2 = desc2[which.max(TOM)],
-      .groups = "drop"
-    ) %>%
-    mutate(network = network_name, .before = 1)
-
-  edge_summary
-}
-
-#----------------------------
-# 3. Define key nodes to track across all three networks
-#----------------------------
-
-key_nodes <- c(carot_traits, carb_traits, 
-  # Core carotenoid and carbohydrate  genes
-  overall_modules_annot[!is.na(overall_modules_annot$class),"gene_id"]$gene_id)
-
-# Keep only nodes that appear in at least one network
-key_nodes_present <- unique(c(
-  key_nodes[key_nodes %in% overall_modules_annot$gene_id],
-  key_nodes[key_nodes %in% nongeno_modules_annot$gene_id],
-  key_nodes[key_nodes %in% geno_modules_annot$gene_id],
-  key_nodes[key_nodes %in% overall_modules_annot$locusName],
-  key_nodes[key_nodes %in% nongeno_modules_annot$locusName],
-  key_nodes[key_nodes %in% geno_modules_annot$locusName]
-))
-
-#----------------------------
-# 4. Make the comparison tables
-#----------------------------
-
-global_topology_table <- bind_rows(
-  summarize_global_topology(
-    "overall", overall_TOM, overall_module_df,
-    selected_power = 7,
-    sft_file = "../RNAseq_yr2/output/picksoftthres_overall_gene-metabolite.RDS"
-  ),
-  summarize_global_topology(
-    "genetic", geno_TOM, geno_module_df,
-    selected_power = 6,
-    sft_file = "../RNAseq_yr2/output/picksoftthres_genotypic_gene-metabolite.RDS"
-  ),
-  summarize_global_topology(
-    "non-genetic", nongeno_TOM, nongeno_module_df,
-    selected_power = 10,
-    sft_file = "../RNAseq_yr2/output/picksoftthres_nongeno.RDS"
-  )
+enrich_overall_purple <- enricher(
+  gene          = overall_purple$locusName, 
+  universe      = allgenes_observed,
+  TERM2GENE     = go_annotations_clean,
+  pAdjustMethod = "BH", 
+  pvalueCutoff  = pcutoff,
+  qvalueCutoff  = qcutoff 
 )
 
-focal_class_connectivity_table <- bind_rows(
-  summarize_focal_classes_lowmem("overall", overall_TOM, overall_modules_annot, 
-                                 block_size=100, cache_file = "../RNAseq_yr2/output/overall_TOM_connectivity_blocked.RDS"),
-  summarize_focal_classes_lowmem("genetic", geno_TOM, geno_modules_annot,
-                                 block_size=100, cache_file = "../RNAseq_yr2/output/geno_TOM_connectivity_blocked.RDS"),
-  summarize_focal_classes_lowmem("non-genetic", nongeno_TOM, nongeno_modules_annot,
-                                 block_size=100, cache_file = "../RNAseq_yr2/output/nongeno_TOM_connectivity_blocked.RDS")
+print(paste0(nrow(enrich_overall_purple), " enriched terms found for the purple module"))
+
+enrich_overall_purple_annot <- left_join(enrich_overall_purple@result, go_descriptions, by=join_by("ID"=="GO"))
+View(enrich_overall_purple_annot)
+write.csv(enrich_overall_purple_annot, "../RNAseq_yr2/output/overall_ntwk_purple_module_GOenrichment.csv")
+ 
+
+geno_black <- geno_modules_annot %>% filter(colors == "black")
+
+enrich_geno_black <- enricher(
+  gene          = geno_black$locusName, 
+  universe      = allgenes_observed,
+  TERM2GENE     = go_annotations_clean,
+  pAdjustMethod = "BH", 
+  pvalueCutoff  = pcutoff,
+  qvalueCutoff  = qcutoff 
 )
 
-key_node_module_table <- bind_rows(
-  summarize_key_nodes_lowmem("overall", overall_TOM, overall_modules_annot, key_nodes_present,
-                             block_size=100, cache_file = "../RNAseq_yr2/output/overall_TOM_connectivity_blocked.RDS"),
-  summarize_key_nodes_lowmem("genetic", geno_TOM, geno_modules_annot, key_nodes_present,
-                             block_size=100, cache_file = "../RNAseq_yr2/output/geno_TOM_connectivity_blocked.RDS"),
-  summarize_key_nodes_lowmem("non-genetic", nongeno_TOM, nongeno_modules_annot, key_nodes_present,
-                             block_size=100, cache_file = "../RNAseq_yr2/output/nongeno_TOM_connectivity_blocked.RDS")
-)
+print(paste0(nrow(enrich_geno_black), " enriched terms found for the black module"))
 
-cross_class_TOM_table <- bind_rows(
-  summarize_cross_class_TOM("overall", overall_TOM, overall_modules_annot),
-  summarize_cross_class_TOM("genetic", geno_TOM, geno_modules_annot),
-  summarize_cross_class_TOM("non-genetic", nongeno_TOM, nongeno_modules_annot)
-)
+enrich_geno_black_annot <- left_join(enrich_geno_black@result, go_descriptions, by=join_by("ID"=="GO"))
+View(enrich_geno_black_annot)
 
-#----------------------------
-# 5. Save outputs
-#----------------------------
+write.csv(enrich_overall_purple_annot, "../RNAseq_yr2/output/geno_ntwk_black_module_GOenrichment.csv")
 
-write.csv(
-  global_topology_table,
-  file = "../RNAseq_yr2/output/network_global_topology_comparison.csv",
-  row.names = FALSE
-)
-
-write.csv(
-  focal_class_connectivity_table,
-  file = "../RNAseq_yr2/output/network_focal_class_connectivity_comparison.csv",
-  row.names = FALSE
-)
-
-write.csv(
-  key_node_module_table,
-  file = "../RNAseq_yr2/output/network_key_node_module_comparison.csv",
-  row.names = FALSE
-)
-
-write.csv(
-  cross_class_TOM_table,
-  file = "../RNAseq_yr2/output/network_cross_class_TOM_comparison.csv",
-  row.names = FALSE
-)
-
-# View tables in Rmd
-global_topology_table
-focal_class_connectivity_table
-key_node_module_table %>%
-  arrange(gene_id, network) %>%
-  rmarkdown::paged_table()
-
-cross_class_TOM_table %>%
-  arrange(comparison, network) %>%
-  rmarkdown::paged_table()
 ```
 
 
-Check genetic network black module TOM of carotenoid genes and metabolites
-```{r}
-subset_row <- rownames(geno_TOM) %in% c("Manes.05G193700.v8.1", "Manes.01G124200.v8.1", "Manes.11G144700.v8.1", "Manes.12G144300.v8.1")
-subset_col <- colnames(geno_TOM) %in% carot_traits
 
-geno_TOM_carot <- geno_TOM[subset_row, subset_col]
 
-geno_TOM_carot
-```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3693,6 +3213,7 @@ carot_bins <- gene_bins[carot_genes$gene_id]
 carb_bins <- gene_bins[carb_genes$gene_id]
 
 ```
+
 Run permutations in parallel
 ```{r, eval=F} 
 #Run node permutation test
@@ -3784,18 +3305,7 @@ sum(sum_4_overall_yr2 > obs_carot_carb_sum)/length(sum_4_overall_yr2)
 
 
 
-*Mantel test for correlation between genetic and non-genetic TOMs*
 
-Kohonen package
-
-string database of interactions with transcriptomic data in Cytoscape
-
-Scatterplot of gene significance (GS) vs module membership (MM)
-
-Pathway enrichment of trait-related modules:
-enricher package
-enrichplot
-ontologyIndex 
 
 
 

@@ -1,0 +1,4 @@
+network,n_nodes,n_modules_including_grey,n_modules_excluding_grey,n_grey_nodes,median_module_size,largest_module_size,mean_TOM,median_TOM_approx,q95_TOM_approx,q99_TOM_approx,TOM_sample_n,selected_power,scale_free_R2,mean_connectivity_at_power,percent_assigned,percent_unassigned
+overall,20446,25,24,3826,235.5,5230,0.0034,0.00035,0.01838,0.041,1.00E+06,7,0.852,22.04,0.812872934,0.187127066
+genetic,20450,103,102,443,108.5,1475,0.00371,0.00163,0.0142,0.03115,1.00E+06,6,0.87,51.75,0.978337408,0.021662592
+non-genetic,20446,17,16,7261,286,6654,0.00208,3.00E-05,0.01243,0.03427,1.00E+06,10,0.849,12.63,0.644869412,0.355130588

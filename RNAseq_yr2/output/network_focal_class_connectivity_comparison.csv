@@ -1,0 +1,13 @@
+"network","focal_class","n_nodes","n_modules","top_module","top_module_n","median_TOM_k","mean_TOM_k","median_TOM_k_percentile","max_node","max_node_name","max_node_module","max_node_TOM_k_percentile","max_node_description"
+"overall","carotenoid genes",63,15,"turquoise",21,44.5747546506851,52.2742509674603,50.4,"Manes.01G124200.v8.1","Manes.01G124200","turquoise",89.6,"(1 of 3) K02291 - phytoene synthase (crtB)"
+"overall","carotenoid metabolites",14,4,"purple",6,17.0366099546721,28.933011650974,29.4,"Lutein","Lutein","blue",66.7,NA
+"overall","starch/carbohydrate genes",240,23,"turquoise",41,40.7993552342987,61.2411170699109,47.9,"Manes.01G184000.v8.1","Manes.01G184000","turquoise",98.6,"(1 of 3) K00703 - starch synthase (E2.4.1.21, glgA)"
+"overall","starch/carbohydrate metabolites",2,1,"grey",2,2.12277109587717,2.12277109587717,5.3,"i_o_diff_DM","i_o_diff_DM","grey",9.7,NA
+"genetic","carotenoid genes",63,37,"yellow",5,56.1646034436897,67.5127238243295,43.1,"Manes.08G122300.v8.1","Manes.08G122300","blue",96.9,"(1 of 2) 2.7.1.36 - Mevalonate kinase"
+"genetic","carotenoid metabolites",14,5,"black",5,134.697141744385,112.408903617157,90.6,"Zeta.Carotene","Zeta.Carotene","black",96.8,NA
+"genetic","starch/carbohydrate genes",240,75,"turquoise",24,59.872722634493,70.464089018391,48.75,"Manes.09G061100.v8.1","Manes.09G061100","blue",98.2,"(1 of 3) PTHR11817//PTHR11817:SF33 - PYRUVATE KINASE // SUBFAMILY NOT NAMED"
+"genetic","starch/carbohydrate metabolites",6,5,"lightcyan",2,45.5698294094388,49.1428816933422,25.35,"mean_totalsugar","mean_totalsugar","lightcyan",52.3,NA
+"non-genetic","carotenoid genes",63,10,"grey",24,14.6363940960299,27.31226570691,46.5,"Manes.04G021700.v8.1","Manes.04G021700","yellow",89.4,"(1 of 2) 1.17.7.1 - (E)-4-hydroxy-3-methylbut-2-enyl-diphosphate synthase (ferredoxin) / 4-hydroxy-3-methylbut-2-en-1-yl diphosphate synthase"
+"non-genetic","carotenoid metabolites",14,3,"turquoise",7,26.2120527345173,23.9950638609483,55.2,"Violaxanthin.peak.2","Violaxanthin.peak.2","turquoise",76.4,NA
+"non-genetic","starch/carbohydrate genes",240,15,"grey",81,15.2489274714426,35.8353153672216,47,"Manes.03G164100.v8.1","Manes.03G164100","turquoise",99.1,"(1 of 5) K00025 - malate dehydrogenase (MDH1)"
+"non-genetic","starch/carbohydrate metabolites",2,1,"grey",2,0.00160871427139519,0.00160871427139519,0.9,"dry_matter","dry_matter","grey",1.1,NA
