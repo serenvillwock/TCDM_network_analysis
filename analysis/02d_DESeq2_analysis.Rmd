@@ -1,0 +1,2183 @@
+---
+title: "02_DESeq2_analysis"
+output: html_document
+date: "2025-03-14"
+---
+
+Version c: edited 1/20/26
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load packages
+```{r}
+library(tidyverse)
+library(DESeq2)
+library(data.table)
+library(vsn) #BiocManager::install("impute")
+
+dir <- "../RNAseq/" #/home/jj332_cas/ssv42/RNAseq/" #"/workdir/ssv42/RNAseq/"
+dir2 <- "../RNAseq_yr2/"   #"/home/jj332_cas/ssv42/RNAseq_yr2/" #"/workdir/ssv42/RNAseq_yr2/"
+set.seed(14850)
+```
+
+Load counts matrix data
+```{r}
+#save joined files
+counts_joined_filt <- readRDS(file = paste0(dir2, "analysis/TCDM1-4_joined_intersectgenes_Mescv8_genecountmatrix.RDS"))
+metadata_joined_filt <- readRDS(file = paste0(dir2, "analysis/TCDM1-4_joined_metadata.RDS"))
+```
+
+Get carotenoid & dry matter data
+```{r, eval=F}
+#Read in phenotype data, changing & cleaning column names to match across years for easier joining
+phenodata_yr1 <- read.csv(paste0(dir, "data/HPLCdata_merged_cleaned.csv")) %>%
+  rename(Zeta = "Zeta.Carotene", totalbc = "Beta.Carotene", Viola_1 = "Violaxanthin.peak.1", Viola_2 = "Violaxanthin.peak.2",
+         totalc = "total_carotenoids", totalv = "total_violaxanthin", sample_ID = "sampleID", dmc="dry_matter") %>%
+  mutate(timept = "5MAP", year = "2022", 
+         root = as.numeric(str_extract(root_ID, "_([0-9])$", group=1))) %>%
+  dplyr::select(-c(X, tube_ID, root_ID, rep, family, group, totalpre, ratio_bc_v)) %>%
+  mutate(harvest_date = case_when(harvest_date == "" ~ NA, T ~ harvest_date),
+        block = case_when(block == "NA" ~ NA, T ~ block),
+        dry_date = case_when(dry_date == "" ~ NA, T ~ dry_date) ) %>% #replace empty cells with NA
+  filter(!(sampleID == "X4_67_1_i" & extraction_date=="8/2/22")) %>% #remove duplicates
+  filter(!(sampleID == "C64_4_3_o" & extraction_date=="7/14/22")) %>%
+  filter(!(sampleID == "A01_2_1_o" & technician=="Jiho")) %>%
+  filter(!(sampleID == "C17_1_3_o" & sample_weight_g=="0.252")) %>%
+  mutate(Beta.Carotene = case_when(Beta.Carotene == 0 ~ NA, T ~ Beta.Carotene)) %>% #remove error 0 which should be NA
+  left_join(., read.csv(paste0(dir, "data/phenodata_yr1_block_harvestdate.csv")) ) %>%
+  mutate(block = if_else(is.na(block), block_y, block),
+         harvest_date = if_else(is.na(harvest_date), harvest_date_y, harvest_date),
+         dry_date = if_else(is.na(dry_date), dry_date_y, dry_date) ) %>%
+  dplyr::select(-c(block_y, harvest_date_y, dry_date_y)) %>%
+  mutate(genotype = case_when(genotype == "X4_24" ~ "X4_42", T ~ genotype)) #fix labeling error
+
+phenodata_yr2 <- read.csv(paste0(dir2, "data/CarotenoidsHPLCdata_merged_yr2.csv")) %>%
+  dplyr::select(extraction_date = date_extracted, Phytoene:Lutein, date_extracted, technician, timept, harvest_date, plant, root, layer, sampleID, genotype = genotypeID, block, dry_matter, total_carotenoids, total_violaxanthin, dry_date = dry_date_out) %>%
+  mutate(layer = gsub("outer", "o", layer) %>% gsub("inner", "i", .)) %>%
+  mutate(year = "2024") %>% dplyr::select(-plant) %>%
+  left_join(., read.csv(paste0(dir2, "data/phenodata_yr2_drydate_batches.csv")) ) %>%
+  mutate(dry_date = if_else(is.na(dry_date) | dry_date=="", dry_date_y, dry_date) ) %>%
+  dplyr::select(-dry_date_y)
+
+phenodata_merged <- full_join(phenodata_yr1, phenodata_yr2) %>%
+  mutate(plantID = gsub("_[a-z]$", "", sampleID)) %>% 
+  mutate(block = as.factor(block)) %>% 
+  rename(extraction_date = "carot_extraction_date") %>%
+  dplyr::select(-c(harvest_date)) %>%
+  mutate(sampleID = gsub("X8_41.5","X8_415",sampleID),
+         genotype = gsub("X8_41.5","X8_415", genotype)) %>%
+  filter(sampleID != "X1_54_std") %>% #filter out carotenoid standards
+  mutate(percent_bcarotene = Beta.Carotene/total_carotenoids,
+         percent_ciscarotenes = (Phytoene + Phytofluene + Zeta.Carotene)/total_carotenoids,
+         ratio_cis_bc = (Phytoene + Phytofluene + Zeta.Carotene)/Beta.Carotene,
+         ratio_viola_bc = total_violaxanthin/Beta.Carotene) %>%
+  mutate(across(where(is.numeric), ~ ifelse(is.infinite(.), NA, .))) #clean Inf values from dividing by 0
+
+#Make column for egg yolk phenotype 
+phenodata_root_ioratio <- phenodata_merged %>% 
+  group_by(genotype, plantID) %>% 
+  pivot_wider(id_cols=c(genotype, plantID), 
+              names_from=layer, values_from=c(total_carotenoids, dry_matter)) %>%
+  mutate(i_o_ratio_TC = total_carotenoids_i/total_carotenoids_o,
+         i_o_ratio_DM = dry_matter_i/dry_matter_o,
+         i_o_diff_TC = total_carotenoids_i - total_carotenoids_o,
+         i_o_diff_DM = dry_matter_i - dry_matter_o) %>%
+  filter(i_o_ratio_TC < 10) #remove outlier sample 
+
+#find upper and lower 25% tails
+lower_threshold <- quantile(phenodata_root_ioratio$i_o_diff_TC, 0.25, na.rm = TRUE)
+upper_threshold <- quantile(phenodata_root_ioratio$i_o_diff_TC, 0.75, na.rm = TRUE)
+
+ggplot(phenodata_root_ioratio, aes(i_o_diff_TC)) +
+  geom_histogram() +
+  geom_vline(xintercept = lower_threshold, color = "red", linetype = "dashed") + 
+  #geom_vline(xintercept = 1.5, color = "red", linetype = "dashed") +
+  geom_vline(xintercept = upper_threshold, color = "blue", linetype = "dashed") +
+  xlab("Difference in TC between inner and outer tissue layers")
+
+
+  
+phenodata_merged_eggyolk <- phenodata_merged %>%
+  left_join(phenodata_root_ioratio) %>%
+  mutate(eggyolk = case_when(i_o_diff_TC <= lower_threshold ~ "higherTCouter",
+                             i_o_diff_TC >= upper_threshold ~ "higherTCinner", 
+                             T ~ "middle"))
+
+#saveRDS(phenodata_merged_eggyolk, file=paste0(dir2, "data/Carotenoids_DM_phenodata_yr1-2merged.RDS"))
+
+
+#combine pheno data with RNA metadata
+#full join preserves phenotypes of samples that were not RNA sequenced
+metadata_joined_phenos <- full_join(metadata_joined_filt, phenodata_merged_eggyolk)
+#saveRDS(metadata_joined_phenos, file = paste0(dir2, "analysis/TCDM1-4_joined_metadata_phenos.RDS"))
+```
+```{r}
+phenodata_merged_eggyolk = readRDS(paste0(dir2, "data/Carotenoids_DM_phenodata_yr1-2merged.RDS"))
+metadata_joined_phenos = readRDS(paste0(dir2, "analysis/TCDM1-4_joined_metadata_phenos.RDS"))
+```
+
+
+
+
+Impute missing phenotype data with the mean
+```{r}
+#RNA sequenced samples only:
+metadata_joined_phenos_rna <- metadata_joined_phenos %>% filter(!is.na(fullID))
+
+#impute samples with missing carotenoid or dry matter data with the mean for that genotype/layer
+missingTC <- metadata_joined_phenos_rna[is.na(metadata_joined_phenos_rna$total_carotenoids),]
+nrow(missingTC) #4 samples missing TC data
+
+missingDM <- metadata_joined_phenos_rna[is.na(metadata_joined_phenos_rna$dry_matter),]
+nrow(missingDM) #6 samples missing DM data
+
+#impute with mean per genotype/layer
+metadata_joined_phenos_NAimputed <- metadata_joined_phenos_rna %>%
+  mutate(total_ciscarotenes = (Phytoene + Phytofluene + Zeta.Carotene)) %>%
+  group_by(genotype, layer) %>%
+  mutate(total_carotenoids = if_else(is.na(total_carotenoids), mean(total_carotenoids, na.rm = TRUE), total_carotenoids)) %>%
+  mutate(dry_matter = if_else(is.na(dry_matter), mean(dry_matter, na.rm = TRUE), dry_matter)) %>%
+  mutate(total_ciscarotenes = if_else(is.na(total_ciscarotenes), mean(total_ciscarotenes, na.rm = TRUE), total_ciscarotenes)) %>%
+  ungroup()
+
+```
+
+Make DEseq2 dataset
+```{r, eval=FALSE}
+#remove samples without carotenoid data for now (may try imputing later)
+# removemissingTC <- metadata_joined_phenos$fullID[is.na(metadata_joined_phenos$total_carotenoids) | 
+#                                                    is.na(metadata_joined_phenos$dry_matter)]
+# counts_joined_filtx2 <- counts_joined_filt %>% dplyr::select(-all_of(removemissingTC))
+# metadata_joined_phenos_filt <- metadata_joined_phenos %>% filter(!fullID %in% removemissingTC)
+
+
+#center numeric variables & make timept/year factor
+metadata_phenos_scaled <- metadata_joined_phenos_NAimputed %>%
+  mutate(across(c(Phytoene:Lutein, total_carotenoids:dry_matter, percent_bcarotene:i_o_diff_DM, total_ciscarotenes),
+                ~ scale(., center=T, scale=T)[,1])) %>%
+  mutate(year_tmpt = paste0(year, "_", timept), #make nested factor variable names to help DESeq2 fit factors
+         year_batch = paste0(year, "_", RNA_extraction_date),
+         year_plate = paste0(year, "_", plateID),
+         tmpt_plate = paste0(timept, "_", plateID),
+         root = as.factor(root),
+         timept_numeric = (as.numeric(gsub("MAP","",timept))) - 6.5) #center timepoint around 0
+
+
+#saveRDS(metadata_phenos_scaled, file=paste0(dir2, "output/scaled_pheno_data.RDS"))
+
+#confirm correct sample order in both files
+all(colnames(counts_joined_filt) == metadata_phenos_scaled$fullID)
+```
+
+```{r}
+metadata_phenos_scaled = readRDS(paste0(dir2, "output/scaled_pheno_data.RDS"))
+```
+
+
+```{r}
+#Make DESeq2 dataset
+dds <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filt), 
+                              colData = metadata_phenos_scaled,
+                              design = ~ 1 + genotype + layer + root + block + year_tmpt + 
+                                total_carotenoids + dry_matter )
+
+
+
+#estimate size factors for count normalization 
+dds <- estimateSizeFactors(dds)
+
+
+
+#check design matrices to troubleshoot full rank issue:
+
+#make design matrix
+#model_design_matrix <- model.matrix(~ 1 + genotype + layer + root + block + timept_numeric + plateID +
+#                                      total_carotenoids + dry_matter, metadata_phenos_scaled)
+#colnames(model_design_matrix)
+
+#table(metadata_phenos_scaled$tmpt_plate)
+
+#to remove factor levels with no samples:
+#identify columns of all 0s in design matrix (factor levels with no samples)
+# all.zero <- apply(model_design_matrix, 2, function(x) all(x==0))
+# all.zero
+# 
+# #remove columns with all zeros
+# if(sum(all.zero) > 0){
+#   idx <- which(all.zero)
+#   model_design_matrix_fixed <- model_design_matrix[,-idx]
+# } else { model_design_matrix_fixed <- model_design_matrix}
+```
+
+Data visualization: 
+Variance transform, check counts mean/variance relationship
+```{r}
+#first variance transform -- just for PCA visualization
+#Variance stabilizing transformation: normalizes with respect to library size, corrects for genes with low mean expression having higher variance
+#blind=F: without using exp design data covariates in estimating dispersions
+vsd <- vst(dds) 
+
+
+#check whether the variance transformation was effective or if there is residual mean/dispersion relationship
+#before
+beforeplot <- meanSdPlot(assay(dds)) 
+beforeplot$gg + ggtitle("before variance transformation")
+
+#after
+afterplot <- meanSdPlot(assay(vsd))
+afterplot$gg + ggtitle("after variance stabilizing transformation")
+#ggsave(paste0(dir2, "figures/mean-variance-after-vst.png"))
+
+#there is still some low standard deviation in the lower count range. Let's try a different transformation:
+#ntd <- normTransform(dds)
+#ntdplot <- meanSdPlot(assay(ntd))
+#ntdplot$gg + ggtitle("after variance stabilizing transformation")
+#less flat -- vsd is better
+
+#don't run the rlog transformation -- it takes forever
+
+
+
+# Make my own plot
+plot(rowMeans(log2(assay(dds)+1)), rowVars(log2(assay(dds)+1)), 
+     xlab= "mean log2(counts)", ylab= "variance log2(counts)", pch=19,
+     main="mean-variance relationship after variance-stabilizing transformation", col="steelblue")
+
+```
+
+Visualize PCA
+```{r} 
+#PCA using the default number (500) of most variable genes, color by plateID
+pcaData <- plotPCA(vsd, intgroup=c("plateID"), returnData=TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+ggplot(pcaData, aes(PC1, PC2, color=plateID)) + geom_point(size=2) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) + ylab(paste0("PC2: ",percentVar[2],"% variance")) +
+  ggtitle("PCA of variance-stabilized gene counts") +
+  labs(color = "RNA Plate") + 
+  scale_color_discrete(labels = c("TCDM_1" = "Year1_1", "TCDM_2" = "Year1_2", "TCDM3" = "Year2_3", "TCDM4" = "Year2_4"))
+
+#ggsave(paste0(dir2, "figures/PCA_VST_genecounts_joinedTCDM1-4_colorbyplate.png"),
+#       width=7, height=5, units="in")
+
+
+#PCA using the default number (500) of most variable genes, color by extraction batch
+
+pcaData2 <- plotPCA(vsd, intgroup=c("RNA_extraction_date"), returnData=TRUE)
+percentVar2 <- round(100 * attr(pcaData2, "percentVar"))
+
+#put batches in chronological order
+pcaData2$RNA_extraction_date <- factor(pcaData2$RNA_extraction_date, 
+                                       levels = c("2_22_23", "2_8_23", "3_19_23", "3_29_23", 
+                                                  "6_5_23", "6_14_23", "07_23" , "8_5_23",
+                                                  "110724", "112024", "112224", "112424", "120624", 
+                                                  "120924"))
+
+ggplot(pcaData2, aes(PC1, PC2, color=RNA_extraction_date)) + geom_point(size=2) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) + ylab(paste0("PC2: ",percentVar[2],"% variance")) +
+  ggtitle("PCA of variance-stabilized gene counts") +
+  labs(color = "RNA Extraction Batch") + 
+  scale_color_discrete(labels = c("110724" = "Year2_9", "112024" = "Year2_10", "112224" = "Year2_11", 
+                                  "112424" = "Year2_12", "120624" = "Year2_13", "120924" = "Year2_14", 
+                                  "2_22_23" = "Year1_1", "2_8_23" = "Year1_2", "3_19_23" = "Year1_3", 
+                                  "3_29_23" = "Year1_4", "6_5_23" = "Year1_5", "6_14_23" = "Year1_6", 
+                                  "07_23" = "Year1_7", "8_5_23" = "Year1_8"))
+
+#ggsave(paste0(dir2, "figures/PCA_VST_genecounts_joinedTCDM1-4_colorbybatch.png"),
+#       width=7, height=5, units="in")
+```
+
+Visualize data with heatmaps
+```{r, eval=FALSE}
+# Visualize heatmap of sample distances -- colored by plate
+sampleDists <- dist(t(assay(vsd)))
+library("pheatmap"); library("RColorBrewer")
+
+# pull out factors of interest to annotate on the heatmap
+plate_annotation <- as.data.frame(colData(vsd)[, "year_plate"] %>% gsub("TCDM", "",.) %>% gsub("__", "_", .))
+rownames(plate_annotation) <- make.unique(vsd$sampleID)
+colnames(plate_annotation) <- "Year_PlateID"
+
+geno_annotation <- as.data.frame(colData(vsd)[, "genotype"])
+rownames(geno_annotation) <- make.unique(vsd$sampleID)
+colnames(geno_annotation) <- "Genotype"
+
+#set annotation colors
+genocolors <- Polychrome::createPalette(25, seedcolors = c("#ff0000", "#00ff00", "#0000ff") ) 
+names(genocolors) <- levels(ordered_geno_annotation$Genotype)
+
+platecolors <- scales::hue_pal(l=75)(4)
+names(platecolors) <- levels(as.factor(plate_annotation$Year_PlateID))
+
+annotation_colorlist <- list(Genotype = genocolors,
+                      Year_PlateID = platecolors)
+
+
+sampleDistMatrix <- as.matrix( sampleDists )
+rownames(sampleDistMatrix) <- vsd$sampleID
+colnames(sampleDistMatrix) <- vsd$sampleID # Keep this for column clustering
+
+
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows = sampleDists,
+         clustering_distance_cols = sampleDists,
+         col = colors,
+         annotation_col = plate_annotation,
+         annotation_row = geno_annotation,
+         annotation_names_row = F,
+         annotation_colors = annotation_colorlist,
+         show_rownames = FALSE, # hide long sample names
+         treeheight_row = 30,
+         treeheight_col = 0, 
+         fontsize= 16,
+         fontsize_col = 4, angle_col = 45,
+         width = 24, height = 20, border_color = NA,
+         filename = paste0(dir2, "figures/sample_heatmap_colorbyplate.png") )
+
+
+## Re-cluster samples by genotype:
+
+# Reorder the distance matrix by genotype
+ordered_samples <- vsd$sampleID[order(colData(vsd)$genotype)]
+ordered_matrix <- sampleDistMatrix[ordered_samples, ordered_samples]
+
+# Double check annotations match new sample order
+# Ordered genotypes
+ordered_sample_data <- colData(vsd)[order(colData(vsd)$genotype), ]
+ordered_geno_annotation <- data.frame(Genotype = ordered_sample_data$genotype)
+rownames(ordered_geno_annotation) <- make.unique(ordered_sample_data$sampleID)
+
+
+pheatmap(
+  ordered_matrix,
+  cluster_rows = FALSE,
+  cluster_cols = FALSE,
+  col = colors,
+  annotation_col = ordered_geno_annotation,
+  annotation_colors = genocolorlist,
+  show_rownames = FALSE, # hide long sample names
+  treeheight_row = 30,
+  treeheight_col = 0, 
+  fontsize= 16,
+  fontsize_col = 4, angle_col = 90,
+  width = 24, height = 20, border_color = NA,
+  filename = paste0(dir2, "figures/sample_heatmap_clusterbygeno.png") )
+
+
+## Annotate samples by layer:
+
+layer_annotation <- data.frame(Layer = colData(vsd)[, "layer"])
+rownames(layer_annotation) <- make.unique(vsd$sampleID)
+
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows = sampleDists,
+         clustering_distance_cols = sampleDists,
+         col = colors,
+         annotation_col = layer_annotation,
+         show_rownames = FALSE,
+         treeheight_row = 30,
+         treeheight_col = 0, 
+         fontsize= 16,
+         fontsize_col = 4, angle_col = 90,
+         width = 24, height = 20, border_color = NA,
+  filename = paste0(dir2, "figures/sample_heatmap_colorbylayer.png") )
+
+```
+
+Use SVA to correct for batch effects and latent technical variation.
+The goal of the sva is to remove all unwanted sources of variation while protecting the contrasts due to the primary variables included in mod. This leads to the identification of features that are consistently different between groups, removing all common sources of latent variation.
+SVAseq has an internal log link transformation and so it works with raw count data.
+```{r, eval=F}
+library(sva) #BiocManager::install("sva")
+
+#Run SVA to identify latent sources of variation:
+raw_counts <- assay(dds, normalized=T)
+
+#full model: includes variables of interest and nuisance variables
+print(dds@design)
+mod  <- model.matrix(formula(dds@design), colData(dds))
+#reduced model: includes only nuisance variables (only intercept)
+mod0 <- model.matrix(~ 1, colData(dds))
+
+#estimate surrogate variables
+svseq <- svaseq(raw_counts, mod, mod0) 
+#unspecified num.sv means to automatically estimate num of significant surrogate variables
+
+#saveRDS(svseq, file=paste0(dir2, "output/SVA_calculation.RDS"))
+
+#svseq$sv is the estimated surrogate variables
+#svseq$pprob.gam is the posterior probability that each gene is associated with one or more latent variables
+#svseq$pprob.b is the posterior probability that each gene is associated with the variables of interest
+```
+
+```{r}
+svseq = readRDS(paste0(dir2, "output/SVA_calculation.RDS"))
+```
+
+
+```{r, eval=F}
+#plot surrogate variables
+plot(svseq$sv)
+
+#add surrogate variables to metadata
+sv_df <- as.data.frame(svseq$sv)
+metadata_phenos_scaled_sv <- cbind(metadata_phenos_scaled, sv_df)
+#saveRDS(metadata_phenos_scaled_sv, file=paste0(dir2, "output/metadata_phenos_scaled_wsvs.RDS"))
+
+#see if the SVs are capturing batch information
+ggplot(metadata_phenos_scaled_sv, aes(x=V1, y=V2, color=plateID)) +
+  geom_point()
+
+#check correlation between SVs and known technical variation
+#cor(cbind( metadata_phenos_scaled_sv$mean_nguL, sv_df[,1:10]))^2
+#cor(cbind( metadata_phenos_scaled_sv$Well_concentration_nguL, sv_df[,1:10]))^2
+#very small correlation values mostly
+
+
+#decide how many SVs to include
+
+#pprob.gam = posterior probability that each gene is associated with one or more SVs
+p.gam <- svseq[2]$pprob.gam
+#pprob.b = posterior probability that each gene is associated variables of interest
+p.b <- svseq[3]$pprob.b
+#almost all of the genes have pps > 0.99 -- not useful since all sig SVs are included
+
+
+#Get PVE from DESeq2: (this takes awhile)
+SV_PVE_test <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filt), 
+                                      colData = metadata_phenos_scaled_sv, 
+  design = formula( paste0("~ 1 + ", paste0("V", 1:ncol(sv_df), collapse="+"))) ) %>%
+  DESeq()
+
+SVcoefs <- coef(SV_PVE_test)
+
+#extract coefficients an p-values for each SV
+SVlist <- paste0("V", 1:ncol(sv_df))
+for (i in seq_along(SVlist)){
+  SVcoefs_i <- as.data.frame(results(SV_PVE_test, name=SVlist[i])) %>%
+    dplyr::select(log2FoldChange, padj)
+  
+  SVi_hist <- hist(SVcoefs_i$padj, breaks=1000, 
+       xlab="adjusted p-value",
+       main=paste0("distribution of p-values for effect of S", SVlist[i], " on 20k genes"))
+  
+  png(filename = paste0(dir2, "figures/SV_p-value_distributions/", SVlist[i], ".png"),
+      width=4, height=3, units="in", res=300)
+    hist(SVcoefs_i$padj, breaks=1000, 
+       xlab="adjusted p-value",
+       main=paste0("S", SVlist[i]))
+  dev.off()
+  
+  SVi_hist
+}
+
+```
+The first 7 SVs are clearly associated with most genes and therefore likely to be technical factors. SVs > 8 have a more uniform distribution of p-values.
+
+Run DESeq2 with SVs as covariates:
+```{r, eval=F}
+#remake DESeq2 dataset with surrogate variables as covariates to remove latent variation:
+dds_wsv <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filt), 
+                                  colData = metadata_phenos_scaled_sv,
+                design = ~ 1 + genotype + layer + root + block + year_tmpt + V1 + V2 + V3 + V4 + V5 + V6 + V7)
+
+#removed TC and DM as they were only included as covariates in the SVseq model to prevent SVA from identifying factors related to variation in those traits of interest
+
+
+## Run DESeq2 with SV factors
+
+deseq_wsv_analysis <- DESeq(dds_wsv, parallel=T)
+#saveRDS(deseq_wsv_analysis, file=paste0(dir2, "output/DEseq_analysis_w7SVfactors.RDS"))
+```
+
+Extract LFC coefficients for WGCNA genotypic network
+```{r}
+deseq_wsv_analysis <- readRDS(file=paste0(dir2, "output/DEseq_analysis_w7SVfactors.RDS"))
+metadata_phenos_scaled_sv <- readRDS(file=paste0(dir2, "output/metadata_phenos_scaled_wsvs.RDS"))
+
+
+#extract model coefficients -- on log2 scale
+model_coefs <- coef(deseq_wsv_analysis)
+#saveRDS(model_coefs, file=paste0(dir2, "output/coefficients_from7SVmodel_log2FC_estimates.RDS"))
+
+model_coefs_SE <- coef(deseq_wsv_analysis, SE=T)
+#saveRDS(model_coefs_SE, file=paste0(dir2, "output/coefficients_from7SVmodel_log2FC_stderrors.RDS"))
+
+
+#extract residuals according to Michael Love
+mu <- assays(deseq_wsv_analysis, normalized=TRUE)[["mu"]]
+#to get the fitted values on the common scale, you just need to divide each column by the size factor:
+fitted.common.scale = t(t(assays(deseq_wsv_analysis)[["mu"]])/sizeFactors(deseq_wsv_analysis))
+#fitted.common.scale = mu/s = qij
+#So then the residuals are
+Loveresiduals <- counts(deseq_wsv_analysis, normalized=TRUE) - fitted.common.scale 
+#saveRDS(Loveresiduals, file=paste0(dir2, "output/residuals_from7SVmodel_countscale_estimates.RDS"))
+#Love residuals are (Kij/s)-qij (count scale)
+
+
+
+#extract residuals on log2 scale to match coefficients
+#add a small pseudocount value to prevent log2(0)
+pseudocount <- 1
+Kij_norm_mat <- counts(deseq_wsv_analysis, normalized=TRUE)
+qij_mat <- fitted.common.scale
+
+log2residuals <- log2(Kij_norm_mat + pseudocount) - log2(qij_mat + pseudocount)
+log2residuals_wInf <- log2(Kij_norm_mat) - log2(qij_mat)
+
+#saveRDS(log2residuals, file=paste0(dir2, "output/residuals_from7SVmodel_log2scale_estimates.RDS"))
+
+plot(log2residuals[1,], log2residuals_wInf[1,])
+plot(log2residuals[6,], log2residuals_wInf[6,])
+
+
+
+# check residuals calculation with first sample and first gene:
+model_matrix <- model.matrix(deseq_wsv_analysis@design, metadata_phenos_scaled_sv)
+sj <- sizeFactors(deseq_wsv_analysis)[1] #sample-specific size factor
+log2qij <- sum(model_matrix[1,] * model_coefs[1,]) #fitted value, sum of beta estimates
+qij <- 2^(log2qij) #undo the log2 scale
+mu <- assays(deseq_wsv_analysis, normalized=TRUE)[["mu"]] #pull out mu from the DESeq2 model object
+round(qij*sj, 4) == round(mu[1,1], 4) #check mu calculation: mu_ij = s_j * q_ij
+Kij <- counts(deseq_wsv_analysis, normalized=TRUE)[1,1] #normalized raw counts
+resid_ij <- Kij - qij
+round(resid_ij, 4) == round(Loveresiduals[1], 4) #check residuals calculation: normalized raw counts - q_ij
+
+#examine Love method (count scale) residual distribution
+hist(Loveresiduals, xlim=c(-200,200), breaks=500000, 
+     main="distribution of count scale residuals", xlab="residuals (K_ij-q_ij)")
+
+
+#currently residuals are on normalized counts scale
+#to get them on the same log2 scale as the coefficients:
+resid_logscale <- log2(qij + resid_ij) - log2(qij)
+
+#verify that we get back to normalized counts number:
+newlog2qij <- log2qij + resid_logscale
+newqij <- 2^(newlog2qij)
+round(newqij, 4) == round(Kij, 4)
+
+
+#examine residual (log2 scale) distribution when pseudocount is used in residual calculation to prevent -Infs
+hist(log2residuals, breaks=100,
+     main="distribution of log2 scale residuals", xlab="log2 scale residuals")
+
+##examine residual (log2 scale) distribution when -Inf are not replaced
+hist(log2residuals_wInf, breaks=100,
+     main="distribution of log2 scale residuals with -Inf left in", xlab="log2 scale residuals")
+
+```
+
+\deqn{ K_{ij} \sim \textrm{NB}( \mu_{ij}, \alpha_i) }{ K_ij ~ NB(mu_ij, alpha_i) }
+\deqn{ \mu_{ij} = s_j q_{ij} }{ mu_ij = s_j q_ij }
+\deqn{ \log_2(q_{ij}) = x_{j.} \beta_i }{ log2(q_ij) = x_j. beta_i }
+
+where counts \eqn{K_{ij}}{K_ij} for gene i, sample j are modeled using
+a Negative Binomial distribution with fitted mean \eqn{\mu_{ij}}{mu_ij}
+and a gene-specific dispersion parameter \eqn{\alpha_i}{alpha_i}.
+The fitted mean is composed of a sample-specific size factor
+\eqn{s_j}{s_j} and a parameter \eqn{q_{ij}}{q_ij} proportional to the
+expected true concentration of fragments for sample j.
+The coefficients \eqn{\beta_i}{beta_i} give the log2 fold changes for gene i for each
+column of the model matrix \eqn{X}{X}.
+
+
+log_scale_residual = log2(fitted + (observed - fitted)) - log2(fitted)
+                   = log2(observed) - log2(fitted)
+
+
+
+
+# Repeat on year 2 data only
+
+Subset for year 2 data and reconduct SVA
+```{r, eval=F}
+#Get names of year2 samples
+yr2_samplenames <- colnames(readRDS(file=paste0(dir2, "TCDM3-4_Mescv8_R1_genecountmatrix_filt10kgenes.RDS")))
+
+#Make DESeq2 dataset
+dds_yr2 <- DESeqDataSetFromMatrix(countData = as.matrix( counts_joined_filt %>% dplyr::select(all_of(yr2_samplenames)) ), 
+                              colData = (metadata_phenos_scaled %>% filter(year=="2024")),
+                              design = ~ 1 + genotype + layer + root + block + timept + 
+                                total_carotenoids + dry_matter )
+
+#Run SVA to identify latent sources of variation:
+raw_counts_yr2 <- assay(dds_yr2)
+
+#full model: includes variables of interest and nuisance variables
+print(dds_yr2@design)
+mod  <- model.matrix(formula(dds_yr2@design), colData(dds_yr2))
+#reduced model: includes only nuisance variables (only intercept)
+mod0 <- model.matrix(~ 1, colData(dds_yr2))
+
+#estimate surrogate variables
+svseq_yr2 <- svaseq(raw_counts_yr2, mod, mod0) 
+#saveRDS(svseq_yr2, file=paste0(dir2, "output/SVA_calculation_year2only_subset.RDS"))
+
+
+#Decide how many SVs to include
+#add surrogate variables to metadata
+metadata_yr2_sv <- cbind(metadata_phenos_scaled %>% filter(year=="2024"), as.data.frame(svseq_yr2$sv) )
+#saveRDS(metadata_yr2_sv, file=paste0(dir2, "output/metadata_phenotypes_year2subset_wSVs.RDS"))
+
+#Get PVE from DESeq2:
+SV_yr2_PVE_test <- DESeqDataSetFromMatrix(countData = as.matrix( counts_joined_filt %>% dplyr::select(all_of(yr2_samplenames))  ), 
+                                      colData = metadata_yr2_sv, 
+  design = formula( paste0("~ 1 + ", paste0("V", 1:ncol(svseq_yr2$sv), collapse="+"))) ) %>%
+  DESeq()
+
+SVcoefs_2 <- coef(SV_yr2_PVE_test)
+
+#extract coefficients an p-values for each SV
+SVlist_2 <- paste0("V", 1:ncol(svseq_yr2$sv))
+for (i in seq_along(SVlist_2)){
+  SVcoefs_i <- as.data.frame(results(SV_yr2_PVE_test, name=SVlist_2[i])) %>%
+    dplyr::select(log2FoldChange, padj)
+  
+  SVi_hist <- hist(SVcoefs_i$padj, breaks=1000, 
+       xlab="adjusted p-value",
+       main=paste0("distribution of p-values for effect of S", SVlist[i], " on 20k genes"))
+  
+  png(filename = paste0(dir2, "figures/SV_p-value_distributions/", SVlist[i], ".png"),
+      width=4, height=3, units="in", res=300)
+    hist(SVcoefs_i$padj, breaks=1000, 
+       xlab="adjusted p-value",
+       main=paste0("S", SVlist[i]))
+  dev.off()
+  
+  SVi_hist
+}
+
+```
+
+Get LFC estimates for yr2 subset
+```{r, eval=F}
+#remake year 2 DESeq2 dataset with surrogate variables as covariates to remove latent variation:
+dds_yr2_wsv <- DESeqDataSetFromMatrix(countData = 
+                                        as.matrix( counts_joined_filt %>% dplyr::select(all_of(yr2_samplenames)) ), 
+                                  colData = metadata_yr2_sv,
+                design = ~ 1 + genotype + layer + root + block + timept + V1 + V2 + V3 + V4 + V5 + V6)
+
+
+## Run DESeq2 with SV factors for year 2 data subset
+deseq_wsv_yr2_analysis <- DESeq(dds_yr2_wsv, parallel=T)
+#saveRDS(deseq_wsv_yr2_analysis, file=paste0(dir2, "output/DEseq_analysis_year2subset_w6SVfactors.RDS"))
+
+#extract model coefficients -- on log2 scale
+yr2_model_coefs <- coef(deseq_wsv_yr2_analysis)
+#saveRDS(yr2_model_coefs, file=paste0(dir2, "output/coefficients_from_yr2_6SVmodel_log2FC_estimates.RDS"))
+
+yr2_model_coefs_SE <- coef(deseq_wsv_yr2_analysis, SE=T)
+#saveRDS(yr2_model_coefs_SE, file=paste0(dir2, "output/coefficients_from_yr2_6SVmodel_log2FC_stderrors.RDS"))
+
+
+#extract residuals on log2 scale to match coefficients
+fitted.common.scale_2 = t(t(assays(deseq_wsv_yr2_analysis)[["mu"]])/sizeFactors(deseq_wsv_yr2_analysis))
+pseudocount <- 1 #add a small pseudocount value to prevent log2(0)
+Kij_norm_mat_2 <- counts(deseq_wsv_yr2_analysis, normalized=TRUE)
+qij_mat_2 <- fitted.common.scale_2
+
+log2residuals_2 <- log2(Kij_norm_mat_2 + pseudocount) - log2(qij_mat_2 + pseudocount)
+#saveRDS(log2residuals_2, file=paste0(dir2, "output/residuals_from_yr2_6SVmodel_log2scale_estimates.RDS"))
+```
+
+
+
+
+
+TAG analysis:
+1. find trait-associated genes associated with carotenoids after accounting for layer and SVs
+```{r, eval=F}
+fullgene_annotations <- readRDS(file=paste0(dir2, "output/fullgene_annotations_wcarot-carb_class.RDS"))
+
+
+# Which genes are associated overall with TC after accounting for layer? (both genetic and non-genetic association)
+dds_testTC <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filt), 
+                                  colData = metadata_phenos_scaled_sv,
+                design = ~ 1 + total_carotenoids + layer + V1 + V2 + V3 + V4 + V5 + V6 + V7)
+
+dds_testTC_analysis <- DESeq(dds_testTC, parallel=T)
+#saveRDS(dds_testTC_analysis, file=paste0(dir2, "output/DEseq_analysis_TC_layer_7SVfactors.RDS"))
+```
+
+Genes significantly associated with TC (*TC-TAGs*) after accounting for layer and SVs
+```{r}
+dds_testTC_analysis = readRDS(paste0(dir2, "output/DEseq_analysis_TC_layer_7SVfactors.RDS"))
+fullgene_annotations <- readRDS(file=paste0(dir2, "output/fullgene_annotations_wcarot-carb_class.RDS"))
+
+TC_DEGs <- as.data.frame(results(dds_testTC_analysis, name="total_carotenoids")) %>% arrange(padj) %>% filter(padj < 0.05) %>% 
+  rownames_to_column("gene_id") %>% mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  mutate(direction = case_when( sign(log2FoldChange) == 1 ~ "+",
+                                sign(log2FoldChange) == -1 ~ "-", T ~ NA)) %>%
+  left_join(., fullgene_annotations, by="locusName")
+#write.csv(TC_DEGs, file=paste0(dir2, "output/TC_DEGs_annotated.csv"))
+
+
+#All genes effect (sig. and non. sig.) on TC LFC estimate
+TC_allgeneestimates <- as.data.frame(results(dds_testTC_analysis, name="total_carotenoids")) %>% arrange(padj) %>% rownames_to_column("gene_id") %>% mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(TC_allgeneestimates, file=paste0(dir2, "output/TC_allgenelog2foldchanges_annotated.csv"))
+
+#View TC TAGs with largest log2Foldchange:
+View( as.data.frame(results(dds_testTC_analysis, name="total_carotenoids")) %>% 
+  arrange(-abs(log2FoldChange)) %>% rownames_to_column("gene_id") %>% filter(padj < 0.05) %>%
+  mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName") )
+
+# TC TAGs with |LFC| > 0.5 (Table S3)
+TC_TAGs_LFCthresh = TC_DEGs %>% filter(abs(log2FoldChange) > 0.5) %>% mutate(TAG_type = "overall") %>%
+  dplyr::select(TAG_type, locusName, baseMean:padj, direction:`Best-hit-arabi-defline`)
+write.csv(TC_TAGs_LFCthresh, file=paste0(dir2, "output/TC_TAGs_LFC0.5_annotated.csv"))
+
+```
+
+2. find genes significantly associated with cis-carotenes (*CC-TAGs*) after accounting for layer and SVs
+```{r, eval=FALSE}
+dds_testCC <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filt), 
+                                  colData = metadata_phenos_scaled_sv,
+                design = ~ 1 + total_ciscarotenes + layer + V1 + V2 + V3 + V4 + V5 + V6 + V7)
+
+dds_testCC_analysis <- DESeq(dds_testCC)
+saveRDS(dds_testCC_analysis, file=paste0(dir2, "output/DEseq_analysis_CC_layer_7SVfactors.RDS"))
+```
+
+```{r}
+dds_testCC_analysis = readRDS(paste0(dir2, "output/DEseq_analysis_CC_layer_7SVfactors.RDS"))
+
+CC_TAGs <- as.data.frame(results(dds_testCC_analysis, name="total_ciscarotenes")) %>% arrange(padj) %>% filter(padj < 0.05) %>% 
+  rownames_to_column("gene_id") %>% mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  mutate(direction = sign(log2FoldChange)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(CC_TAGs, file=paste0(dir2, "output/Ciscarotene_TAGs_annotated.csv"))
+
+
+#All genes effect (sig. and non. sig.) on CC LFC estimate
+CC_allgeneestimates <- as.data.frame(results(dds_testCC_analysis, name="total_ciscarotenes")) %>% arrange(padj) %>% rownames_to_column("gene_id") %>% mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  mutate(direction = sign(log2FoldChange)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(TC_allgeneestimates, file=paste0(dir2, "output/TC_allgenelog2foldchanges_annotated.csv"))
+
+
+#View CC TAGs with largest log2Foldchange:
+View( as.data.frame(results(dds_testCC_analysis, name="total_ciscarotenes")) %>% 
+  arrange(-abs(log2FoldChange)) %>% rownames_to_column("gene_id") %>% filter(padj < 0.05) %>%
+  mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  mutate(direction = sign(log2FoldChange)) %>%
+  left_join(fullgene_annotations, by="locusName") %>% head(200) )
+
+```
+
+
+
+Genes significantly associated with *genetic variation in TC*
+```{r}
+# Which genes are associated with genetic variation in TC after accounting for non-genetic covariates?
+dds_testTC_geno <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filt), 
+                                  colData = metadata_phenos_scaled_sv,
+                design = ~ 1 + total_carotenoids + layer + root + block + year_tmpt  + V1 + V2 + V3 + V4 + V5 + V6 + V7)
+
+dds_testTCgeno_analysis <- DESeq(dds_testTC_geno, parallel=T)
+#saveRDS(dds_testTCgeno_analysis, file=paste0(dir2, "output/DEseq_analysis_TC_layer_wnongenocovars_7SVfactors.RDS"))
+#dds_testTCgeno_analysis = readRDS(file=paste0("../RNAseq_yr2/output/large_files/DEseq_analysis_TC_layer_wnongenocovars_7SVfactors.RDS"))
+
+TC_genetic_DEGs <- as.data.frame(results(dds_testTCgeno_analysis, name="total_carotenoids")) %>% 
+  arrange(padj) %>% filter(padj < 0.05) %>% rownames_to_column("gene_id") %>% 
+  mutate(direction = case_when( sign(log2FoldChange) == 1 ~ "+",
+                                sign(log2FoldChange) == -1 ~ "-", T ~ NA)) %>%
+  mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(TC_genetic_DEGs, file=paste0(dir2, "output/TC_genetic_DEGs_annoted.csv"))
+#TC_genetic_DEGs = read.csv(file=paste0(dir2, "output/TC_genetic_DEGs_annotated.csv"))
+
+TC_genetic_allgeneestimates <- as.data.frame(results(dds_testTCgeno_analysis, name="total_carotenoids")) %>% arrange(padj) %>% rownames_to_column("gene_id") %>% mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(TC_genetic_allgeneestimates, file=paste0(dir2, "output/TC_genetic_allgenelog2foldchanges_annotated.csv"))
+
+# TC Genetic TAGs with |LFC| > 0.5 (Table S3)
+TC_Genetic_TAGs_LFCthresh = TC_genetic_DEGs %>% filter(abs(log2FoldChange) > 0.5) %>% mutate(TAG_type = "genetic") %>%
+  dplyr::select(TAG_type, locusName, baseMean:padj, direction:`Best-hit-arabi-defline`)
+write.csv(TC_Genetic_TAGs_LFCthresh, file=paste0("../RNAseq_yr2/output/TC_Genetic_TAGs_LFC0.5_annotated.csv"))
+```
+
+Genes significantly associated with *non-genetic variation in TC*
+```{r, eval=FALSE}
+# Which genes are associated with non-genetic variation in TC after accounting for genotype?
+dds_testTC_nongeno <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filt), 
+                      colData = metadata_phenos_scaled_sv %>% mutate(genotype_layer = paste0(genotype, "_", layer)),
+                design = ~ 1 + total_carotenoids + genotype_layer + V1 + V2 + V3 + V4 + V5 + V6 + V7)
+
+dds_testTC_nongeno_analysis <- DESeq(dds_testTC_nongeno, parallel=T)
+#saveRDS(dds_testTC_nongeno_analysis, file=paste0(dir2, "output/DEseq_analysis_TC_layer_wgenolayer_7SVfactors.RDS"))
+#dds_testTC_nongeno_analysis = readRDS(file="../RNAseq_yr2/output/large_files/DEseq_analysis_TC_layer_wgenolayer_7SVfactors.RDS")
+
+TC_nongenetic_DEGs <- as.data.frame(results(dds_testTC_nongeno_analysis, name="total_carotenoids")) %>% 
+  arrange(padj) %>% filter(padj < 0.05) %>% rownames_to_column("gene_id") %>% 
+  mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  mutate(direction = case_when( sign(log2FoldChange) == 1 ~ "+",
+                                sign(log2FoldChange) == -1 ~ "-", T ~ NA)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(TC_nongenetic_DEGs, file=paste0(dir2, "output/TC_nongenetic_DEGs_annoted.csv"))
+
+TC_nongenetic_allgeneestimates <- as.data.frame(results(dds_testTC_nongeno_analysis, name="total_carotenoids")) %>% arrange(padj) %>% rownames_to_column("gene_id") %>% mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(TC_nongenetic_allgeneestimates, file=paste0(dir2, "output/TC_nongenetic_allgenelog2foldchanges_annotated.csv"))
+
+# TC Genetic TAGs with |LFC| > 0.5 (Table S3)
+TC_Nongenetic_TAGs_LFCthresh = TC_nongenetic_DEGs %>% filter(abs(log2FoldChange) > 0.5) %>% mutate(TAG_type = "non-genetic") %>%
+  dplyr::select(TAG_type, locusName, baseMean:padj, direction:`Best-hit-arabi-defline`)
+write.csv(TC_Nongenetic_TAGs_LFCthresh, file=paste0("../RNAseq_yr2/output/TC_Nongenetic_TAGs_LFC0.5_annotated.csv"))
+
+
+```
+
+Genes significantly associated with the *egg-yolk phenotype*
+```{r, eval=FALSE}
+# Which genes are associated with the egg yolk phenotype?
+#remove NAs
+missing_diffio_to_remove <- metadata_phenos_scaled_sv[which(is.na(metadata_phenos_scaled_sv$i_o_diff_TC)),"fullID"]
+
+dds_testyolk <- DESeqDataSetFromMatrix(countData = 
+                as.matrix(counts_joined_filt %>% dplyr::select(-missing_diffio_to_remove)),
+                colData = metadata_phenos_scaled_sv %>% filter(!fullID %in% missing_diffio_to_remove) %>%
+                  mutate(layer = factor(layer, levels = c("o", "i"))), #set outer layer as reference level
+                design = ~ 1 + i_o_diff_TC*layer + V1 + V2 + V3 + V4 + V5 + V6 + V7)
+
+dds_testyolk_analysis <- DESeq(dds_testyolk, parallel=T)
+#saveRDS(dds_testyolk_analysis, file=paste0(dir2, "output/DEseq_analysis_iodiffTC_layer_7SVfactors.RDS"))
+
+#make contrast for main effect + interaction with inner layer
+res_inner <- results(dds_testyolk_analysis, contrast = list(c("i_o_diff_TC", "i_o_diff_TC.layeri")))
+
+
+#resultsNames(dds_testyolk_analysis)
+#results(dds_testyolk_analysis, name="i_o_diff_TC.layeri"
+
+eggyolk_DEGs <- as.data.frame(res_inner) %>% 
+  arrange(padj) %>% rownames_to_column("gene_id") %>% filter(padj < 0.05) %>%
+  mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName")
+
+
+eggyolk_allgeneestimates <- as.data.frame(res_inner) %>% arrange(padj) %>% rownames_to_column("gene_id") %>% mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(eggyolk_allgeneestimates, file=paste0(dir2, "output/eggyolk_allgenelog2foldchanges_annotated.csv"))
+
+
+
+table(eggyolk_DEGs$class)
+#write.csv(eggyolk_DEGs, file=paste0(dir2, "output/Eggyolk_DEGs_annotated.csv"))
+
+#view TAGs with largest log2FoldChange:
+View( as.data.frame(res_inner) %>% 
+  arrange(-abs(log2FoldChange)) %>% rownames_to_column("gene_id") %>% filter(padj < 0.05) %>%
+  mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName") )
+
+
+
+
+#make contrast for interaction with inner layer only
+res_interaction <- results(dds_testyolk_analysis, name = "i_o_diff_TC.layeri")
+
+eggyolk_interaction_DEGs <- as.data.frame(res_interaction) %>% 
+  arrange(padj) %>% rownames_to_column("gene_id") %>% filter(padj < 0.05) %>%
+  mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName")
+
+#write.csv(eggyolk_interaction_DEGs, file=paste0(dir2, "output/Eggyolk_layer_interaction_DEGs_annotated.csv"))
+
+eggyolk_interaction_allgeneestimates <- as.data.frame(res_interaction) %>% arrange(padj) %>% rownames_to_column("gene_id") %>% mutate(locusName = gsub(".v8.1","", gene_id)) %>%
+  left_join(fullgene_annotations, by="locusName")
+#write.csv(eggyolk_interaction_allgeneestimates, file=paste0(dir2, "output/eggyolk_layer-interaction_allgenelog2foldchanges_annotated.csv"))
+```
+
+
+GO Term enrichment with clusterProfiler recommended by Elise
+```{r}
+#Want to perform functional enrichment analysis on the modules created from
+#using the PyWGCNA tool analyzing all of my RNAseq data.
+
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#remotes::install_github("YuLab-SMU/ggtree")
+#BiocManager::install("clusterProfiler")
+#BiocManager::install("DOSE")
+
+library(clusterProfiler)
+#library(DOSE)  
+
+#Get a list of all genes & annotations from the RNAseq dataset
+allgenes_observed <- rownames(counts_joined_filt) %>% gsub(".v8.1","",.)
+fullgene_annotations <- readRDS(file=paste0(dir2, "output/fullgene_annotations_wcarot-carb_class.RDS"))
+
+#Read in DEGs
+TC_DEGs <- read.csv(file=paste0(dir2, "output/TC_DEGs_annotated.csv"))
+CC_DEGs <- read.csv(file=paste0(dir2, "output/Ciscarotene_TAGs_annotated.csv"))
+#TC_genetic_DEGs <- read.csv(file=paste0(dir2, "output/TC_genetic_DEGs_annoted.csv"))
+#TC_nongenetic_DEGs <- read.csv(file=paste0(dir2, "output/TC_nongenetic_DEGs_annoted.csv"))
+#eggyolk_DEGs  <- read.csv(file=paste0(dir2, "output/Eggyolk_DEGs_annotated.csv"))
+#eggyolk_interaction_DEGs  <- read.csv( file=paste0(dir2, "output/Eggyolk_layer_interaction_DEGs_annotated.csv"))
+
+# Get GO Term to GeneID keye:
+go_annotations_clean <- fullgene_annotations %>%
+  tidyr::separate_rows(GO, sep = " ") %>% #put individual GO terms in their own rows
+  dplyr::select(GO, locusName, GODescription) %>%
+  rename("locusName" = "geneID", "GODescription" = "Description")
+
+# Set background genes
+KEGG_universe <- fullgene_annotations %>% filter(locusName %in% allgenes_observed) %>%
+  tidyr::separate_rows(KO, sep = " ") %>% #put individual KO terms in their own rows
+  dplyr::select(KO, locusName) %>%
+  rename("locusName" = "geneID")
+
+GO_universe <- fullgene_annotations %>% filter(locusName %in% allgenes_observed) %>%
+  tidyr::separate_rows(GO, sep = " ") %>% #put individual KO terms in their own rows
+  dplyr::select(GO, locusName) %>%
+  rename("locusName" = "geneID")
+
+
+pcutoff <- 0.05
+qcutoff <- 0.1
+foldchange_cutoff <- 0.5
+```
+
+GO enrichment for TC overall
+```{r}
+# GO enrichment for TC overall
+TC_DEGs_top50percent <- TC_DEGs %>% arrange(-abs(log2FoldChange)) %>% 
+  filter(abs(log2FoldChange) > foldchange_cutoff)
+  #head(n=nrow(TC_DEGs)*0.5)
+
+#note: I kept the old variable name "top50percent" but it's actually just a threshold cutoff for log2foldchange now
+
+enrich_TC_DEGs <- enricher(
+  gene          = TC_DEGs_top50percent$locusName, 
+  universe      = allgenes_observed,
+  TERM2GENE     = go_annotations_clean,  # Use your custom GO annotations
+  pAdjustMethod = "BH", 
+  pvalueCutoff  = pcutoff,
+  qvalueCutoff  = qcutoff 
+)
+
+if(nrow(enrich_TC_DEGs) != 0){
+  
+  print(paste0(nrow(enrich_TC_DEGs), " enriched terms found for TC TAGs"))
+  
+# Save results as CSV
+  enrich_TC_DEGs_results <- as.data.frame(enrich_TC_DEGs)
+  
+  enrich_TC_DEGs_results_termkey <- go2term(enrich_TC_DEGs_results$ID)
+  enrich_TC_DEGs_results <- left_join(enrich_TC_DEGs_results, enrich_TC_DEGs_results_termkey, 
+                                              by=c("ID"="go_id")) 
+   #replace missing GO description
+  enrich_TC_DEGs_results$Term[enrich_TC_DEGs_results$ID=="GO:0050662"] <- "coenzyme binding (obsolete)"
+  
+  write.csv(enrich_TC_DEGs_results, file=paste0(dir2, "output/GO_enrichment_TC_DEGs.csv"), row.names = FALSE)
+  
+  # Plot results with enrichplot
+  # Create a named vector where names are GO IDs and values are descriptions
+  enrich_TC_DEGs_results_termkey_labels <- setNames(enrich_TC_DEGs_results$Term,
+                        enrich_TC_DEGs_results$ID)
+  
+
+  dp_GO_TCoverall <- dotplot(enrich_TC_DEGs, title="Enriched GO terms in overall TC TAGs", 
+          label_format=function(x){ 
+            str_wrap(enrich_TC_DEGs_results_termkey_labels[x], width=40 ) }) +
+  theme(axis.text.y = element_text(lineheight = 0.7))
+  
+  print(dp_GO_TCoverall)
+  
+  ggsave(dp_GO_TCoverall, filename=paste0(dir2, "figures/TC_DEGs_enriched_GOterms.png"), width=10, height=5, units="in")
+  
+  
+ enrich_TC_DEGs_results %>% dplyr::select(ID, p.adjust, Term)
+  
+} else{print("no enriched terms found for TC TAGs")}
+```
+
+
+GO enrichment for cis-carotenes
+```{r}
+# GO enrichment for CC
+TC_DEGs_top50percent <- CC_DEGs %>% arrange(-abs(log2FoldChange)) %>% 
+  filter(abs(log2FoldChange) > foldchange_cutoff)
+  #head(n=nrow(TC_DEGs)*0.5)
+
+#note: I kept the old variable name "top50percent" but it's actually just a threshold cutoff for log2foldchange now
+
+enrich_TC_DEGs <- enricher(
+  gene          = TC_DEGs_top50percent$locusName, 
+  universe      = allgenes_observed,
+  TERM2GENE     = go_annotations_clean,  # Use your custom GO annotations
+  pAdjustMethod = "BH", 
+  pvalueCutoff  = pcutoff,
+  qvalueCutoff  = qcutoff 
+)
+
+if(nrow(enrich_TC_DEGs) != 0){
+  
+  print(paste0(nrow(enrich_TC_DEGs), " enriched terms found for TC TAGs"))
+  
+# Save results as CSV
+  enrich_TC_DEGs_results <- as.data.frame(enrich_TC_DEGs)
+  
+  enrich_TC_DEGs_results_termkey <- go2term(enrich_TC_DEGs_results$ID)
+  enrich_TC_DEGs_results <- left_join(enrich_TC_DEGs_results, enrich_TC_DEGs_results_termkey, 
+                                              by=c("ID"="go_id")) 
+   #replace missing GO description
+  enrich_TC_DEGs_results$Term[enrich_TC_DEGs_results$ID=="GO:0050662"] <- "coenzyme binding (obsolete)"
+  
+  write.csv(enrich_TC_DEGs_results, file=paste0(dir2, "output/GO_enrichment_TC_DEGs.csv"), row.names = FALSE)
+  
+  # Plot results with enrichplot
+  # Create a named vector where names are GO IDs and values are descriptions
+  enrich_TC_DEGs_results_termkey_labels <- setNames(enrich_TC_DEGs_results$Term,
+                        enrich_TC_DEGs_results$ID)
+  
+
+  dp_GO_TCoverall <- dotplot(enrich_TC_DEGs, title="Enriched GO terms in overall TC TAGs", 
+          label_format=function(x){ 
+            str_wrap(enrich_TC_DEGs_results_termkey_labels[x], width=40 ) }) +
+  theme(axis.text.y = element_text(lineheight = 0.7))
+  
+  print(dp_GO_TCoverall)
+  
+  ggsave(dp_GO_TCoverall, filename=paste0(dir2, "figures/TC_DEGs_enriched_GOterms.png"), width=10, height=5, units="in")
+  
+  
+ enrich_TC_DEGs_results %>% dplyr::select(ID, p.adjust, Term)
+  
+} else{print("no enriched terms found for TC TAGs")}
+```
+
+
+GO enrichment for TC genetic
+```{r}
+### GO enrichment for TC genetic
+
+TC_genetic_DEGs_top50percent <- TC_genetic_DEGs %>% arrange(-abs(log2FoldChange)) %>% 
+  filter(abs(log2FoldChange) > foldchange_cutoff) #head(n=nrow(TC_genetic_DEGs)*0.5)
+nrow(TC_genetic_DEGs_top50percent)
+
+enrich_TC_genetic_DEGs <- enricher(
+  gene          = TC_genetic_DEGs_top50percent$locusName, 
+  universe      = allgenes_observed,
+  TERM2GENE     = go_annotations_clean,  # Use your custom GO annotations
+  pAdjustMethod = "BH", 
+  pvalueCutoff  = pcutoff,
+  qvalueCutoff  = qcutoff 
+)
+
+if(nrow(enrich_TC_genetic_DEGs) != 0){
+  
+   print(paste0(nrow(enrich_TC_genetic_DEGs), " enriched terms found for TC genetic DEGs"))
+  
+  # Save results as CSV
+  enrich_TC_genetic_DEGs_results <- as.data.frame(enrich_TC_genetic_DEGs)
+  enrich_TC_genetic_DEGs_termkey <- go2term(enrich_TC_genetic_DEGs_results$ID)
+  enrich_TC_genetic_DEGs_results <- left_join(enrich_TC_genetic_DEGs_results, 
+                                              enrich_TC_genetic_DEGs_termkey, 
+                                              by=c("ID"="go_id")) 
+  #replace missing GO description
+  enrich_TC_genetic_DEGs_results$Term[enrich_TC_genetic_DEGs_results$ID=="GO:0050662"] <- "coenzyme binding (obsolete)"
+  
+  write.csv(enrich_TC_genetic_DEGs_results, file=paste0(dir2, "output/GO_enrichment_TC_genetic_DEGs.csv"), row.names = FALSE)
+  
+  # Plot results with enrichplot
+  enrich_TC_genetic_DEGs_termkey_labels <- setNames(enrich_TC_genetic_DEGs_results$Term,
+                        enrich_TC_genetic_DEGs_results$ID)
+  
+  dp_GO_TCgenetic <- dotplot(enrich_TC_genetic_DEGs, title="Enriched GO terms in TC genetic TAGs", 
+          label_format=function(x){ 
+            str_wrap(enrich_TC_genetic_DEGs_termkey_labels[x], width=40 ) }) +
+  theme(axis.text.y = element_text(lineheight = 0.7))
+  
+  print(dp_GO_TCgenetic)
+  
+  ggsave(dp_GO_TCgenetic, filename=paste0(dir2, "figures/TC_genetic_DEGs_enriched_GOterms.png"), width=10, height=5, units="in")
+  
+  
+  View(enrich_TC_genetic_DEGs_results %>% dplyr::select(ID, p.adjust, Term))
+
+  
+  
+}else{print("no enriched terms found for TC genetic DEGs")}
+```
+
+GO enrichment for TC non-genetic
+```{r}
+### GO enrichment for TC non-genetic
+
+TC_nongenetic_DEGs_top50percent <- TC_nongenetic_DEGs %>% arrange(-abs(log2FoldChange)) %>%   
+  filter(abs(log2FoldChange) > foldchange_cutoff)
+#head(n=nrow(TC_nongenetic_DEGs)*0.5)
+
+
+
+enrich_TC_nongenetic_DEGs <- enricher(
+  gene          = TC_nongenetic_DEGs_top50percent$locusName, 
+  universe      = allgenes_observed,
+  TERM2GENE     = go_annotations_clean,  # Use your custom GO annotations
+  pAdjustMethod = "BH", 
+  pvalueCutoff  = pcutoff,
+  qvalueCutoff  = qcutoff 
+)
+
+
+if(nrow(enrich_TC_nongenetic_DEGs) != 0){
+  
+   print(paste0(nrow(enrich_TC_nongenetic_DEGs), " enriched terms found for TC nongenetic DEGs"))
+  
+  # Save results as CSV
+  enrich_TC_nongenetic_DEGs_results <- as.data.frame(enrich_TC_nongenetic_DEGs)
+  enrich_TC_nongenetic_DEGs_termkey <- go2term(enrich_TC_nongenetic_DEGs_results$ID)
+  enrich_TC_nongenetic_DEGs_results <- left_join(enrich_TC_nongenetic_DEGs_results, enrich_TC_nongenetic_DEGs_termkey, 
+                                              by=c("ID"="go_id")) 
+  write.csv(enrich_TC_nongenetic_DEGs_results, file=paste0(dir2, "output/GO_enrichment_TC_nongenetic_DEGs.csv"), row.names = FALSE)
+  
+  
+  # Plot results with enrichplot
+  enrich_TC_nongenetic_DEGs_termkey_labels <- setNames(enrich_TC_nongenetic_DEGs_termkey$Term,
+                        enrich_TC_nongenetic_DEGs_termkey$go_id)
+  
+
+  dp_GO_TCnongenetic <- dotplot(enrich_TC_nongenetic_DEGs, 
+                                title="Enriched GO terms in TC nongenetic TAGs", 
+            label_format=function(x){ 
+            str_wrap(enrich_TC_nongenetic_DEGs_termkey_labels[x], width=40 ) }) +
+    theme(axis.text.y = element_text(lineheight = 0.7))
+  
+  print(dp_GO_TCnongenetic)
+  
+   ggsave(dp_GO_TCnongenetic, filename=paste0(dir2, "figures/TC_nongenetic_DEGs_enriched_GOterms.png"), width=10, height=5, units="in")
+  
+}else{print("no enriched terms found for TC nongenetic DEGs")}
+```
+
+GO enrichment for eggyolk
+```{r}
+### GO enrichment for eggyolk
+eggyolk_DEGs_top50percent <- eggyolk_DEGs %>% arrange(-abs(log2FoldChange)) %>% 
+  filter(abs(log2FoldChange) > foldchange_cutoff) 
+#head(n=nrow(eggyolk_DEGs)*0.5)
+
+
+enrich_eggyolk_DEGs <- enricher(
+  gene          = eggyolk_DEGs_top50percent$locusName, 
+  universe      = allgenes_observed,
+  TERM2GENE     = go_annotations_clean,  # Use your custom GO annotations
+  pAdjustMethod = "BH", 
+  pvalueCutoff  = pcutoff,
+  qvalueCutoff  = qcutoff 
+)
+
+#none found
+if(nrow(enrich_eggyolk_DEGs) != 0){
+  
+  print(paste0(nrow(enrich_eggyolk_DEGs), " enriched terms found for eggyolk DEGs"))
+
+
+  # Save results as CSV
+  enrich_eggyolk_DEGs_results <- as.data.frame(enrich_eggyolk_DEGs)
+  enrich_eggyolk_DEGs_termkey <- go2term(enrich_eggyolk_DEGs_results$ID)
+  enrich_eggyolk_DEGs_results <- left_join(enrich_eggyolk_DEGs_results, enrich_eggyolk_DEGs_termkey,
+                                              by=c("ID"="go_id"))
+  write.csv(enrich_eggyolk_DEGs_results, file=paste0(dir2, "output/GO_enrichment_eggyolk_DEGs.csv"), row.names = FALSE)
+
+  # Plot results with enrichplot
+   enrich_eggyolk_DEGs_termkey_labels <- setNames(enrich_eggyolk_DEGs_results$Term,
+                         enrich_eggyolk_DEGs_results$ID)
+  
+
+   dp_GO_eggyolk <- dotplot(enrich_eggyolk_DEGs, title="Enriched GO terms in eggyolk DEGs",
+     label_format=function(x){ 
+            str_wrap(enrich_TC_nongenetic_DEGs_termkey_labels[x], width=40 ) }) +
+    theme(axis.text.y = element_text(lineheight = 0.7))
+   
+   print(dp_GO_eggyolk)
+   
+   ggsave(dp_GO_eggyolk, filename=paste0(dir2, "figures/Eggyolk_DEGs_enriched_GOterms.png"), width=10, height=5, units="in")
+
+}else{print("no enriched terms found for eggyolk DEGs")}
+```
+
+```{r, eval=F}
+### NO TAGs for eggyolk/layer interaction
+
+# GO enrichment for eggyolk/layer interaction
+# enrich_eggyolk_layer_DEGs <- enricher(
+#   gene          = eggyolk_interaction_DEGs$locusName, 
+#   universe      = allgenes_observed,
+#   TERM2GENE     = go_annotations_clean,  # Use your custom GO annotations
+#   pAdjustMethod = "BH", 
+#   pvalueCutoff  = pcutoff,
+#   qvalueCutoff  = qcutoff 
+# )
+
+
+# if(nrow(enrich_eggyolk_layer_DEGs) != 0){
+#   
+#   print("enriched terms found for eggyolk_layer DEGs")
+# 
+#   # Save results as CSV
+#   enrich_eggyolk_layer_DEGs_results <- as.data.frame(enrich_eggyolk_layer_DEGs)
+#   enrich_eggyolk_layer_DEGs_termkey <- go2term(enrich_eggyolk_layer_DEGs_results$ID)
+#   enrich_eggyolk_layer_DEGs_results <- left_join(enrich_eggyolk_layer_DEGs_results,
+#                                                  enrich_eggyolk_layer_DEGs_termkey,
+#                                                  by=c("ID"="go_id"))
+#   write.csv(enrich_eggyolk_layer_DEGs_results, file=paste0(dir2, "output/GO_enrichment_eggyolk_layer_DEGs.csv"), row.names = FALSE)
+# 
+#   # Plot results with enrichplot
+#   enrich_eggyolk_layer_DEGs_termkey_labels <- setNames(enrich_eggyolk_layer_DEGs_termkey$Term,
+#                         enrich_eggyolk_layer_DEGs_termkey$go_id)
+# 
+#   dp_GO_eggyolk_layer <- dotplot(enrich_eggyolk_layer_DEGs, 
+#                                  title="Enriched GO terms in eggyolk/layer DEGs",
+#           label_format=function(x){enrich_eggyolk_layer_DEGs_termkey_labels[x]})
+#   print(dp_GO_eggyolk_layer)
+# 
+# }else{print("no enriched terms found for eggyolk/layer interaction DEGs")}
+```
+
+Test for KEGG enrichment:
+```{r}
+# Run KEGG enrichment -- TC overall 
+kegg_enrich_TCoverall <- enrichKEGG(
+  gene         = TC_DEGs_top50percent$KO,
+  universe = KEGG_universe$KO,
+  organism     = "ko",   # "ko" for general KEGG Orthology-based analysis
+  keyType      = "kegg",
+  pAdjustMethod = "BH",
+  pvalueCutoff = 0.05
+)
+
+# View results
+nrow(kegg_enrich_TCoverall)
+
+if(nrow(kegg_enrich_TCoverall) != 0) {
+
+  print(paste0(nrow(kegg_enrich_TCoverall), " enriched KO terms found"))
+
+
+  dp_KO_TCoverall <- dotplot(kegg_enrich_TCoverall, title="Enriched KO terms in TC overall TAGs")
+  print(dp_KO_TCoverall)
+  ggsave(dp_KO_TCoverall, filename=paste0(dir2, "figures/TC_overall_DEGs_enriched_KOterms.png"))
+
+print(as.data.frame(kegg_enrich_TCoverall) %>%
+        dplyr::select(Description, ID, p.adjust) %>%
+        mutate(p.adjust = round(p.adjust, 4)) 
+)
+}else{print("no enriched KO")}
+```
+
+```{r}
+# Run KEGG enrichment -- TC genetic 
+kegg_enrich_TC_genetic <- enrichKEGG(
+  gene         = TC_genetic_DEGs_top50percent$KO,
+  universe = KEGG_universe$KO,
+  organism     = "ko",   # "ko" for general KEGG Orthology-based analysis
+  keyType      = "kegg",
+  pAdjustMethod = "BH",
+  pvalueCutoff = 0.05
+)
+
+# View results
+nrow(kegg_enrich_TC_genetic)
+
+if(nrow(kegg_enrich_TC_genetic) != 0){
+  
+  print(paste0(nrow(kegg_enrich_TC_genetic), " enriched KO terms"))
+
+  dp_KO_TCgenetic <-dotplot(kegg_enrich_TC_genetic, title="Enriched KO terms in TC genetic TAGs")
+  print(dp_KO_TCgenetic)
+  ggsave(dp_KO_TCgenetic, filename=paste0(dir2, "figures/TC_genetic_DEGs_enriched_KOterms.png"))
+
+
+print(as.data.frame(kegg_enrich_TC_genetic) %>%
+        dplyr::select(Description, ID, p.adjust) %>%
+        mutate(p.adjust = round(p.adjust, 4)) 
+)
+}else {print("no enriched KO")}
+
+```
+
+```{r}
+# Run KEGG enrichment -- TC nongenetic 
+kegg_enrich_TC_nongenetic <- enrichKEGG(
+  gene         = TC_nongenetic_DEGs_top50percent$KO,
+  universe = KEGG_universe$KO,
+  organism     = "ko",   # "ko" for general KEGG Orthology-based analysis
+  keyType      = "kegg",
+  pAdjustMethod = "BH",
+  pvalueCutoff = 0.05
+)
+
+# View results
+nrow(kegg_enrich_TC_nongenetic)
+
+if(nrow(kegg_enrich_TC_nongenetic) != 0){
+  
+  print(paste0(nrow(kegg_enrich_TC_nongenetic), " enriched KO terms"))
+
+  dp_KO_TCnongenetic <-dotplot(kegg_enrich_TC_nongenetic, title="Enriched KO terms in TC nongenetic TAGs")
+  print(dp_KO_TCnongenetic)
+  ggsave(dp_KO_TCnongenetic, filename=paste0(dir2, "figures/TC_nongenetic_DEGs_enriched_KOterms.png"))
+
+
+print(as.data.frame(kegg_enrich_TC_nongenetic) %>%
+        dplyr::select(Description, ID, p.adjust) %>%
+        mutate(p.adjust = round(p.adjust, 4)) 
+)
+}else {print("no enriched KO")}
+
+```
+
+```{r}
+# Run KEGG enrichment -- eggyolk
+kegg_enrich_eggyolk <- enrichKEGG(
+  gene         = eggyolk_DEGs_top50percent$KO,
+  universe = KEGG_universe$KO,
+  organism     = "ko",   # "ko" for general KEGG Orthology-based analysis
+  keyType      = "kegg",
+  pAdjustMethod = "BH",
+  pvalueCutoff = 0.05
+)
+
+# View results
+nrow(kegg_enrich_eggyolk)
+
+if(nrow(kegg_enrich_eggyolk) != 0){
+  
+  print(paste0(nrow(kegg_enrich_eggyolk), " enriched KO terms"))
+
+  dp_KO_TCnongenetic <-dotplot(kegg_enrich_eggyolk, title="Enriched KO terms in eggyolk TAGs")
+  print(dp_KO_TCnongenetic)
+  ggsave(dp_KO_TCnongenetic, filename=paste0(dir2, "figures/eggyolk_DEGs_enriched_KOterms.png"))
+
+
+print(as.data.frame(kegg_enrich_eggyolk) %>%
+        dplyr::select(Description, ID, p.adjust) %>%
+        mutate(p.adjust = round(p.adjust, 4)) 
+)
+}else {print("no enriched KO")}
+
+
+```
+
+# Make Volcano plots
+TC overall
+```{r}
+library(ggrepel)
+
+n_namestoprint <- 8 #how many of the top genes to label on the plot
+
+volcano_data <- TC_allgeneestimates %>%
+  mutate(negLog10P = -log10(padj),
+         significance = ifelse(padj < 0.05 & abs(log2FoldChange) > foldchange_cutoff, "Significant", "Not Significant"),
+         iscarot = case_when(class == "carot" ~ "carot", T ~ "NA"),
+         class = case_when(is.na(class) ~ "none", T~class)) %>%
+  filter(!is.na(padj))
+
+top_genes <- volcano_data %>% filter(significance == "Significant") %>%
+  mutate(index=abs(log2FoldChange) * negLog10P) %>%
+  arrange(-index) %>% head(n=n_namestoprint) %>%
+  mutate(Description = sub(".* - \\s*", "", Description)) %>%
+  mutate(shortname = sub("^(.*?)(?://| - ).*NOT NAMED.*//\\s*(.*)$", "\\2", Description, perl = TRUE)) %>%
+  mutate(shortname = ifelse(shortname == Description, 
+                 sub("^.*?//\\s*(.*NOT NAMED.*)", "\\1", x), 
+                 shortname))
+top_genes$manualname <- c("Domain of unknown function", "Phloem protein 2 (PP2)", "Domain of unknown function", "Glutathione S-transferase U1-related", "Glucan endo-1,3-beta-glucosidase 7-related", "SCARECROW-like protein 15", "Unknown (Manes.14G136021)","Calcium-binding EF hand family protein")
+
+TC_overall_volcano <- ggplot(volcano_data, aes(x = log2FoldChange, y = negLog10P)) +
+  geom_point(aes(color = significance, shape = class)) +  # group you want in legend
+  scale_color_manual(values = c("gray", "red")) +
+  scale_shape_manual(values=c(13, 8, 19), labels=c("starch-related", "carotenoid-related", "none"),
+                     name="a priori gene class") +
+  labs(title = "Gene expression associated with overall variation in TC",
+       x = "log2 Fold Change",
+       y = "-log10(p-value)") +
+  geom_text_repel(data = top_genes, aes(label = manualname), force = 18,
+      max.overlaps = Inf, # Allow all labels to try to repel
+      segment.size = 0.3, # Show a line to the point
+      segment.color = "grey50",
+      box.padding = 0.8,  # Increase padding around text boxes
+      point.padding = 0.5 , size=3, direction="y", seed=14850)
+
+print(TC_overall_volcano)
+
+ggsave(TC_overall_volcano, filename=paste0(dir2, "figures/TCoverall_gene_associations_volcano.png"))
+```
+
+TC genetic
+```{r}
+volcano_data_genetic <- TC_genetic_allgeneestimates %>%
+  mutate(negLog10P = -log10(padj),
+         significance = ifelse(padj < 0.05 & abs(log2FoldChange) > foldchange_cutoff, "Significant", "Not Significant"),
+         iscarot = case_when(class == "carot" ~ "carot", T ~ "NA"),
+         class = case_when(is.na(class) ~ "none", T~class)) %>%
+  filter(!is.na(padj))
+
+top_genes_genetic <- volcano_data_genetic %>% filter(significance == "Significant") %>%
+  mutate(index=abs(log2FoldChange) * negLog10P) %>%
+  arrange(-index) %>% head(n=n_namestoprint) %>%
+  mutate(shortname = sub(".*//\\s*", "", Description) %>% sub(".* - \\s*", "", .) ) 
+
+top_genes_genetic$manualname <- c("Lariciresinol reductase", "Phloem protein 2 (PP2)", "Domain of unknown function", "Glutathione S-transferase U1-related", "Unknown (Manes.14G136021)", "Scarecrow-like protein 15", "Universal stress protein family (Usp)", "Small heat-shock protein HSP20 family")
+
+TC_genetic_volcano <- ggplot(volcano_data_genetic, aes(x = log2FoldChange, y = negLog10P)) +
+  geom_point(aes(color = significance, shape = class)) +  # group you want in legend
+  scale_color_manual(values = c("gray", "red")) +
+  scale_shape_manual(values=c(13, 8, 19), labels=c("starch-related", "carotenoid-related", "none"),
+                     name="a priori gene class") +
+  labs(title = "Gene expression associated with genetic variation in TC",
+       x = "log2 Fold Change",
+       y = "-log10(p-value)") +
+  geom_text_repel(data = top_genes_genetic, aes(label = manualname), force = 20,
+      max.overlaps = Inf, # Allow all labels to try to repel
+      segment.size = 0.3, # Show a line to the point
+      segment.color = "grey50",
+      box.padding = 0.8,  # Increase padding around text boxes
+      point.padding = 0.5, size= 3, direction="y", seed=14850)
+
+print(TC_genetic_volcano)
+
+ggsave(TC_genetic_volcano, filename=paste0(dir2, "figures/TC_genetic_gene_associations_volcano.png"))
+```
+
+TC nongenetic
+```{r}
+volcano_data_nongenetic <- TC_nongenetic_allgeneestimates %>%
+  mutate(negLog10P = -log10(padj),
+         significance = ifelse(padj < 0.05 & abs(log2FoldChange) > foldchange_cutoff, "Significant", "Not Significant"),
+         iscarot = case_when(class == "carot" ~ "carot", T ~ "NA"),
+         class = case_when(is.na(class) ~ "none", T~class)) %>%
+  filter(!is.na(padj))
+
+top_genes_nongenetic <- volcano_data_nongenetic %>% filter(significance == "Significant") %>%
+  mutate(index=abs(log2FoldChange) * negLog10P) %>%
+  arrange(-index) %>% head(n=n_namestoprint) %>%
+  mutate(shortname = sub(".*//\\s*", "", Description) %>% sub(".* - \\s*", "", .) )
+
+top_genes_nongenetic$manualname <- c("Unknown (Manes.17G096900)", "Unknown (Manes.17G010400)", "Auxin responsive protein", "Peroxidase 35-related", "Copper transport protein ATOX1-related", "Glucose-6-phosphate isomerase 1, chloroplastic", "Protein of unknown function", "Delta(8)-fatty-acid desaturase")
+  
+TC_nongenetic_volcano <- ggplot(volcano_data_nongenetic, aes(x = log2FoldChange, y = negLog10P)) +
+  geom_point(aes(color = significance, shape = class)) +  # group you want in legend
+  scale_color_manual(values = c("gray", "red")) +
+  scale_shape_manual(values=c(13, 8, 19), labels=c("starch-related", "carotenoid-related", "none"),
+                     name="a priori gene class") +
+  labs(title = "Gene expression associated with non-genetic variation in TC",
+       x = "log2 Fold Change",
+       y = "-log10(p-value)") +
+  geom_text_repel(data = top_genes_nongenetic, aes(label = manualname), force = 8,
+      max.overlaps = Inf, # Allow all labels to try to repel
+      segment.size = 0.3, # Show a line to the point
+      segment.color = "grey50",
+      box.padding = 0.8,  # Increase padding around text boxes
+      point.padding = 0.5, size= 3, direction="both", seed=14850)
+
+print(TC_nongenetic_volcano)
+
+ggsave(TC_nongenetic_volcano, filename=paste0(dir2, "figures/TC_nongenetic_gene_associations_volcano.png"))
+```
+
+Eggyolk (main effect + layer interaction)
+```{r}
+volcano_data_eggyolk <- eggyolk_allgeneestimates %>%
+  mutate(negLog10P = -log10(padj),
+         significance = ifelse(padj < 0.05 & abs(log2FoldChange) > foldchange_cutoff, "Significant", "Not Significant"),
+         iscarot = case_when(class == "carot" ~ "carot", T ~ "NA"),
+         class = case_when(is.na(class) ~ "none", T~class)) %>%
+  filter(!is.na(padj))
+
+top_genes_eggyolk <- volcano_data_eggyolk %>% filter(significance == "Significant") %>%
+  mutate(index=abs(log2FoldChange) * negLog10P) %>%
+  arrange(-index) %>% head(n=n_namestoprint) %>%
+  mutate(shortname = sub(".*//\\s*", "", Description) %>% sub(".* - \\s*", "", .) )
+
+top_genes_eggyolk$manualname <- c("Unknown (Manes.02G127202)", "Unknown (Manes.14G136021)", "Heat shock transcription factor", "Early light-induced protein 1, chloroplastic", "Chalcone synthase (CHS)", "Calcium-binding protein CML30-related", "Heat stress transcription factor A-2-related", "Chalcone synthase (CHS)")
+
+eggyolk_volcano <- ggplot(volcano_data_eggyolk, aes(x = log2FoldChange, y = negLog10P)) +
+  geom_point(aes(color = significance, shape = class)) +  # group you want in legend
+  scale_color_manual(values = c("gray", "red")) +
+  scale_shape_manual(values=c(13, 8, 19), labels=c("starch-related", "carotenoid-related", "none"),
+                     name="a priori gene class") +
+  labs(title = "Gene expression associated with the egg-yolk phenotype",
+       x = "log2 Fold Change",
+       y = "-log10(p-value)") +
+  geom_text_repel(data = top_genes_eggyolk, aes(label = manualname), force = 10,
+      max.overlaps = Inf, # Allow all labels to try to repel
+      segment.size = 0.3, # Show a line to the point
+      segment.color = "grey50",
+      box.padding = 0.8,  # Increase padding around text boxes
+      point.padding = 0.5, size= 3, direction="y", seed=14850)
+
+print(eggyolk_volcano)
+
+ggsave(eggyolk_volcano, filename=paste0(dir2, "figures/eggyolk_gene_associations_volcano.png"))
+```
+
+Eggyolk/layer interaction
+```{r}
+volcano_data_eggyolk_interaction <- eggyolk_interaction_allgeneestimates %>%
+  mutate(negLog10P = -log10(padj),
+         significance = ifelse(padj < 0.05 & abs(log2FoldChange) > foldchange_cutoff, "Significant", "Not Significant"),
+         iscarot = case_when(class == "carot" ~ "carot", T ~ "NA"),
+         class = case_when(is.na(class) ~ "none", T~class)) %>%
+  filter(!is.na(padj))
+
+top_genes_eggyolk_interaction <- volcano_data_eggyolk_interaction %>% 
+  mutate(index=abs(log2FoldChange) * negLog10P) %>%
+  arrange(-index) %>% head(n=n_namestoprint) %>%
+  mutate(shortname = sub(".*//\\s*", "", Description) %>% sub(".* - \\s*", "", .) )
+
+top_genes_eggyolk_interaction$manualname <- c("Expressed protein (Manes.17G096900)", "Alcohol dehydrogenase class-P (ADH1)", "Pyruvate decarboxylase 2", "Unknown (Manes.02G127202)", "MYB-like DNA-binding protein", "EF-hand calcium-binding domain containing protein", "Phosphoribosylglycinamide synthetase", "Helix-loop-helix DNA-binding domain")
+
+eggyolk_interaction_volcano <- ggplot(volcano_data_eggyolk_interaction, aes(x = log2FoldChange, y = negLog10P)) +
+  geom_point(aes(color = significance, shape = class)) +  # group you want in legend
+  scale_color_manual(values = c("gray", "red")) +
+  scale_shape_manual(values=c(13, 8, 19), labels=c("starch-related", "carotenoid-related", "none"),
+                     name="a priori gene class") +
+  labs(title = "Gene expression associated with egg-yolk/layer interaction",
+       x = "log2 Fold Change",
+       y = "-log10(p-value)") +
+  geom_text_repel(data = top_genes_eggyolk_interaction, aes(label = manualname), force = 10,
+      max.overlaps = Inf, # Allow all labels to try to repel
+      segment.size = 0.3, # Show a line to the point
+      segment.color = "grey50",
+      box.padding = 0.8,  # Increase padding around text boxes
+      point.padding = 0.5, size=3, seed=14850)
+
+print(eggyolk_interaction_volcano)
+
+ggsave(eggyolk_interaction_volcano, filename=paste0(dir2, "figures/eggyolk_interaction_gene_associations_volcano.png"))
+```
+
+Correlation of lutein and beta-carotene
+```{r}
+test <- cor.test(phenodata_merged$Lutein, phenodata_merged$Beta.Carotene) 
+test$estimate
+test$p.value
+```
+
+
+
+
+
+
+
+
+
+
+Get GO terms and test enrichment -- old method with biomaRt
+```{r, eval=F}
+library(biomaRt) #BiocManager::install("biomaRt")
+library(GO.db) #BiocManager::install("GO.db")
+
+
+#get cassava genome info from ensembl
+cassava_mart <- useMart("plants_mart", dataset = "mesculenta_eg_gene", host = "https://plants.ensembl.org")
+
+# getch GO IDs + GO Term Descriptions
+go_annotations <- getBM(
+  attributes = c(
+    "ensembl_gene_id",     # Cassava gene ID
+    "go_id",               # GO term ID
+    "name_1006",           # GO term description (aka "GO name")
+    "namespace_1003"       # GO domain: BP / MF / CC
+  ),
+  mart = cassava_mart
+)
+
+
+# Expand multiple GO terms per gene
+term2gene <- fullgene_annotations %>%
+  separate_rows(GO, sep = " ") %>%  # split on spaces
+  filter(GO != "") %>%
+  mutate(gene_id = paste0(locusName, ".v8.1")) %>% 
+  dplyr::select(GO, gene_id)
+
+# Use select() to get the descriptions
+term2name <- AnnotationDbi::select(
+  GO.db,
+  keys = term2gene$GO,
+  columns = c("TERM"), 
+  keytype = "GOID"
+) %>% distinct()
+
+#Run enricher:
+go_enrich_eggyolk <- enricher(
+  gene          = eggyolk_DEGs$gene_id, 
+  TERM2GENE     = term2gene, 
+  pAdjustMethod = "BH"        # Adjust p-values
+)
+
+#Run enricher:
+go_enrich_TC <- enricher(
+  gene          = TC_DEGs$gene_id, 
+  TERM2GENE     = term2gene, 
+  pAdjustMethod = "BH"        # Adjust p-values
+)
+
+# View results
+head(as.data.frame(go_enrich_TC))
+
+eggyolk_DEGs_annot <- eggyolk_DEGs %>% separate_rows(GO, sep = " ") %>% left_join(term2name, by=c("GO" = "GOID"))
+
+
+```
+
+
+
+
+
+
+```{r,eval=F}
+dds_testTC_analysis <- readRDS(file=paste0(dir2, "output/DEseq_analysis_TC_layer_7SVfactors.RDS"))
+
+deseq_wsv_analysis@design
+
+test <- results(deseq_wsv_analysis, contrast=c("layer","i", "o"))
+
+summary(deseq_wsv_analysis)
+
+head(deseq_wsv_analysis)
+
+#shrinkage on effect size (LFC estimates)
+resLFC <- lfcShrink(DEanalysis, coef="layer_o_vs_i", type="apeglm")
+resLFC
+
+
+
+#join with gene functional annotations
+gene_annot <- fread("/workdir/ssv42/Mesc671_v8_assembly/annotation/Mesculenta_671_v8.1.annotation_info.txt")
+
+DEresults_annotated <- as.data.frame(DEresults) %>% 
+  mutate(Cassava.gene.name.s. = gsub("\\.v8\\.1", "", rownames(.))) %>%
+  left_join(gene_annot, by=c("Cassava.gene.name.s."="locusName")) %>%
+  arrange(padj)
+
+
+
+
+#check for any of the carotenoid genes
+carotgenes <- read.csv("/workdir/ssv42/APrioriCandidateGenesTable.csv") %>%
+  dplyr::select(Cassava.gene.name.s., Function.category, Description, Abbreviation) %>%
+  filter(Function.category == "Carotenoid synthesis" | Function.category == "Apocarotenoid synthesis" |
+           Function.category == "Carotenoid synthesis, chromoplast formation")
+
+#merge with layer DEG results
+layerDEG <- as.data.frame(DEresults) %>% 
+  mutate(Cassava.gene.name.s. = gsub("\\.v8\\.1", "", rownames(.)))
+
+carot_layerDEresults <- left_join(carotgenes, layerDEG, by="Cassava.gene.name.s.") %>%
+  arrange(padj)
+
+head(carot_layerDEresults)
+
+
+#plotCounts(dds, "Manes.01G000031.v8.1", intgroup="layer")
+```
+
+
+
+#### Egg Yolk DEG analysis ####
+
+Which genes are associated with spatial up-regulation of carotenoids and the "egg yolk" phenotype?
+Which genes are associated with carotenoids after accounting for genotype & layer?
+
+
+Make DEseq2 dataset for continuous total_carotenoids method
+```{r, eval=F}
+#Make new DESeq2 dataset only with genotype, layer, TC, and extraction date
+dds_desv_eggyolk <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filtx2), colData = metadata_phenos_scaled_sv,
+                design = ~ genotype + layer + total_carotenoids + RNA_extraction_date + V1 + V2 + V3 + V4 + V5 + V6 + V7)
+
+#Run DEanalysis
+DE_eggyolk_analysis <- DESeq(dds_desv_eggyolk, parallel=T)
+
+#save analysis and model used for analysis
+#saveRDS(DE_eggyolk_analysis, file=paste0(dir2, "output/DESeq_eggyolk_analysis_TCDM1-4_", format(Sys.Date(), "%m.%d.%y"), ".RDS"))
+#writeLines(as.character(dds_desv_eggyolk@design), paste0(dir2, "output/DESeq_eggyolk_analysis_TCDM1-4_", format(Sys.Date(), "%m.%d.%y"), "_modelinfo.txt"))
+
+#check results
+DE_TC_results <- results(DE_eggyolk_analysis, name = "total_carotenoids")
+summary(DE_TC_results)
+head(as.data.frame(DE_TC_results) %>% arrange(padj))
+
+#shrinkage on effect size (LFC estimates) (?)
+# TCresLFC <- lfcShrink(DE_eggyolk_analysis, coef="total_carotenoids", type="apeglm")
+# TCresLFC
+
+#join with gene functional annotations
+gene_annot <- fread("/workdir/ssv42/Mesc671_v8_assembly/annotation/Mesculenta_671_v8.1.annotation_info.txt")
+
+DE_TC_results_annotated <- as.data.frame(DE_TC_results) %>% 
+  mutate(Cassava.gene.name.s. = gsub("\\.v8\\.1", "", rownames(.))) %>%
+  left_join(gene_annot, by=c("Cassava.gene.name.s."="locusName")) %>%
+  arrange(padj)
+
+DE_TC_results_significant <- DE_TC_results_annotated %>% filter(padj <= 0.1)
+#write.table(DE_TC_results_significant, file=paste0(dir2, "output/DESeq_eggyolk_analysis_TCDM1-4_DEGs_padj.05"), row.names=F)
+
+#check for any of the carotenoid genes
+carotgenes <- read.csv("/workdir/ssv42/APrioriCandidateGenesTable.csv") %>%
+   dplyr::select(Cassava.gene.name.s., Function.category, Description, Abbreviation) %>%
+   filter(Function.category == "Carotenoid synthesis" | Function.category == "Apocarotenoid synthesis" |
+            Function.category == "Carotenoid synthesis, chromoplast formation")
+
+# merge with egg yolk DEG results
+eggyolkDEG <- as.data.frame(DE_TC_results) %>% 
+  mutate(Cassava.gene.name.s. = gsub("\\.v8\\.1", "", rownames(.)))
+
+carot_eggyolkDEresults <- left_join(carotgenes, eggyolkDEG, by="Cassava.gene.name.s.") %>%
+   arrange(padj)
+
+head(carot_layerDEresults)
+#CCD8 and NCED
+```
+
+
+Save R session information
+```{r}
+writeLines(capture.output(sessionInfo()), paste0(dir2, "Rsessioninfo.txt"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+#############################
+###### OLD code below #######
+#############################
+
+
+Troubleshoot log-scale residual calculation with zero counts:
+```{r, eval=F}
+#there is a problem with infinite values coming from log2(0)s. Find where this is coming from:
+hist(fitted.common.scale , xlim=c(-100,100), breaks=500000, main="qij, aka fitted.common.scale")
+hist(Loveresiduals , xlim=c(-100,100), breaks=500000, main="Kij - qij, aka Love residuals")
+hist(fitted.common.scale + Loveresiduals , xlim=c(-100,100), breaks=500000, main="qij + Kij - qij")
+hist(counts(deseq_wsv_analysis, normalized=TRUE)[,1] , xlim=c(-100,100), breaks=50000, main="Kij, normalized counts")
+
+#the problem is that we have a lot of 0 counts
+#when there are 0 counts, qij + Kij - qij = 0
+
+#Love residuals are Kij - qij
+#if qij + (Kij-qij) =  0, that means Kij (the counts) were 0
+
+Kij_mat <- counts(deseq_wsv_analysis, normalized=TRUE)
+qij_mat <- fitted.common.scale
+Loveresid_mat <- Kij_mat - qij_mat
+
+newqij_mat <- qij_mat + Loveresid_mat
+
+#for example:
+newqij_mat[6,4] == 0
+
+# if Kij is 0, then newqij should be 0 such sj*qij = 0
+#but log2(0) doesn't exist
+#log2 of a very small number does
+#therefore xj*Bi + e (fitted value + e) should be minimized
+```
+
+Remove technical variation from variance-stabilized counts for WGCNA input (overall network)
+```{r, eval=F}
+#confirm samples are in the same order in metadata and vst counts matrix
+all(colnames(assay(vsd)) == metadata_phenos_scaled_sv$fullID)
+
+SVmatrix <- metadata_phenos_scaled_sv %>% dplyr::select(V1:V5)
+
+vsd_batchremoved <- limma::removeBatchEffect(assay(vsd), batch = colData(vsd)$plateID,
+                                             covariates= SVmatrix)
+
+#saveRDS(vsd_batchremoved, file=paste0(dir2, "output/variance_stabilized_plateIDSVs_removed_data.RDS"))
+
+```
+
+Check the output of the batch-corrected count data:
+```{r, eval=F}
+vsd_copy <- vsd
+vsd_batchremoved_copy <- vsd_copy
+assay(vsd_batchremoved_copy) <- vsd_batchremoved
+
+overall_pcaData <- DESeq2::plotPCA(vsd_batchremoved_copy, intgroup=c("plateID"), returnData=TRUE)
+percentVar <- round(100 * attr(overall_pcaData, "percentVar"))
+
+ggplot(overall_pcaData, aes(PC1, PC2, color=plateID)) + geom_point(size=2) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) + ylab(paste0("PC2: ",percentVar[2],"% variance")) +
+  ggtitle("PCA of batch-corrected variance-stabilized gene counts") +
+  labs(color = "RNA Plate") + 
+  scale_color_discrete(labels = c("TCDM_1" = "Year1_1", "TCDM_2" = "Year1_2", "TCDM3" = "Year2_3", "TCDM4" = "Year2_4"))
+
+ #ggsave(paste0(dir2, "figures/PCA_VST_genecounts_afterbatchremoval_joinedTCDM1-4_colorbyplate.png"),
+ #       width=7, height=5, units="in")
+
+```
+
+MOFA2 method of factor analysis:
+
+Fit initial negative poisson GLM with DESeq and extract residuals for latent factor analysis
+```{r, eval=F}
+print(dds@design)
+dds_analysis <- DESeq(dds, parallel=T)
+
+counts_raw <- counts(dds, normalized=TRUE)  # Approximate fitted values
+counts <- counts(dds_analysis, normalized=TRUE)  # Approximate fitted values
+mu <- results(dds_analysis, tidy=T) # Extract raw counts
+
+
+# Residuals = counts-mu
+dds_residuals <- counts_raw - mu 
+
+#Michael Love method
+#on the scale of the counts, the fitted values are:
+mu2 <- assays(dds_analysis)[["mu"]]
+#to get the fitted values on the common scale, you just need to divide each column by the size factor:
+fitted.common.scale = t(t(assays(dds_analysis)[["mu"]])/sizeFactors(dds_analysis))
+#So then the residuals are
+Loveresiduals <- counts(dds_analysis, normalized=TRUE) - fitted.common.scale 
+
+
+
+ggplot(data.frame(as.numeric(Loveresiduals)), aes(x = as.numeric.Loveresiduals.)) +
+  geom_histogram(bins = 30) +
+  scale_y_log10()  # Log scale for y-axis
+
+#saveRDS(dds_residuals, file=paste0(dir2, "output/DESeq_model1_residuals_matrix.RDS"))
+```
+
+Factor analysis to remove latent technical variation
+
+Multi-omic factor analysis (MOFA) for PEER implementation:
+based on https://github.com/bioFAM/PEER/blob/master/run/peer_wrapper.R
+MOFA is a multi-view factor analysis framework that is a generalisation of PEER
+MOFA must also be installed in python: (`pip install mofapy2`)
+
+Calculate PEER factors on the residuals 
+```{r, eval=F}
+#BiocManager::install("MOFA2")
+library(MOFA2) 
+
+## Load data as a matrix with dimensions (features,samples)
+# The data needs to be input as a list of views. If you have a single data modality, the input data 
+# corresponds to a list with a single element.
+mofadata <- list(as.matrix(Loveresiduals))
+
+## Create MOFA object
+mofaobject <- suppressMessages( create_mofa(mofadata) )
+
+# check dimensionalities
+print(mofaobject)
+
+## Define data options
+data_opts <- get_default_data_options(mofaobject)
+
+## Define model options
+model_opts <- get_default_model_options(mofaobject)
+
+# use ARD prior for the factors? (please do not edit this)
+model_opts$ard_factors <- FALSE
+
+# number of factors
+model_opts$num_factors <- 10
+
+## Define training options
+train_opts <- get_default_training_options(mofaobject)
+
+# maximum number of iterations
+train_opts$maxiter <- 2000
+
+# fast, medium, slow
+train_opts$convergence_mode <- "fast"
+
+# initial iteration to start evaluating convergence using the ELBO (recommended >1)
+train_opts$startELBO <- 1
+
+# frequency of evaluation of ELBO (recommended >1)
+train_opts$freqELBO <- 1
+
+# use GPU (needs cupy installed and working)
+train_opts$gpu_mode <- FALSE
+
+# verbose output?
+train_opts$verbose <- TRUE
+
+# random seed
+train_opts$seed <- 14850
+
+## Prepare the MOFA object 
+mofaobject <- prepare_mofa(
+  object = mofaobject, 
+  data_options = data_opts,
+  model_options = model_opts,
+  training_options = train_opts
+)
+
+##############
+## Run MOFA
+
+# The output is an hdf5 file that can be loaded using the function load_model(file)
+outfile = "/workdir/ssv42/RNAseq_yr2/output/MOFAmodel_onDESeq2resids.hdf5"
+mofamodel <- run_mofa(mofaobject, outfile=outfile, use_basilisk=T)
+#basilisk=T makes sure R can find python mofa
+
+#############################
+## Plot variance explained ##
+#############################
+
+# Plot variance explained using individual factors
+plot_variance_explained(mofamodel, factors="all")
+
+# Plot total variance explained using all factors
+plot_variance_explained(mofamodel, plot_total = TRUE)
+
+# Plot variance explained with line plot to see elbow
+# Calculate variance explained (R2)
+r2 <- calculate_variance_explained(mofamodel)
+pve <- as.data.frame((r2[[2]])) %>% rownames_to_column("factor") %>%
+  mutate(factor = factor(gsub("Factor", "", factor), levels=c(1:10)))
+
+ggplot(pve, aes(x=factor, y=view_1)) +
+  geom_point() + 
+  geom_line(aes(group=1)) + 
+  xlab("PEER factor") +
+  ylab("percent residual variance explained")
+# elbow at 4
+
+#ggsave(file=paste0(dir2, "figures/PEERfactors_PVE.png"))
+
+
+########################
+## Plot factor values ##
+########################
+
+plot_factor(mofamodel, factor = 1) #, color_by="year")
+plot_factors(mofamodel, factor = c(1,2)) #, color_by="year")
+
+###########################
+## Plot feature loadings ##
+###########################
+
+# The weights or loadings provide a score for each gene on each factor. 
+# Genes with no association with the factor are expected to have values close to zero
+# Genes with strong association with the factor are expected to have large absolute values. 
+# The sign of the loading indicates the direction of the effect: a positive loading indicates that the feature is more active in the cells with positive factor values, and viceversa.
+
+# Plot the distribution of loadings for Factor 1.
+plot_weights(mofamodel,
+  view = 1,
+  factor = 1,
+  nfeatures = 10,     # Top number of features to highlight
+  scale = T           # Scale loadings from -1 to 1
+)
+
+# If you are not interested in the full distribution, but just on the top loadings:
+plot_top_weights(mofamodel, 
+  view = 1, 
+  factor = 1, 
+  nfeatures = 10,
+  scale = T
+)
+
+## Plot correlation between factors
+plot_factor_cor(mofamodel)
+
+## Fetch factors
+# fetch factors in matrix format, with dimensions (nfactors, nsamples)
+# factors <- get_factors(mofamodel)[[1]]
+# dim(factors)
+
+# fetch factors in data.frame format, with columns "sample", "factor", "value"
+factors_df <- get_factors(mofamodel, as.data.frame = T)
+head(factors_df)
+# transform to wide version
+factors_wide <- factors_df %>% dplyr::select(-group) %>%
+  pivot_wider(names_from = factor, values_from= value) 
+
+
+## Fetch weights
+# # fetch weights in matrix format, with dimensions (nfeatures, nfactors)
+# weights <- get_weights(mofamodel)[[1]]
+# dim(weights)
+# 
+# # fetch weights in long data.frame format, with columns "feature", "view", "factor", "value"
+# weights <- get_weights(mofamodel, as.data.frame = T)
+# head(weights)
+
+
+saveRDS(mofamodel, file=paste0(dir2, "output/MOFA_PEER_model_", 
+                            format(Sys.time(), '%m_%d_%Y_%H:%M')) )
+```
+
+Remake DESeq2 dataset with surrogate variables as covariates to remove latent variation:
+```{r, eval=F}
+metadata_wfactors <- left_join(metadata_phenos_scaled, factors_wide, by=c("fullID" = "sample"))
+
+dds_wfactors <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filtx2), 
+                                       colData = metadata_wfactors, 
+                                       design = ~ 1 + genotype + layer + root + block + timept + 
+                                         total_carotenoids + dry_matter + 
+                                         Factor1 + Factor2 + Factor3 + Factor4 + Factor5)
+saveRDS(dds_wfactors, file=paste0(dir2, "output/DEseq_dataset_w4PEERfactors.RDS"))
+```
+#saveRDS(dds_wfactors, file=paste0(dir2, "output/DEseq_dataset_w4PEERfactors.RDS"))
+
+Run DESeq2 with PEER factors
+```{r, eval=F}
+#dds_wfactors <- readRDS(file=paste0(dir2, "output/DEseq_dataset_w4PEERfactors.RDS"))
+
+deseq_wfactors_analysis <- DESeq(dds_wfactors, parallel=T)
+saveRDS(deseq_wfactors_analysis, file=paste0(dir2, "output/DEseq_analysis_w4PEERfactors.RDS"))
+```
+
+Extract LFC coefficients for WGCNA
+```{r, eval=F}
+deseq_wfactors_analysis <- readRDS(file=paste0(dir2, "output/DEseq_analysis_w4PEERfactors.RDS"))
+
+#get list of coefficient/factor contrast names
+coef_list <- resultsNames(deseq_wfactors_analysis)
+
+#initialize storage
+coef_LFCestimates <- matrix(nrow= (dim(deseq_wfactors_analysis)[1]), ncol= (length(coef_list)) )
+
+#extract each LFC coefficient  
+for(i in seq_along(coef_list)){
+  coef_i_results <- data.frame(results(deseq_wfactors_analysis, name=paste0(coef_list[i])))
+  coef_LFCestimates[,i] <- coef_i_results$log2FoldChange
+}
+
+#reattach names
+coef_LFCestimates <- as.data.frame(coef_LFCestimates)
+colnames(coef_LFCestimates) <- coef_list
+rownames(coef_LFCestimates) <- rownames(coef_i_results)
+saveRDS(coef_LFCestimates, file=paste0(dir2, "output/coefficients_log2FC_estimates.RDS"))
+
+```
+
+Egg yolk analysis for eggyolk factor variable method
+```{r, eval=F}
+#remove samples without carotenoid data for now (may try imputing later)
+removemissingTC <- metadata_joined_phenos$fullID[is.na(metadata_joined_phenos$total_carotenoids) | 
+                                                   is.na(metadata_joined_phenos$eggyolk)]
+counts_joined_filtx2 <- counts_joined_filt %>% dplyr::select(-all_of(removemissingTC))
+metadata_joined_phenos_filt <- metadata_joined_phenos %>% filter(!fullID %in% removemissingTC)
+
+#center numeric variables
+metadata_phenos_scaled <- metadata_joined_phenos_filt %>%
+  mutate(total_carotenoids = scale(total_carotenoids, center=T, scale=T),
+         dry_matter = scale(dry_matter, center=T, scale=T),
+         Phytoene = scale(Phytoene, center=T, scale=T),
+         mean_nguL = scale(mean_nguL, center=T, scale=T))
+
+#confirm correct sample order in both files
+all(colnames(counts_joined_filtx2) == metadata_phenos_scaled$fullID)
+
+#Make DESeq2 dataset (note: need to add latent factors )
+dds_eggyolk_fac <- DESeqDataSetFromMatrix(countData = as.matrix(counts_joined_filtx2), colData = metadata_phenos_scaled,
+                design = ~ genotype + layer + eggyolk + RNA_extraction_date)
+
+#Run DEanalysis
+DE_eggyolk_fac_analysis <- DESeq(dds_eggyolk_fac, parallel=T)
+
+#save analysis and model used for analysis
+saveRDS(DE_eggyolk_fac_analysis, file=paste0(dir2, "output/DESeq_eggyolk_asfactor_analysis_TCDM1-4_", format(Sys.Date(), "%m.%d.%y"), ".RDS"))
+#writeLines(as.character(DE_eggyolk_fac_analysis@design), paste0(dir2, "output/DESeq_eggyolk_asfactor_analysis_TCDM1-4_", format(Sys.Date(), "%m.%d.%y"), "_modelinfo.txt"))
+
+#check results
+DE_eggyolkfac_results <- results(DE_eggyolk_fac_analysis, contrast = c("eggyolk", "higherTCinner", "higherTCouter"))
+summary(DE_eggyolkfac_results)
+head(as.data.frame(DE_eggyolkfac_results) %>% arrange(padj))
+
+#join with gene functional annotations
+#note: need to check for missing carotenoid genes in the annotations file
+
+DE_eggyolkfacs_results_annotated <- as.data.frame(DE_eggyolkfac_results) %>% 
+  mutate(Cassava.gene.name.s. = gsub("\\.v8\\.1", "", rownames(.))) %>%
+  left_join(gene_annot, by=c("Cassava.gene.name.s."="locusName")) %>%
+  arrange(padj)
+
+DE_eggyolkfacs_results_significant <- DE_eggyolkfacs_results_annotated %>% filter(padj <= 0.1)
+#write.table(DE_eggyolkfacs_results_significant, file=paste0(dir2, "output/DESeq_eggyolk_asfactor_analysis_TCDM1-4_DEGs_padj.1"), row.names=F)
+
+#check for any of the carotenoid genes
+carotgenes <- read.csv("/workdir/ssv42/APrioriCandidateGenesTable.csv") %>%
+   dplyr::select(Cassava.gene.name.s., Function.category, Description, Abbreviation) %>%
+   filter(Function.category == "Carotenoid synthesis" | Function.category == "Apocarotenoid synthesis" |
+            Function.category == "Carotenoid synthesis, chromoplast formation")
+
+# merge with egg yolk DEG results
+eggyolkDEG <- as.data.frame(DE_TC_results) %>% 
+  mutate(Cassava.gene.name.s. = gsub("\\.v8\\.1", "", rownames(.)))
+
+carot_eggyolkDEresults <- left_join(carotgenes, eggyolkDEG, by="Cassava.gene.name.s.") %>%
+   arrange(padj)
+
+head(carot_layerDEresults)
+#CCD8 and NCED
+```
+
+OLD OLD code below:
+
+First regress out the known factors using negative binomial model glmGamPoi and extract residuals
+```{r, eval=F}
+BiocManager::install("glmGamPoi")
+library("glmGamPoi")
+
+# extract normalized count data from DESeq dataset
+#dds <- estimateSizeFactors(dds)
+#dds <- estimateDispersions(dds, parallel=T)
+#normalized_counts <- counts(dds, normalized=TRUE)
+
+normalized_counts <- assay(vsd)
+normalized_counts_metadata <- colData(vsd)
+
+# regress out the known factors using negative binomial (Gamma-Poisson) GLM
+
+#glmGamPoi method
+print(dds@design)
+gp_fit <- glm_gp(normalized_counts, design = dds@design, 
+                 col_data = normalized_counts_metadata)
+gp_residuals <- residuals(gp_fit)
+
+saveRDS(gp_fit, file=paste0(dir2, "output/GamPoimodel_fit_", 
+                            format(Sys.time(), '%m_%d_%Y_%H:%M')) )
+
+```
+
+Notes from Bioconductor support forum:
+Limma method to separate genetic and non-genetic effects:
+"If you want to remove batch effects, first shoot your data through DESeq2's vst, then use that log2 like matrix with limma's removeBatchEffects function"
+```{r, eval=F}
+#limma::residuals.MArrayLM function; try residuals(fit, data)
+
+#the removeBatchEffects method below does not subtract out intercept
+#nongeno_resids <- limma::removeBatchEffect(data, batch = data$genotype)
+
+
+#to get pearson residuals from edgeR:
+fit <- glmFit(y, design)
+y <- fit$counts
+mu <- fit$fitted.values
+phi <- fit$dispersion
+v <- mu*(1+phi*mu)
+resid.pearson <- (y-mu) / sqrt(v)
+
+
+#How DESEq2 calculates pearson residuals internally for cook's outlier test:
+p <- ncol(modelMatrix)
+dispersions <- robustMethodOfMomentsDisp(object, modelMatrix)
+V <- assays(object)[["mu"]] + dispersions * assays(object)[["mu"]]^2
+PearsonResSq <- (counts(object) - assays(object)[["mu"]])^2 / V
+```

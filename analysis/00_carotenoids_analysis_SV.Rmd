@@ -15,13 +15,13 @@ library(ggplot2)
 
 # Read in data
 ```{r}
-carotenoids <- read.csv("./data/Cassava_Carotenoid_Extraction.csv") %>% #uplc/uv-vis data
+carotenoids <- read.csv("../data/Cassava_Carotenoid_Extraction.csv") %>% #uplc/uv-vis data
   filter(tube_ID != 168) %>% #exclude a duplicate with outlier total carotenoids
   dplyr::select(-c(X:X.3)) #remove empty columns 
 
-weights <- read.csv("./data/carotenoid_sample_weights.csv") #sample weights for carotenoid extractions
+weights <- read.csv("../data/carotenoid_sample_weights.csv") #sample weights for carotenoid extractions
 
-dry_matter <- read.csv("./data/3_harvest_data.csv") %>% #dry matter and metadata
+dry_matter <- read.csv("../data/3_harvest_data.csv") %>% #dry matter and metadata
   mutate(tube_ID = as.character(samplenum)) %>% dplyr::select(-samplenum) %>%
   mutate(block = substr(as.character(plant), 1, 1), #get block number from first digit of plant number
          timept = case_when(harvest_date %in% c("5/29/23", "5/30/23") ~ "6MAP", 
@@ -61,7 +61,8 @@ joined_df <- joined_df %>%
   dplyr::select(-c(dry_matter., dry_matter._complete))
 
 
-write.csv(joined_df, "./data/CarotenoidsHPLCdata_merged_yr2.csv")
+#write.csv(joined_df, "../data/CarotenoidsHPLCdata_merged_yr2.csv")
+joined_df = read.csv("../data/CarotenoidsHPLCdata_merged_yr2.csv")
 ```
 
 
@@ -82,9 +83,9 @@ outliertest2 <- grubbs.test(joined_df$dry_matter)
 # #outliertest2
 joined_df[joined_df$tube_ID == "62", "dry_matter" ] <- NA
 
-# outliertest3 <- grubbs.test(joined_df$total_carotenoids)
+outliertest3 <- grubbs.test(joined_df$total_carotenoids)
 # # #outliertest3
-# joined_df[joined_df$tube_ID == "349", "total_carotenoids" ] <- NA
+joined_df[joined_df$tube_ID == "349", "total_carotenoids" ] <- NA
 
 ```
 
@@ -228,7 +229,7 @@ cat("layer effect across timepoints: ", tp1layer, tp2layer, tp3layer, tp4layer)
 
   
   
-#Pick 4 genotypes for RNAseq:
+#Pick 4 genotypes to focus on for RNAseq across all timepoints:
 For the four most important traits (DM, TC, phytoene, beta-carotene), fit a line through the timepoints (one for inner, one for outer layer)
 Get genotype/layer mean and std. error for each timepoint, divide by standard error (?)
 Calculate the distance between each genotype/layer scaled mean and the line
@@ -753,7 +754,7 @@ anova_blockDM
 - block does significantly improve the model fit for DM 
 
 
-## model_11 : efect of timepoint in TC 
+## model_11 : effect of timepoint in TC 
 ```{r}
 #this will be the "reduced" model to model_2
 model_11 <- lm(data = joined_df, total_carotenoids ~ dry_matter + layer + block)
@@ -766,7 +767,7 @@ anova_timeptTC
 - timepoint does significantly improve the model fit for TC 
 
 
-## model_12 : efect of timepoint in DM 
+## model_12 : effect of timepoint in DM 
 ```{r}
 #this will be the "reduced" model to model_1
 model_12 <- lm(data = joined_df, dry_matter ~ total_carotenoids + layer + block)
@@ -799,7 +800,7 @@ anova_genotypeDM
 ```
 
 ## model_15: effect of phytoene in DM
-- to help verify the hypothesis that phyotene accumulating may be promoting the degradation or inhibition of starch by the change of amyloplasts to chromoplasts?
+- to help test the hypothesis that phyotene accumulating may be promoting the degradation or inhibition of starch by the change of amyloplasts to chromoplasts
 
 ```{r}
 #this is the "full" model to model_1 
@@ -981,7 +982,7 @@ anova_18
 ```
 
 
-## model_19: effect of cis-carotenes 
+## model_19: effect of cis-carotenes vs. total carotenoids
 
 ```{r}
 clean_joined_df <- clean_joined_df %>%
@@ -990,13 +991,84 @@ clean_joined_df <- clean_joined_df %>%
          totalothercarotenoids = total_violaxanthin + Lutein + Beta.Carotene)
 
 
-model_19 <- lmer(data = clean_joined_df, dry_matter ~ totalciscarotenes + totalothercarotenoids + timept + layer + block + (1|genotypeID))
+model_19 <- lmer(data = clean_joined_df, dry_matter ~ totalciscarotenes + totalothercarotenoids + timept + layer + block + (1|genotypeID), REML=FALSE)
 summary(model_19)
 
-model_19test <- lmer(data = clean_joined_df, dry_matter ~ totalothercarotenoids + timept + layer + block + (1|genotypeID))
+model_19test <- lmer(data = clean_joined_df, dry_matter ~ totalothercarotenoids + timept + layer + block + (1|genotypeID), REML=FALSE)
 
 anova_19 <- anova(model_19, model_19test)
-anova_19
+anova_19 #p=0.000339
+```
+
+
+## model_19.2: effect of lutein vs. total_carotenoids 
+
+```{r}
+clean_joined_df <- clean_joined_df %>%
+  mutate(totalciscarotenes = Phytoene + Phytofluene + Zeta.Carotene, 
+         totalxanthophylls = total_violaxanthin + Lutein,
+         totalothercarotenoids = total_violaxanthin + Lutein + Beta.Carotene,
+         totalviola = Violaxanthin.peak.1 + Violaxanthin.peak.2,
+         nonlutein = Phytoene + Phytofluene + Zeta.Carotene + Beta.Carotene + Violaxanthin.peak.1 + Violaxanthin.peak.2,
+         nonphytoene = Phytofluene + Zeta.Carotene + Lutein + Beta.Carotene + Violaxanthin.peak.1 + Violaxanthin.peak.2,
+         nonphytofluene = Phytoene + Zeta.Carotene + Lutein + Beta.Carotene + Violaxanthin.peak.1 + Violaxanthin.peak.2,
+         nonzeta = Phytoene + Phytofluene + Lutein + Beta.Carotene + Violaxanthin.peak.1 + Violaxanthin.peak.2,
+         nonbeta = Phytoene + Phytofluene + Zeta.Carotene + Lutein + Violaxanthin.peak.1 + Violaxanthin.peak.2,
+         nonviola = Phytoene + Phytofluene + Zeta.Carotene + Lutein + Beta.Carotene)
+
+
+# Lutein vs all other carotenoids
+model_19_2 <- lmer(data = clean_joined_df, dry_matter ~ Lutein + nonlutein + timept + layer + block + (1|genotypeID), REML=FALSE)
+summary(model_19_2)
+
+model_19_2_test <- lmer(data = clean_joined_df, dry_matter ~ nonlutein + timept + layer + block + (1|genotypeID), REML=FALSE)
+anova_19_2 <- anova(model_19_2, model_19_2_test)
+anova_19_2 # X2 = 0.1666, p = 0.6832
+
+# Phytoene vs all other carotenoids
+model_19_2 <- lmer(data = clean_joined_df, dry_matter ~ Phytoene + nonphytoene + timept + layer + block + (1|genotypeID), REML=FALSE)
+summary(model_19_2)
+
+model_19_2_test <- lmer(data = clean_joined_df, dry_matter ~ nonphytoene + timept + layer + block + (1|genotypeID), REML=FALSE)
+anova_19_2 <- anova(model_19_2, model_19_2_test)
+anova_19_2 # X2 =  17.028, p = 5.662e-05
+
+
+# Phytofluene vs all other carotenoids
+model_19_2 <- lmer(data = clean_joined_df, dry_matter ~ Phytofluene + nonphytofluene + timept + layer + block + (1|genotypeID), REML=FALSE)
+summary(model_19_2)
+
+model_19_2_test <- lmer(data = clean_joined_df, dry_matter ~ nonphytofluene + timept + layer + block + (1|genotypeID), REML=FALSE)
+anova_19_2 <- anova(model_19_2, model_19_2_test)
+anova_19_2 # X2= 10.211, p=0.001396
+
+
+# Zeta carotene vs all other carotenoids
+model_19_2 <- lmer(data = clean_joined_df, dry_matter ~ Zeta.Carotene + nonzeta + timept + layer + block + (1|genotypeID), REML=FALSE)
+summary(model_19_2)
+
+model_19_2_test <- lmer(data = clean_joined_df, dry_matter ~ nonzeta + timept + layer + block + (1|genotypeID), REML=FALSE)
+anova_19_2 <- anova(model_19_2, model_19_2_test)
+anova_19_2 # X2=1.269, p = 0.2598
+
+
+# Beta carotene vs all other carotenoids
+model_19_2 <- lmer(data = clean_joined_df, dry_matter ~ Beta.Carotene + nonbeta + timept + layer + block + (1|genotypeID), REML=FALSE)
+summary(model_19_2)
+
+model_19_2_test <- lmer(data = clean_joined_df, dry_matter ~ nonbeta + timept + layer + block + (1|genotypeID), REML=FALSE)
+anova_19_2 <- anova(model_19_2, model_19_2_test)
+anova_19_2 #X2=2.0955, p = 0.1477
+
+
+
+# Violaxanthin vs all other carotenoids
+model_19_2 <- lmer(data = clean_joined_df, dry_matter ~ totalviola + nonviola + timept + layer + block + (1|genotypeID), REML=FALSE)
+summary(model_19_2)
+
+model_19_2_test <- lmer(data = clean_joined_df, dry_matter ~ nonviola + timept + layer + block + (1|genotypeID), REML=FALSE)
+anova_19_2 <- anova(model_19_2, model_19_2_test)
+anova_19_2 #X2=1.33, p = 0.2488
 ```
 
 
@@ -1050,7 +1122,7 @@ ggsave("plot_TCDM_layer.png", width = 8.5, height = 6.5, dpi = 400)
 
 ```
 
-#TC/DM relationship by timepoints??
+#TC/DM relationship by timepoints
 
 ```{r}
 plot_TCDM_timept <- ggplot(data = joined_df %>% filter(dry_matter < 55))+
@@ -1127,5 +1199,40 @@ summary(her_modelDM)
 heritabilityDM <- as.data.frame((summary(her_modelDM))$varcor)^2
 summary(her_modelTC) 
 ```
+
+
+Heritability of the egg-yolk phenotype:
+```{r}
+phenodata_merged_eggyolk = readRDS("../RNAseq_yr2/data/Carotenoids_DM_phenodata_yr1-2merged.RDS")
+
+
+her_modelEY <- lmer(data = joined_df, total_carotenoids ~ layer + block + timept + (1|genotype))
+```
+
+
+Comparison of Latin American vs. African:
+```{r}
+phenodata_merged <- phenodata_merged_eggyolk %>% mutate(genotype.category = case_when(
+    startsWith(genotype, "A") ~ "African",
+    startsWith(genotype, "C") ~ "Latin American",
+    startsWith(genotype, "X") ~ "Hybrid"))
+
+model_20 <- lmer(data = phenodata_merged, dry_matter ~ total_carotenoids*genotype.category + layer + block + timept + (1|genotype))
+summary(model_20)
+
+#total_carotenoids:genotype.categoryLatin American   Estimate: 0.07596 Pr(>|t|):0.19033  
+
+model_20_reduced <- lmer(data = phenodata_merged, dry_matter ~ total_carotenoids + genotype.category + layer + block + timept + (1|genotype))
+
+anova(model_20, model_20_reduced)
+# Chisq 9.2448, Df 2, Pr(>Chisq) 0.009829 
+
+
+
+### C
+
+```
+There is a significant interaction effect between genotype category and total carotenoids on DM (X2 = 9.2448, p=0.009829).
+
 
 

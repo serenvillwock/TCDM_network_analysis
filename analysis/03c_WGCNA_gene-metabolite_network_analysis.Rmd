@@ -387,6 +387,12 @@ gene_car_membership <- fullgene_annotations %>%
 
 saveRDS(gene_car_membership, file=paste0(dir2, "output/carotenoid_carbohydrate_gene_list.RDS"))
 
+gene_car_membership_annot <- gene_car_membership %>% 
+  left_join(fullgene_annotations, by=c("locusName","class","Description")) %>%
+  mutate(class = case_when(class == "carot" ~ "carotenoid",
+                           class == "carb" ~ "carbohydrate", T~NA)) %>%
+  arrange(class,locusName)
+write.csv(gene_car_membership_annot, file=paste0(dir2, "output/TableS2_carotenoid_carbohydrate_genes.csv"))
 
 #check how many genes in each class
 table(gene_car_membership$class)
@@ -679,6 +685,23 @@ table(overall_modules_annot %>% filter(grepl("PWY-6724", Pathways)) %>% dplyr::s
 overall_modules_annot %>% filter(grepl("PWY-6724", Pathways)) %>% dplyr::select(colors, locusName, Description) %>%
   rmarkdown::paged_table()
 
+```
+
+
+Identify carbohydrate-related genes with the strongest topological overlap with carotenoid metabolites:
+```{r}
+# Subset overall TOM matrix for carotenoid metabolite/starch gene relationships
+top_overallTOM_carbcarot <- overall_TOM[rownames(overall_TOM) %in% carb_genes$gene_id,
+                                colnames(overall_TOM) %in% carot_traits] %>%
+  reshape2::melt() %>% arrange(-value) %>%
+  left_join(overall_modules_annot, by=join_by("Var1" == "gene_id"))
+
+
+# Subset genetic TOM matrix for carotenoid metabolite/starch gene relationships
+top_overallTOM_carbcarot <- geno_TOM[rownames(geno_TOM) %in% carb_genes$gene_id,
+                                colnames(geno_TOM) %in% carot_traits] %>%
+  reshape2::melt() %>% arrange(-value) %>%
+  left_join(geno_modules_annot, by=join_by("Var1" == "gene_id"))
 ```
 
 Select modules of interest from overall network and export for Cytoscape
